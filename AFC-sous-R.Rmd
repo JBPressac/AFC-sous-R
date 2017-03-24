@@ -1,5 +1,5 @@
 ---
-title: "AFC sous R"
+title: "Analyse factorielle des correspondances sous R"
 author: "Jean-Baptiste Pressac, Laurent Mell"
 date: "March 21, 2017"
 output: html_document
@@ -9,22 +9,270 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
+# Introduction
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+Dans le cadre d'un travail plus large sur l'analyse de données multidimensionnelles Spécificité de la séance : avec une AFC. Étudier les éventuelles liaisons entre les modalités de 2 variables qualitatives. Plus d'expérimentation qu'autre chose pour l'instant. Approfondissement qui a apporté davantage de questions. Travail sur des données de François Husson (Agrocampus Rennes) ou sur dse exemples que lui-même a repris.
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+# Les données
 
-```{r cars}
-summary(cars)
+EXEMPLE DU CRÉDOC (jean-baptiste) sur 1724 femmes, Nicole Tabard du CREDOC, date de publication 1974.
+Afficher le diaporama (slide 5 du PDF de Husson)
+Sur un questionnaire de x questions au total, on cherche à étudier
+l'articulation des réponses à deux questions.
+Question (variable) 1 : Quelle est la famille idéale pour vous ?
+Question (variable) 2 : Quelle activité convient le mieux à une mère de famille quand ses enfants 
+vont à l’école ?
+Chaque question de l'exemple à trois modalités qualitatives.
+Données de départ : un tableau de contingence. Il y a des chiffres dans le tableau mais ils ne
+représentent pas les réponses aux questions mais seulement le nombre d'individus ayant répondu 
+aux deux modalités.
+Marge ligne et marge colonne. 1724 en bas à gauche.
+Reprendre la contradiction évoquée par François Husson. Reprendre l’apparente contradiction entre 
+les 2 questions : Il y a des réponses à une question qui semblent plus favorables 
+que l’autre au travail féminin.
+Notamment sur le travail féminin, si on cumule les 1123 + 317 en faveur du travail féminin, on 
+obtient 83,5% de réponses en faveur du travail féminin.
+
+A quoi va nous servir l'AFC ?
+L'AFC va nous servir à **visualiser** la nature de la liaison entre les 2 variables qualitatives.
+Qu'est-ce qu'une liaison ?
+C'est l'écart entre les données observées et le modèle d'indépendance (ne pas oublier de revenir 
+sur la notion d'indépendance avec le khi2don$expected).
+
+On n'a pas le questionnaire complet et on ne montrera pas comment obtenir le 
+tableau de contingence à partir des réponses au questionnaire.
+Commment ouvrir le fichier CSV avec Notepad++, OpenOffice, LibreOffice, etc ?
+Petite explication sur le système d'encodage et les éventuels problèmes avec Excel.
+
+Ouverture de R studio.
+Créer un dossier projet.
+Y mettre le fichier CSV
+On peut exécuter les instructions en R dans la console mais le mieux est de créer un fichier .R pour
+y sauvegarder toutes instructions et pouvoir les relancer plus tard.
+Créer un fichier .R
+
+DÉFINIR LA LOCALISATION DU RÉPERTOIRE DE TRAVAIL (Montrer que l'on peut aussi utiliser la roue crantée dans RStudio)
+Afficher la localisation du répertoire de travail sous la forme d'un chemin absolu
+
+```{r}
+getwd()
 ```
 
-## Including Plots
+# Importation du jeu de données
 
-You can also embed plots, for example:
+On lit le fichier CSV et on stocke le résultat dans la variable "don"
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+```{r}
+don <- read.table("AnaDo_JeuDonnees_TravailFemme.csv", header=TRUE, row.names=1, sep=";", fileEncoding="latin1")
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+Montrer que l'on peut afficher don dans RStudio à partir du volet Data.
+Seules les 3 premières colonnes du jeu de données sont utilisées ici :
+On n'a besoin de suppprimer les colonnes dans le fichier CSV on peut les sélectionner avec la commande :
+
+```{r}
+don <- don[,1:3]
+```
+
+STATISTIQUE DE BASE DU TABLEAU DE CONTINGENCE (Laurent)
+
+```{r}
+summary(don)
+```
+
+Rappel : Notre objectif est de visualiser la nature de la liaison entre deux variables qualitatives.
+Mais faut-il encore que cette liaison soit significative. Pour ce faire, on fait un test du Khi2.
+TEST DU KHI2
+Le test du khi2 mesure la significativité d'une relation mais pas son intensité.
+On utilise une fonction fournie de base avec R (pas nécessaire d'installer une librairie) 
+
+```{r}
+chisq.test(don)
+```
+
+X-squared à lire Khi 2 soit Khi au carré.
+La commande nous donne la valeur du Khi 2 qui est indicateur de la significativité de la liaison
+mais ce qui nous interesse ici est la p-value. On voit ici que la p-value est inférieure à 2.2e-16 
+La probabilité que les variables soient indépendante est inférieure à 2.2e-16. Ce qui nous permet de rejetter
+cette hypothèse d'indépendance. Ce qui ne veut dire pour autant que les variables soient dépendantes.
+Les réponses à la question sur la famille idéale sont probablement liées aux réponses concerant l'activité
+convenant le mieux à une mère de famille dont les enfants vont à l'école.
+
+TEST DU KHI2 - EXPLICATIONS
+Test permettant de déterminer la probabilité que les deux variables d'un tableau de contingence sont indépendantes,
+c'est-à-dire qu'il n'existe pas de relation entre les modalités en ligne et les modalités en colonne (les unes ne
+conditionnent pas les autres, et réciproquement).
+
+On stocke le résultat de la fonction dans la variable khi2don
+
+```{r}
+chisq.test(don) -> khi2don
+```
+
+RAPPEL OBJECTIF
+Notre objectif est bien de **visualiser** la nature de la liaison entre les 2 variables qualitatives
+Mais tout en sachant qu'une liaison est l'écart entre les données observées et le modèle d'indépendance
+Mais qu'est-ce que le modèle d'indépendance ?
+
+...
+
+TEST DU KHI2 - AIDES À L'INTERPRÉTATION
+Afficher le tableau de contingence d'origine
+Le test du khi2 est symétrique. Les lignes et les colonnes du tableau croisé sont interchangeables. Le
+résultat du test sera exactement le même. Il n'y a pas de "sens de lecture" du tableau.
+khi2don$observed
+Afficher le tableau d'indépendance (tableau des effectifs théoriques)
+On calcule le tableau des pourcentages théoriques, en multipliant pour chaque case la proportion observée
+dans la population des deux modalités correspondantes. Puis, le tableau des effectifs théoriques se calcule
+en multipliant le tableau des pourcentages théoriques par l'effectif total.
+Voir détails : Julien Barnier (2016), "Tout ce que vous n'avez jamais voulu savoir sur le Khi2 sans jamais
+avoir eu envie de le demander", (https://alea.fr.eu.org/pages/khi2)
+
+```{r}
+khi2don$expected
+```
+
+Afficher le tableau des résidus (sens des écarts à l'indépendance)
+Un résidu positif signifie que les effectifs dans la case sont supérieur à ceux attendus sous l'hypothèse
+d'indépendance. Et l'inverse pour un résidu négatif.
+
+```{r}
+khi2don$residuals
+```
+
+RAPPEL DE CE QU'EST CETTE INDÉPENDANCE ET L'ÉCART À L'INDÉPENDANCE
+...
+
+TRÈS TRÈS IMPORTANT
+Il y a 3 façons de caractériser la liaison entre les 2 variables qualitatives.
+Liaison = l'écart entre les données observées et le modèle d'indépendance.
+La significativité de la liaison (se mesure avec le khi2)
+L'intensité de la liaison (se mesure, notamment avec le Phi2) (Jean-Baptiste)
+La nature de la liaison (=association entre les modalités) (qui est représenté par l'AFC)
+Exemple des lunettes et des yeux bleux pour illustrer la différence entre intensité et significativité de la liaison.
+
+L'AFC travaille, non pas sur le tableau de contingence, mais sur le tableau de probabilité.
+
+CHARGEMENT DES DIFFÉRENTS PACKAGES
+
+Le Khi2 a permis d'écarter l'hypothèse d'indépendance, il y a une liaison entre les modalités des deux variables.
+On peut donc faire une AFC pour visualiser la nature de la liaison.
+FactoMineR (Dédié à l'analyse multidimensionnelle de données) mais il y en a d'autres.
+Une librairie développée notamment par François Husson d'Agrocampus Rennes.
+On charge la librairie qui permet plusieurs analyses de données multi-dimentionnelles (AFC, ACP, ACM)...
+
+```{r}
+library (FactoMineR)
+```
+
+AFC - RÉSULTATS
+les sorties et le graphe par défaut
+Amélioration de la représentation graphique
+
+```{r}
+res <- CA(don)
+```
+
+On stocke le résultat de l'AFC dans la variable "res"
+Slide n°5 du PDF de Husson. Rappel de l'apparente contradiction des réponses. 
+Le tableau de contingence ne permet pas de savoir si les femmes des années 70 
+sont favorables ou non à l'activité féminine.
+Par contre, Une première lecture du graphe de l'AFC permet de dire que les modalités des réponses 
+s'associent entre elles des plus favorables au travail féminin aux plus défavorables au travail féminin.
+
+
+explor (Interface de production et d’exploration interactive des résultats d’analyse multidimensionnelle)
+
+
+library (explor)
+
+
+Représentation graphique avec le package explor
+
+
+explor(res)
+
+
+Si on fait l'AFC avec les données du modèle d'indépendance :
+
+```{r}
+res.independance <- CA(khi2don$expected)
+```
+
+Demander au public d'interpréter cette AFC
+Simplement, lorsqu'il y a indépendance entre les 2 variables, tous les points sont
+confondus avec l'origine
+
+```{r}
+summary(res.independance)
+```
+
+
+Amélioration de l'affichage du graphe...
+Détails des arguments utilisés dans la fonction plot()
+"cex=" permet de madifier la taille de la police
+"title=" permet de donner un titre au graphique
+
+```{r}
+plot(res, cex = 0.6, title = "Représentation graphique", selectRow = "cos2 0.7", selectCol = "cos2 0.7")
+```
+
+
+Les résultats
+
+```{r}
+summary(res, nbelements = Inf)
+```
+
+Les tableaux avec les résultats n'affichent, par défaut, que les 10 réponses les plus significatives
+L'argument "nbelements=Inf" permet de retirer cette limite.
+
+Cette commande permet d'obtenir :
+Le résultat du test du khi2 avec la p-value
+
+Un tableau avec les variance de chaque dimension (axe) et les pourcentages de variance
+Ce qu'il appelle la variance est aussi appelée dans la littérature "valeur propre" ou "inertie".
+La variance mesure l'intensité de la liaison entre les deux variables expliquées par cet axe.
+La variance est comprise entre 0 et 1.
+Le total des variances (le Phi2) est la mesure de l'intensité de la liaison (liaison = l'écart à l'indépendance).
+Le Phi2 = 0.117 + 0.019 = 0.136
+A quoi comparer cette valeur ?
+Les variances étant au max égales à 1, le Phi2 peut avoir au maximum une valeur de 2.
+0.136 << 2 : L'intensité de la liaison est faible. Les réponses s'associent globalement peu entre elles.
+Mais rare sont les cas où l'intensité de la liaison entre les variables est forte.
+
+Le % of var, soit le pourcentage de variance, représente le % de variance expliqué par l'axe.
+Autrement dit, la dimension 1 (ou l'axe 1) explique 86.292% de la variance entre les deux variables.
+et le plan constitué des axes 1 et 2 explique 100% de la variance.
+Ce qui est normal puisque les pourcentages se répartissent sur tous les axes.
+S'il y avait eu 8 axes, le pourcentage d'inertie se serait réparti sur les 8 axes.
+
+Dans quel cas peut-on avoir 8 axes ?
+Ce qu'il faut savoir c'est que le nombre d'axes est égal au nombre minimum entre le nombre de colonnes - 1 
+et le nombre de lignes - 1 du tableau de contingence. Autrement, si vous avez un tableau de contingence
+avec en ligne 9 modalités et en colonnes 15 modalités. On fait 9 - 1 = 8 puis 15 - 1 = 14 et on garde 8.
+
+Dans ce cas le % de variance permettra de choisir le nombre d'axes à retenir pour l'analyse.
+
+La position par rapport au centre de l'axe. Le centre de l'axe correspond au profil moyen en ligne
+et le profil moyen en colonne.
+Expliquer le profil moyen avec le fichier Excel et montrer que les pourcentages colonnes de "travailler à mi-temps"
+sont proches du profil colonne moyen. Ce que l'on retrouve bien sur le graphe où "travailler à mi-temps" est 
+proche du centre du graphe.
+
+Peut_on interpréter la position entre deux point lignes ou deux points colonnes ?
+Rappel : L'AFC ne travaille pas sur le tableau de contingence mais transforme le tableau de contingence
+en tableau de probabilité. C'est à dire le tableau de contingence dont les valeurs sont divisées par la population.
+(voir fichier Excel). Deux point lignes sont donc proches l'un de l'autre si leur profil en porcentage est similaire.
+
+Par contre, on peut dire que les lignes sont "du côté" des colonnes auxquelles elles s'associent le plus.
+Dans la mesure où ces colonnes sont éloignées du centre de gravité.
+Et respectivement, les colonnes sont "du côté" des lignes avec lesquelles elles s'associent le plus.
+Dans la mesure où ces lignes sont éloignées du centre de gravité.
+On en veut pour preuve que sur le graphe "seul le mari travaille" est du côté de "rester au foyer".
+Si on revient sur le tableau de contingence (slide 5 de Husson) ce résultat peut sembler contradictoire 
+puisque 573 personnes ont répondu à "seul le mari travaille" et "travailler à mi-temps" alors que 
+seulement 241 personnes ont répondu à "seul le mari travaille" et "rester au foyer".
+Ne devrait-on pas dire que "seul le mari travaille" s'associe le plus à "travailler à mi-temps".
+Cependant quand on regarde les marges du tableau de contingence...
+et quand on regarder les pourcentages en colonne dans le fichier Excel...
