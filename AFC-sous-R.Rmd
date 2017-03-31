@@ -9,18 +9,22 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+<p>&nbsp; </p>
+
 ### Auteurs
 **Jean-Baptiste PRESSAC** ([CRBC](https://www.univ-brest.fr/crbc/menu/Membres+du+laboratoire/Personnel_administratif_et_technique/Jean-Baptiste_Pressac), Université de Bretagne Occidentale)  
-**Laurent MELL** ([LABERS](https://www.univ-brest.fr/labers/), Université de Bretagne Occidentale)
+**Laurent MELL** ([LABERS](https://www.univ-brest.fr/labers/), Université de Bretagne Occidentale)     
 
+<p>&nbsp; </p>
+<p>&nbsp; </p>
 
 ### Introduction
 
-Ce premier travail s'inscrit dans une démarche de réflexion, plus large, que nous souhaitons entreprendre autour **l'analyse de données multidimensionnelles**. La spécificité de ce premier travail réside dans le fait que nous allons nous concentrer sur **l'analyse factorielle des correspondances (AFC)**. Notre objectif sera d'étudier les _éventuelles_ liaisons entre les modalités de deux variables qualitatives. Par ailleurs, nous avons fait le choix d'utiliser le logiciel [R](https://www.r-project.org/) ainsi que l'environnement de développement [RStudio](https://www.rstudio.com/).
+<p style="text-align:justify";>Ce premier travail s'inscrit dans une démarche de réflexion, plus large, que nous souhaitons entreprendre autour **l'analyse de données multidimensionnelles**. La spécificité de ce premier travail réside dans le fait que nous allons nous concentrer sur **l'analyse factorielle des correspondances (AFC)**. Notre objectif sera d'étudier les **éventuelles** liaisons entre les modalités de deux variables qualitatives. Par ailleurs, nous avons fait le choix d'utiliser le logiciel [R](https://www.r-project.org/) ainsi que l'environnement de développement [RStudio](https://www.rstudio.com/).</p>
 
-Un certain nombre des données sur lesquelles nous allons travailler proviennent du MOOC [**Analyse des données multidimensionnelles**](https://www.fun-mooc.fr/courses/agrocampusouest/40001S03/session03/about) sur la plateforme [FUN](https://www.fun-mooc.fr/). Ce MOOC est proposé par [François Husson](http://math.agrocampus-ouest.fr/infoglueDeliverLive/membres/Francois.Husson), [Jérôme Pagès](http://math.agrocampus-ouest.fr/infoglueDeliverLive/membres/Jerome.Pages) et [Magalie Houée-Bigot](http://math.agrocampus-ouest.fr/infoglueDeliverLive/membres/Magalie.Hou%C3%A9e-Bigot).    
+<p style="text-align:justify";>Un certain nombre des données sur lesquelles nous allons travailler proviennent du MOOC [Analyse des données multidimensionnelles](https://www.fun-mooc.fr/courses/agrocampusouest/40001S03/session03/about) sur la plateforme [FUN](https://www.fun-mooc.fr/). Ce MOOC est proposé par [François Husson](http://math.agrocampus-ouest.fr/infoglueDeliverLive/membres/Francois.Husson), [Jérôme Pagès](http://math.agrocampus-ouest.fr/infoglueDeliverLive/membres/Jerome.Pages) et [Magalie Houée-Bigot](http://math.agrocampus-ouest.fr/infoglueDeliverLive/membres/Magalie.Hou%C3%A9e-Bigot).</p>    
 
-<p style="text-align:center";>*</p>
+<p>&nbsp; </p>
 
 #### Les données
 
@@ -31,18 +35,13 @@ Sur un questionnaire de x questions au total, on cherche à étudier l'articulat
 * Question (variable) 1 : Quelle est la famille idéale pour vous ?    
 * Question (variable) 2 : Quelle activité convient le mieux à une mère de famille quand ses enfants vont à l’école ?     
 
-Chaque question de l'exemple à trois modalités qualitatives.
-Données de départ : un tableau de contingence. Il y a des chiffres dans le tableau mais ils ne
-représentent pas les réponses aux questions mais seulement le nombre d'individus ayant répondu 
-aux deux modalités.
-Marge ligne et marge colonne. 1724 en bas à gauche.
-Reprendre la contradiction évoquée par François Husson. Reprendre l’apparente contradiction entre 
-les 2 questions : Il y a des réponses à une question qui semblent plus favorables 
-que l’autre au travail féminin.
-Notamment sur le travail féminin, si on cumule les 1123 + 317 en faveur du travail féminin, on 
-obtient 83,5% de réponses en faveur du travail féminin.     
+Chaque question de l'exemple à trois modalités qualitatives.     
+Données de départ : un tableau de contingence. Il y a des chiffres dans le tableau mais ils ne représentent pas les réponses aux questions mais seulement le nombre d'individus ayant répondu aux deux modalités.     
+Marge ligne et marge colonne. 1724 en bas à gauche.     
+Reprendre la contradiction évoquée par François Husson.     
+Reprendre l’apparente contradiction entre les 2 questions : Il y a des réponses à une question qui semblent plus favorables que l’autre au travail féminin. Notamment sur le travail féminin, si on cumule les 1123 + 317 en faveur du travail féminin, on obtient 83,5% de réponses en faveur du travail féminin.     
 
-<p style="text-align:center";>*</p>
+<p>&nbsp; </p>
 
 #### À quoi va nous servir l'AFC ?
 
@@ -56,7 +55,7 @@ tableau de contingence à partir des réponses au questionnaire.
 Commment ouvrir le fichier CSV avec Notepad++, OpenOffice, LibreOffice, etc ?
 Petite explication sur le système d'encodage et les éventuels problèmes avec Excel.     
 
-<p style="text-align:center";>*</p>
+<p>&nbsp; </p>
 
 #### Ouverture de R studio.
 
@@ -66,18 +65,21 @@ On peut exécuter les instructions en R dans la console mais le mieux est de cr�
 y sauvegarder toutes instructions et pouvoir les relancer plus tard.
 Créer un fichier .R      
 
-<p style="text-align:center";>*</p>
+<p>&nbsp; </p>
 
 #### Définir la localisation du répertoire de travail
 
-(Montrer que l'on peut aussi utiliser la roue crantée dans RStudio)
 Afficher la localisation du répertoire de travail sous la forme d'un chemin absolu
 
 ```{r}
 getwd()
-```     
+```
 
-<p style="text-align:center";>*</p>
+<p style="text-align:justify";>La définition du répertoire de travail peut aussi être faite par le biais de la commande "Set As Working Directory" via l'onglet "More". Cet onglet correspond au symbole de la roue crantée dans la fenêtre en bas à droite de RStudio.</p>
+
+<p style="text-align:center";>![Roue](Roue.png "Roue")</p>
+
+<p>&nbsp; </p>
 
 #### Importation du jeu de données
 
@@ -95,61 +97,47 @@ On n'a besoin de suppprimer les colonnes dans le fichier CSV on peut les sélect
 don <- don[,1:3]
 ```     
 
-<p style="text-align:center";>*</p>
+<p>&nbsp; </p>
 
-#### Statistique de base du tableau de contingence
+#### Statistiques de base du tableau de contingence
 
 ```{r}
 summary(don)
 ```
 
-Rappel : Notre objectif est de visualiser la nature de la liaison entre deux variables qualitatives.
-Mais faut-il encore que cette liaison soit significative. Pour ce faire, on fait un test du Khi2.     
+<p style="text-align:justify";>La fonction `summary` permet d'obtenir un "résumé", quelques **statistiques de base concernant une variable**, la variable "don" dans le cas qui nous concerne Au regard de ce "résumé", nous voyons que, pour chacune des modalités de la variable, nous obtenons la **médiane**, les **quartiles**, le **minimum** et le **maximum**.</p>     
 
-<p style="text-align:center";>*</p>
+<p style="text-align:justify";>Rappellons que notre objectif est bien de **visualiser la nature de la liaison entre deux variables qualitatives**. Mais faut-il encore que cette liaison soit **significative**.</p>     
+
+<p style="text-align:justify";>Pour ce faire, nous réalisons un **test du Khi2**.</p>     
+
+<p>&nbsp; </p>
 
 #### Test du Khi2
 
-Le test du khi2 mesure la significativité d'une relation mais pas son intensité.
-On utilise une fonction fournie de base avec R (pas nécessaire d'installer une librairie) 
+<p style="text-align:justify";>Le test du khi2 mesure la **significativité d'une relation mais pas son intensité**. Afin de réaliser ce test du khi2, nous utilisons une fonction fournie de base avec logiciel R. Il s'agit de la fonction `chisq.test`. Il n'est pas nécessaire d'installer une librairie supplémentaire afin de réaliser ce test.</p>     
 
 ```{r}
 chisq.test(don)
 ```
 
-X-squared à lire Khi 2 soit Khi au carré.
-La commande nous donne la valeur du Khi 2 qui est indicateur de la significativité de la liaison
-mais ce qui nous interesse ici est la p-value. On voit ici que la p-value est inférieure à 2.2e-16 
-La probabilité que les variables soient indépendante est inférieure à 2.2e-16. Ce qui nous permet de rejetter
-cette hypothèse d'indépendance. Ce qui ne veut dire pour autant que les variables soient dépendantes.
-Les réponses à la question sur la famille idéale sont probablement liées aux réponses concerant l'activité
-convenant le mieux à une mère de famille dont les enfants vont à l'école.     
+<p style="text-align:justify";>Le terme `X-squared` est à lire `Khi2` soit Khi au carré. La fonction `chisq.test` nous donne, entre autres, la valeur du Khi2 qui est un **indicateur de la significativité de la liaison**. Mais ce qui nous interesse ici est la `p-value`. Nous voyons ici que la `p-value` est inférieure à 2,2x10^-16^. Cela signifie que la **probabilité que les variables soient indépendante** est inférieure à 2,2x10^-16^. Ce qui nous permet de rejeter l'hypothèse d'indépendance entre les deux variables. Pour autant, cela ne veut dire que les variables soient dépendantes. Les réponses à la question sur la famille idéale sont probablement liées aux réponses concerant l'activité convenant le mieux à une mère de famille dont les enfants vont à l'école.</p>     
 
-<p style="text-align:center";>*</p>
+<p>&nbsp; </p>
 
 #### Test du Khi2 - Explications
 
-Test permettant de déterminer la probabilité que les deux variables d'un tableau de contingence sont indépendantes,
-c'est-à-dire qu'il n'existe pas de relation entre les modalités en ligne et les modalités en colonne (les unes ne
-conditionnent pas les autres, et réciproquement).
+<p style="text-align:justify";>Le test du khi2 permet de **déterminer la probabilité que les deux variables d'un tableau de contingence sont indépendantes**, c'est-à-dire qu'il n'existe pas de relation entre les modalités en ligne et les modalités en colonne (les unes ne conditionnent pas les autres, et réciproquement). Dit autrement et comme le [rappelle très clairement Julien Barnier](https://alea.fr.eu.org/pages/khi2), cela veut dire que le "fait d'appartenir à une modalité de la première variable n'a pas d'influence sur la modalité d'appartenance de la deuxième variable". Dans ce test, l'hypothèse nulle (H0) suppose qu'il y a indépendance entre les deux variables. Si nous acceptons l'hypothèse d'indépendance (H0), nous n'aurons pas d'utilité à réaliser une AFC car les points projetés seront extrêmement proches ou confondus avec le centre de gravité, confondus avec le centre du graphe. Si nous rejetons l'hypothèse d'indépendance (p-value < 0,05), l'hypothèse alternative (H1) suppose que la liaison entre les deux variables est significative sans que nous puissions définir l'intensité de la liaison.</p>
 
-On stocke le résultat de la fonction dans la variable khi2don
+<p style="text-align:justify";>Du fait que nous ayons obtenu une p-value inférieure à 2.2e-16 et, par extension, inférieure au seuil de 0,05, nous rejetons l'hypothèse d'indépendance entre les deux variables.</p>
+
+<p style="text-align:justify";>Comme le résultat est significatif, nous stockons le résultat de la fonction dans la variable `khi2don`.</p>
 
 ```{r}
 chisq.test(don) -> khi2don
 ```     
 
-<p style="text-align:center";>*</p>
-
-##### Rappel de l'objectif
-
-Notre objectif est bien de **visualiser** la nature de la liaison entre les 2 variables qualitatives
-Mais tout en sachant qu'une liaison est l'écart entre les données observées et le modèle d'indépendance
-Mais qu'est-ce que le modèle d'indépendance ?
-
-...     
-
-<p style="text-align:center";>*</p>
+<p>&nbsp; </p>
 
 #### Test du Khi2 - Aides à l'interprétation
 
@@ -175,13 +163,23 @@ d'indépendance. Et l'inverse pour un résidu négatif.
 khi2don$residuals
 ```     
 
-<p style="text-align:center";>*</p>
+<p>&nbsp; </p>
+
+##### Rappel de l'objectif
+
+<p style="text-align:justify";>Notre objectif est bien de **visualiser** la nature de la liaison entre les deux variables qualitatives.</p>
+
+<p style="text-align:justify";>Sachant qu'une liaison est l'écart entre les données observées et le modèle d'indépendance, qu'est-ce que le modèle d'indépendance ?</p>
+
+...     
+
+<p>&nbsp; </p>
 
 #### Indépendance et écart à l'indépendance (Rappel)
 
 ...     
 
-<p style="text-align:center";>*</p>
+<p>&nbsp; </p>
 
 #### Important
 
@@ -194,7 +192,7 @@ Exemple des lunettes et des yeux bleux pour illustrer la différence entre inten
 
 L'AFC travaille, non pas sur le tableau de contingence, mais sur le tableau de probabilité.     
 
-<p style="text-align:center";>*</p>
+<p>&nbsp; </p>
 
 #### Chargement des packages
 
@@ -208,7 +206,7 @@ On charge la librairie qui permet plusieurs analyses de données multi-dimention
 library (FactoMineR)
 ```     
 
-<p style="text-align:center";>*</p>
+<p>&nbsp; </p>
 
 #### AFC - Résultats
 
@@ -262,7 +260,7 @@ Détails des arguments utilisés dans la fonction plot()
 plot(res, cex = 0.6, title = "Représentation graphique", selectRow = "cos2 0.7", selectCol = "cos2 0.7")
 ```     
 
-<p style="text-align:center";>*</p>
+<p>&nbsp; </p>
 
 ##### Les résultats
 
