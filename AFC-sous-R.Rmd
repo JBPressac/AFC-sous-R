@@ -1,7 +1,7 @@
 ---
 title: "Analyse factorielle des correspondances sous R"
 author: "Jean-Baptiste Pressac, Laurent Mell"
-date: "March 21, 2017"
+date: "March 31, 2017"
 output: html_document
 ---
 
@@ -9,19 +9,28 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# Introduction
+### Auteurs
+**Jean-Baptiste PRESSAC** ([CRBC](https://www.univ-brest.fr/crbc/menu/Membres+du+laboratoire/Personnel_administratif_et_technique/Jean-Baptiste_Pressac), Université de Bretagne Occidentale)  
+**Laurent MELL** ([LABERS](https://www.univ-brest.fr/labers/), Université de Bretagne Occidentale)
 
-Dans le cadre d'un travail plus large sur l'analyse de données multidimensionnelles Spécificité de la séance : avec une AFC. Étudier les éventuelles liaisons entre les modalités de 2 variables qualitatives. Plus d'expérimentation qu'autre chose pour l'instant. Approfondissement qui a apporté davantage de questions. Travail sur des données de François Husson (Agrocampus Rennes) ou sur dse exemples que lui-même a repris.
 
-# Les données
+### Introduction
 
-EXEMPLE DU CRÉDOC (jean-baptiste) sur 1724 femmes, Nicole Tabard du CREDOC, date de publication 1974.
-Afficher le diaporama (slide 5 du PDF de Husson)
-Sur un questionnaire de x questions au total, on cherche à étudier
-l'articulation des réponses à deux questions.
-Question (variable) 1 : Quelle est la famille idéale pour vous ?
-Question (variable) 2 : Quelle activité convient le mieux à une mère de famille quand ses enfants 
-vont à l’école ?
+Ce premier travail s'inscrit dans une démarche de réflexion, plus large, que nous souhaitons entreprendre autour **l'analyse de données multidimensionnelles**. La spécificité de ce premier travail réside dans le fait que nous allons nous concentrer sur **l'analyse factorielle des correspondances (AFC)**. Notre objectif sera d'étudier les _éventuelles_ liaisons entre les modalités de deux variables qualitatives. Par ailleurs, nous avons fait le choix d'utiliser le logiciel [R](https://www.r-project.org/) ainsi que l'environnement de développement [RStudio](https://www.rstudio.com/).
+
+Un certain nombre des données sur lesquelles nous allons travailler proviennent du MOOC [**Analyse des données multidimensionnelles**](https://www.fun-mooc.fr/courses/agrocampusouest/40001S03/session03/about) sur la plateforme [FUN](https://www.fun-mooc.fr/). Ce MOOC est proposé par [François Husson](http://math.agrocampus-ouest.fr/infoglueDeliverLive/membres/Francois.Husson), [Jérôme Pagès](http://math.agrocampus-ouest.fr/infoglueDeliverLive/membres/Jerome.Pages) et [Magalie Houée-Bigot](http://math.agrocampus-ouest.fr/infoglueDeliverLive/membres/Magalie.Hou%C3%A9e-Bigot).    
+
+<p style="text-align:center";>*</p>
+
+#### Les données
+
+EXEMPLE DU CRÉDOC sur 1724 femmes, Nicole Tabard du CREDOC, date de publication 1974.     
+Afficher le diaporama (slide 5 du PDF de François Husson)     
+Sur un questionnaire de x questions au total, on cherche à étudier l'articulation des réponses à deux questions.      
+
+* Question (variable) 1 : Quelle est la famille idéale pour vous ?    
+* Question (variable) 2 : Quelle activité convient le mieux à une mère de famille quand ses enfants vont à l’école ?     
+
 Chaque question de l'exemple à trois modalités qualitatives.
 Données de départ : un tableau de contingence. Il y a des chiffres dans le tableau mais ils ne
 représentent pas les réponses aux questions mais seulement le nombre d'individus ayant répondu 
@@ -31,9 +40,12 @@ Reprendre la contradiction évoquée par François Husson. Reprendre l’apparen
 les 2 questions : Il y a des réponses à une question qui semblent plus favorables 
 que l’autre au travail féminin.
 Notamment sur le travail féminin, si on cumule les 1123 + 317 en faveur du travail féminin, on 
-obtient 83,5% de réponses en faveur du travail féminin.
+obtient 83,5% de réponses en faveur du travail féminin.     
 
-A quoi va nous servir l'AFC ?
+<p style="text-align:center";>*</p>
+
+#### À quoi va nous servir l'AFC ?
+
 L'AFC va nous servir à **visualiser** la nature de la liaison entre les 2 variables qualitatives.
 Qu'est-ce qu'une liaison ?
 C'est l'écart entre les données observées et le modèle d'indépendance (ne pas oublier de revenir 
@@ -42,23 +54,32 @@ sur la notion d'indépendance avec le khi2don$expected).
 On n'a pas le questionnaire complet et on ne montrera pas comment obtenir le 
 tableau de contingence à partir des réponses au questionnaire.
 Commment ouvrir le fichier CSV avec Notepad++, OpenOffice, LibreOffice, etc ?
-Petite explication sur le système d'encodage et les éventuels problèmes avec Excel.
+Petite explication sur le système d'encodage et les éventuels problèmes avec Excel.     
 
-Ouverture de R studio.
+<p style="text-align:center";>*</p>
+
+#### Ouverture de R studio.
+
 Créer un dossier projet.
 Y mettre le fichier CSV
 On peut exécuter les instructions en R dans la console mais le mieux est de créer un fichier .R pour
 y sauvegarder toutes instructions et pouvoir les relancer plus tard.
-Créer un fichier .R
+Créer un fichier .R      
 
-DÉFINIR LA LOCALISATION DU RÉPERTOIRE DE TRAVAIL (Montrer que l'on peut aussi utiliser la roue crantée dans RStudio)
+<p style="text-align:center";>*</p>
+
+#### Définir la localisation du répertoire de travail
+
+(Montrer que l'on peut aussi utiliser la roue crantée dans RStudio)
 Afficher la localisation du répertoire de travail sous la forme d'un chemin absolu
 
 ```{r}
 getwd()
-```
+```     
 
-# Importation du jeu de données
+<p style="text-align:center";>*</p>
+
+#### Importation du jeu de données
 
 On lit le fichier CSV et on stocke le résultat dans la variable "don"
 
@@ -72,17 +93,23 @@ On n'a besoin de suppprimer les colonnes dans le fichier CSV on peut les sélect
 
 ```{r}
 don <- don[,1:3]
-```
+```     
 
-STATISTIQUE DE BASE DU TABLEAU DE CONTINGENCE (Laurent)
+<p style="text-align:center";>*</p>
+
+#### Statistique de base du tableau de contingence
 
 ```{r}
 summary(don)
 ```
 
 Rappel : Notre objectif est de visualiser la nature de la liaison entre deux variables qualitatives.
-Mais faut-il encore que cette liaison soit significative. Pour ce faire, on fait un test du Khi2.
-TEST DU KHI2
+Mais faut-il encore que cette liaison soit significative. Pour ce faire, on fait un test du Khi2.     
+
+<p style="text-align:center";>*</p>
+
+#### Test du Khi2
+
 Le test du khi2 mesure la significativité d'une relation mais pas son intensité.
 On utilise une fonction fournie de base avec R (pas nécessaire d'installer une librairie) 
 
@@ -96,9 +123,12 @@ mais ce qui nous interesse ici est la p-value. On voit ici que la p-value est in
 La probabilité que les variables soient indépendante est inférieure à 2.2e-16. Ce qui nous permet de rejetter
 cette hypothèse d'indépendance. Ce qui ne veut dire pour autant que les variables soient dépendantes.
 Les réponses à la question sur la famille idéale sont probablement liées aux réponses concerant l'activité
-convenant le mieux à une mère de famille dont les enfants vont à l'école.
+convenant le mieux à une mère de famille dont les enfants vont à l'école.     
 
-TEST DU KHI2 - EXPLICATIONS
+<p style="text-align:center";>*</p>
+
+#### Test du Khi2 - Explications
+
 Test permettant de déterminer la probabilité que les deux variables d'un tableau de contingence sont indépendantes,
 c'est-à-dire qu'il n'existe pas de relation entre les modalités en ligne et les modalités en colonne (les unes ne
 conditionnent pas les autres, et réciproquement).
@@ -107,16 +137,22 @@ On stocke le résultat de la fonction dans la variable khi2don
 
 ```{r}
 chisq.test(don) -> khi2don
-```
+```     
 
-RAPPEL OBJECTIF
+<p style="text-align:center";>*</p>
+
+##### Rappel de l'objectif
+
 Notre objectif est bien de **visualiser** la nature de la liaison entre les 2 variables qualitatives
 Mais tout en sachant qu'une liaison est l'écart entre les données observées et le modèle d'indépendance
 Mais qu'est-ce que le modèle d'indépendance ?
 
-...
+...     
 
-TEST DU KHI2 - AIDES À L'INTERPRÉTATION
+<p style="text-align:center";>*</p>
+
+#### Test du Khi2 - Aides à l'interprétation
+
 Afficher le tableau de contingence d'origine
 Le test du khi2 est symétrique. Les lignes et les colonnes du tableau croisé sont interchangeables. Le
 résultat du test sera exactement le même. Il n'y a pas de "sens de lecture" du tableau.
@@ -125,8 +161,7 @@ Afficher le tableau d'indépendance (tableau des effectifs théoriques)
 On calcule le tableau des pourcentages théoriques, en multipliant pour chaque case la proportion observée
 dans la population des deux modalités correspondantes. Puis, le tableau des effectifs théoriques se calcule
 en multipliant le tableau des pourcentages théoriques par l'effectif total.
-Voir détails : Julien Barnier (2016), "Tout ce que vous n'avez jamais voulu savoir sur le Khi2 sans jamais
-avoir eu envie de le demander", (https://alea.fr.eu.org/pages/khi2)
+Voir détails : Julien Barnier (2016), [Tout ce que vous n'avez jamais voulu savoir sur le Khi2 sans jamais avoir eu envie de le demander](https://alea.fr.eu.org/pages/khi2)
 
 ```{r}
 khi2don$expected
@@ -138,22 +173,30 @@ d'indépendance. Et l'inverse pour un résidu négatif.
 
 ```{r}
 khi2don$residuals
-```
+```     
 
-RAPPEL DE CE QU'EST CETTE INDÉPENDANCE ET L'ÉCART À L'INDÉPENDANCE
-...
+<p style="text-align:center";>*</p>
 
-TRÈS TRÈS IMPORTANT
+#### Indépendance et écart à l'indépendance (Rappel)
+
+...     
+
+<p style="text-align:center";>*</p>
+
+#### Important
+
 Il y a 3 façons de caractériser la liaison entre les 2 variables qualitatives.
 Liaison = l'écart entre les données observées et le modèle d'indépendance.
 La significativité de la liaison (se mesure avec le khi2)
-L'intensité de la liaison (se mesure, notamment avec le Phi2) (Jean-Baptiste)
+L'intensité de la liaison (se mesure, notamment avec le Phi2)
 La nature de la liaison (=association entre les modalités) (qui est représenté par l'AFC)
 Exemple des lunettes et des yeux bleux pour illustrer la différence entre intensité et significativité de la liaison.
 
-L'AFC travaille, non pas sur le tableau de contingence, mais sur le tableau de probabilité.
+L'AFC travaille, non pas sur le tableau de contingence, mais sur le tableau de probabilité.     
 
-CHARGEMENT DES DIFFÉRENTS PACKAGES
+<p style="text-align:center";>*</p>
+
+#### Chargement des packages
 
 Le Khi2 a permis d'écarter l'hypothèse d'indépendance, il y a une liaison entre les modalités des deux variables.
 On peut donc faire une AFC pour visualiser la nature de la liaison.
@@ -163,9 +206,12 @@ On charge la librairie qui permet plusieurs analyses de données multi-dimention
 
 ```{r}
 library (FactoMineR)
-```
+```     
 
-AFC - RÉSULTATS
+<p style="text-align:center";>*</p>
+
+#### AFC - Résultats
+
 les sorties et le graphe par défaut
 Amélioration de la représentation graphique
 
@@ -207,7 +253,6 @@ confondus avec l'origine
 summary(res.independance)
 ```
 
-
 Amélioration de l'affichage du graphe...
 Détails des arguments utilisés dans la fonction plot()
 "cex=" permet de madifier la taille de la police
@@ -215,10 +260,11 @@ Détails des arguments utilisés dans la fonction plot()
 
 ```{r}
 plot(res, cex = 0.6, title = "Représentation graphique", selectRow = "cos2 0.7", selectCol = "cos2 0.7")
-```
+```     
 
+<p style="text-align:center";>*</p>
 
-Les résultats
+##### Les résultats
 
 ```{r}
 summary(res, nbelements = Inf)
