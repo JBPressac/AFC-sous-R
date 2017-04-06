@@ -12,17 +12,17 @@ knitr::opts_chunk$set(echo = TRUE)
 <p>&nbsp; </p>
 
 ### Auteurs
-**Jean-Baptiste PRESSAC** ([CRBC](https://www.univ-brest.fr/crbc/menu/Membres+du+laboratoire/Personnel_administratif_et_technique/Jean-Baptiste_Pressac), Université de Bretagne Occidentale)  
-**Laurent MELL** ([LABERS](https://www.univ-brest.fr/labers/), Université de Bretagne Occidentale)     
+**Jean-Baptiste PRESSAC** ([CRBC](https://www.univ-brest.fr/crbc/menu/Membres+du+laboratoire/Personnel_administratif_et_technique/Jean-Baptiste_Pressac "Laboratoire CRBC"), Université de Bretagne Occidentale) (Jean-Baptiste.Pressac@univ-brest.fr)     
+**Laurent MELL** ([LABERS](https://www.univ-brest.fr/labers/ "Laboratoire LABERS"), Université de Bretagne Occidentale) (laurent.mell@univ-brest.fr)     
 
 <p>&nbsp; </p>
 <p>&nbsp; </p>
 
 ### Introduction
 
-<p style="text-align:justify";>Ce premier travail s'inscrit dans une démarche de réflexion, plus large, que nous souhaitons entreprendre autour **l'analyse de données multidimensionnelles**. La spécificité de ce premier travail réside dans le fait que nous allons nous concentrer sur **l'analyse factorielle des correspondances (AFC)**. Notre objectif sera d'étudier les **éventuelles** liaisons entre les modalités de deux variables qualitatives. Par ailleurs, nous avons fait le choix d'utiliser le logiciel [R](https://www.r-project.org/) ainsi que l'environnement de développement [RStudio](https://www.rstudio.com/).</p>
+<p style="text-align:justify";>Ce premier travail s'inscrit dans une démarche de réflexion, plus large, que nous souhaitons entreprendre autour **l'analyse de données multidimensionnelles**. La spécificité de ce premier travail réside dans le fait que nous allons nous concentrer sur **l'analyse factorielle des correspondances (AFC)**. Notre objectif sera d'étudier les **éventuelles** liaisons entre les modalités de deux variables qualitatives. Par ailleurs, nous avons fait le choix d'utiliser le logiciel [R](https://www.r-project.org/ "Logiciel R") ainsi que l'environnement de développement [RStudio](https://www.rstudio.com/ "Environnement de développement RStudio").</p>
 
-<p style="text-align:justify";>Un certain nombre des données sur lesquelles nous allons travailler proviennent du MOOC [Analyse des données multidimensionnelles](https://www.fun-mooc.fr/courses/agrocampusouest/40001S03/session03/about) sur la plateforme [FUN](https://www.fun-mooc.fr/). Ce MOOC est proposé par [François Husson](http://math.agrocampus-ouest.fr/infoglueDeliverLive/membres/Francois.Husson), [Jérôme Pagès](http://math.agrocampus-ouest.fr/infoglueDeliverLive/membres/Jerome.Pages) et [Magalie Houée-Bigot](http://math.agrocampus-ouest.fr/infoglueDeliverLive/membres/Magalie.Hou%C3%A9e-Bigot).</p>    
+<p style="text-align:justify";>Un certain nombre des données sur lesquelles nous allons travailler proviennent du MOOC [Analyse des données multidimensionnelles](https://www.fun-mooc.fr/courses/agrocampusouest/40001S03/session03/about "MOOC Analyse de données multidimensionnelles") sur la plateforme [FUN](https://www.fun-mooc.fr/ "Plateforme FUN"). Ce MOOC est proposé par [François Husson](http://math.agrocampus-ouest.fr/infoglueDeliverLive/membres/Francois.Husson "François Husson"), [Jérôme Pagès](http://math.agrocampus-ouest.fr/infoglueDeliverLive/membres/Jerome.Pages "Jérôme Pagès") et [Magalie Houée-Bigot](http://math.agrocampus-ouest.fr/infoglueDeliverLive/membres/Magalie.Hou%C3%A9e-Bigot "Magalie Houée-Bigot").</p>    
 
 <p>&nbsp; </p>
 
@@ -45,24 +45,21 @@ Reprendre l’apparente contradiction entre les 2 questions : Il y a des répons
 
 #### À quoi va nous servir l'AFC ?
 
-L'AFC va nous servir à **visualiser** la nature de la liaison entre les 2 variables qualitatives.
-Qu'est-ce qu'une liaison ?
-C'est l'écart entre les données observées et le modèle d'indépendance (ne pas oublier de revenir 
-sur la notion d'indépendance avec le khi2don$expected).
+L'AFC va nous servir à **visualiser** la nature de la liaison entre les 2 variables qualitatives.       
+Qu'est-ce qu'une liaison ?       
+C'est l'écart entre les données observées et le modèle d'indépendance (ne pas oublier de revenir sur la notion d'indépendance avec le khi2don$expected).       
 
-On n'a pas le questionnaire complet et on ne montrera pas comment obtenir le 
-tableau de contingence à partir des réponses au questionnaire.
-Commment ouvrir le fichier CSV avec Notepad++, OpenOffice, LibreOffice, etc ?
+On n'a pas le questionnaire complet et on ne montrera pas comment obtenir le tableau de contingence à partir des réponses au questionnaire.       
+Commment ouvrir le fichier CSV avec Notepad++, OpenOffice, LibreOffice, etc ?       
 Petite explication sur le système d'encodage et les éventuels problèmes avec Excel.     
 
 <p>&nbsp; </p>
 
 #### Ouverture de R studio.
 
-Créer un dossier projet.
-Y mettre le fichier CSV
-On peut exécuter les instructions en R dans la console mais le mieux est de créer un fichier .R pour
-y sauvegarder toutes instructions et pouvoir les relancer plus tard.
+Créer un dossier projet.       
+Y mettre le fichier CSV.       
+On peut exécuter les instructions en R dans la console mais le mieux est de créer un fichier .R pour y sauvegarder toutes instructions et pouvoir les relancer plus tard.       
 Créer un fichier .R      
 
 <p>&nbsp; </p>
@@ -75,29 +72,46 @@ Afficher la localisation du répertoire de travail sous la forme d'un chemin abs
 getwd()
 ```
 
-<p style="text-align:justify";>La définition du répertoire de travail peut aussi être faite par le biais de la commande "Set As Working Directory" via l'onglet "More". Cet onglet correspond au symbole de la roue crantée dans la fenêtre en bas à droite de RStudio.</p>
+<p style="text-align:justify";>La définition du répertoire de travail peut aussi être faite par le biais de la commande `Set As Working Directory` via l'onglet `More`. Cet onglet correspond au symbole de la roue crantée dans la fenêtre en bas à droite de RStudio.</p>
 
-<p style="text-align:center";>![Roue](Roue.png "Roue")</p>
+<p style="text-align:center";>![Roue](Roue.png "Roue crantée")</p>
 
 <p>&nbsp; </p>
 
 #### Importation du jeu de données
 
-On lit le fichier CSV et on stocke le résultat dans la variable "don"
+<p style="text-align:justify";>On lit ensuite le fichier CSV.</p>
 
 ```{r}
-don <- read.table("AnaDo_JeuDonnees_TravailFemme.csv", header=TRUE, row.names=1, sep=";", fileEncoding="latin1")
+don <- read.table("AnaDo_JeuDonnees_TravailFemme.csv", header=TRUE, row.names=1, sep=";", check.names=FALSE, fileEncoding="latin1")
 ```
 
-Montrer que l'on peut afficher don dans RStudio à partir du volet Data.
-Seules les 3 premières colonnes du jeu de données sont utilisées ici :
-On n'a besoin de suppprimer les colonnes dans le fichier CSV on peut les sélectionner avec la commande :
+* La fonction `read.table()` permet de lire un fichier dans un format tabulaire et de créer une dataframe à partir de ce dernier.         
+* L'argument `header=TRUE`permet de spécifier que la première ligne du jeu de données correspond aux intitulés des colonnes.       
+* L'argument`row.names=1`permet de spécifier que le nom des lignes est contenu dans la première colonne.       
+* L'argument `sep=";"`indique que le séparateur de colonne est le point-virgule.       
+* L'argument `check.names=FALSE` permet d'empêcher R de modifier al syntaxe du nom des modalités de variable.
+* L'argument `fileEncoding="latin1"` permet de spécifier l'encodage du fichier.     
+
+<p style="text-align:justify";>Afin de faciliter, par la suite, la lecture et l'emploi du jeu de données, nous **stockons le résultat dans la variable** `don`.</p>
+
+<p style="text-align:justify";>Nous pouvons, très facilement et à n'importe quel moment, afficher le tableau de contingence `don` à partir du volet Data dans la fenêtre en haut à droite de RStudio.</p>
+
+<p>&nbsp; </p>
+
+<p style="text-align:center";>![Data1](Data1.png "Volet Data 1")</p>
+
+<p style="text-align:justify";>Seules les trois premières colonnes du jeu de données sont utilisées ici. Nous avons donc besoin de suppprimer les colonnes dont nous n'aurons pas l'utilité. Plus spécifiquement, nous n'allons **sélectionner que les trois premières colonnes** avec la commande suivante.</p>
 
 ```{r}
 don <- don[,1:3]
 ```     
 
+<p style="text-align:justify";>Nous pouvons voir que, dans le volet Data dans la fenêtre en haut à droite de RStudio, le nombre de variables affichées a été réduit.</p>
+
 <p>&nbsp; </p>
+
+<p style="text-align:center";>![Data2](Data2.png "Volet Data 2")</p>
 
 #### Statistiques de base du tableau de contingence
 
@@ -115,7 +129,7 @@ summary(don)
 
 #### Test du Khi2
 
-<p style="text-align:justify";>Le test du khi2 mesure la **significativité d'une relation mais pas son intensité**. Afin de réaliser ce test du khi2, nous utilisons une fonction fournie de base avec logiciel R. Il s'agit de la fonction `chisq.test`. Il n'est pas nécessaire d'installer une librairie supplémentaire afin de réaliser ce test.</p>     
+<p style="text-align:justify";>Le test du khi2 mesure la **significativité d'une relation mais pas son intensité**. Afin de réaliser ce test du khi2, nous utilisons une fonction fournie de base avec le logiciel R. Il s'agit de la fonction `chisq.test`. Il n'est pas nécessaire d'installer une librairie supplémentaire afin de réaliser ce test.</p>     
 
 ```{r}
 chisq.test(don)
@@ -127,9 +141,9 @@ chisq.test(don)
 
 #### Test du Khi2 - Explications
 
-<p style="text-align:justify";>Le test du khi2 permet de **déterminer la probabilité que les deux variables d'un tableau de contingence sont indépendantes**, c'est-à-dire qu'il n'existe pas de relation entre les modalités en ligne et les modalités en colonne (les unes ne conditionnent pas les autres, et réciproquement). Dit autrement et comme le [rappelle très clairement Julien Barnier](https://alea.fr.eu.org/pages/khi2), cela veut dire que le "fait d'appartenir à une modalité de la première variable n'a pas d'influence sur la modalité d'appartenance de la deuxième variable". Dans ce test, l'hypothèse nulle (H0) suppose qu'il y a indépendance entre les deux variables. Si nous acceptons l'hypothèse d'indépendance (H0), nous n'aurons pas d'utilité à réaliser une AFC car les points projetés seront extrêmement proches ou confondus avec le centre de gravité, confondus avec le centre du graphe. Si nous rejetons l'hypothèse d'indépendance (p-value < 0,05), l'hypothèse alternative (H1) suppose que la liaison entre les deux variables est significative sans que nous puissions définir l'intensité de la liaison.</p>
+<p style="text-align:justify";>Le test du khi2 permet de **déterminer la probabilité que les deux variables d'un tableau de contingence sont indépendantes**, c'est-à-dire qu'il n'existe pas de relation entre les modalités en ligne et les modalités en colonne (les unes ne conditionnent pas les autres, et réciproquement). Dit autrement et comme le [rappelle très clairement Julien Barnier](https://alea.fr.eu.org/pages/khi2 "Test du khi2 par Julien Barnier"), cela veut dire que le "fait d'appartenir à une modalité de la première variable n'a pas d'influence sur la modalité d'appartenance de la deuxième variable". Dans ce test, l'hypothèse nulle (H0) suppose qu'il y a indépendance entre les deux variables. Si nous acceptons l'hypothèse d'indépendance (H0), nous n'aurons pas d'utilité à réaliser une AFC car les points projetés seront extrêmement proches ou confondus avec le centre de gravité, confondus avec le centre du graphe. Si nous rejetons l'hypothèse d'indépendance (p-value < 0,05), l'hypothèse alternative (H1) suppose que la liaison entre les deux variables est significative sans que nous puissions définir l'intensité de la liaison.</p>
 
-<p style="text-align:justify";>Du fait que nous ayons obtenu une p-value inférieure à 2.2e-16 et, par extension, inférieure au seuil de 0,05, nous rejetons l'hypothèse d'indépendance entre les deux variables.</p>
+<p style="text-align:justify";>Du fait que nous ayons obtenu une p-value inférieure à 2.2e-16 et, par extension, inférieure au seuil de 0,05, nous **rejetons l'hypothèse d'indépendance entre les deux variables**.</p>
 
 <p style="text-align:justify";>Comme le résultat est significatif, nous stockons le résultat de la fonction dans la variable `khi2don`.</p>
 
@@ -141,23 +155,23 @@ chisq.test(don) -> khi2don
 
 #### Test du Khi2 - Aides à l'interprétation
 
-Afficher le tableau de contingence d'origine
-Le test du khi2 est symétrique. Les lignes et les colonnes du tableau croisé sont interchangeables. Le
-résultat du test sera exactement le même. Il n'y a pas de "sens de lecture" du tableau.
+<p style="text-align:justify";>Le test du khi2 est symétrique. Les lignes et les colonnes du tableau croisé sont interchangeables. Le résultat du test sera exactement le même. Il n'y a pas de "sens de lecture" du tableau.</p>
+
+<p style="text-align:justify";>Nous pouvons afficher le tableau de contingence d'origine (**tableau des données observées**) en sélectionnant la valeur `observed`.</p>
+
+```{r}
 khi2don$observed
-Afficher le tableau d'indépendance (tableau des effectifs théoriques)
-On calcule le tableau des pourcentages théoriques, en multipliant pour chaque case la proportion observée
-dans la population des deux modalités correspondantes. Puis, le tableau des effectifs théoriques se calcule
-en multipliant le tableau des pourcentages théoriques par l'effectif total.
-Voir détails : Julien Barnier (2016), [Tout ce que vous n'avez jamais voulu savoir sur le Khi2 sans jamais avoir eu envie de le demander](https://alea.fr.eu.org/pages/khi2)
+```
+
+<p style="text-align:justify";>De la même manière, nous pouvons afficher tableau d'indépendance (**tableau des effectifs théoriques**) en sélectionnant la valeur `expected`. Dans ce contexte, nous calculons le tableau des pourcentages théoriques, en multipliant pour chaque case la proportion observée dans la population des deux modalités correspondantes. Puis, le tableau des effectifs théoriques se calcule en multipliant le tableau des pourcentages théoriques par l'effectif total.</p>
+
+<p style="text-align:justify";>Pour plus de détails, nous vous recommandons la lecture de ce document de Julien Barnier : [Tout ce que vous n'avez jamais voulu savoir sur le Khi2 sans jamais avoir eu envie de le demander](https://alea.fr.eu.org/pages/khi2 "Test du khi2 par Julien Barnier").</p>
 
 ```{r}
 khi2don$expected
 ```
 
-Afficher le tableau des résidus (sens des écarts à l'indépendance)
-Un résidu positif signifie que les effectifs dans la case sont supérieur à ceux attendus sous l'hypothèse
-d'indépendance. Et l'inverse pour un résidu négatif.
+<p style="text-align:justify";>Nous pouvons afficher le tableau des résidus (**tableau des écarts à l'indépendance**) en sélectionnant la valeur `residuals`. Un résidu positif signifie que les effectifs dans la case sont supérieur à ceux attendus sous l'hypothèse d'indépendance. Et l'inverse pour un résidu négatif.</p>
 
 ```{r}
 khi2don$residuals
@@ -167,7 +181,7 @@ khi2don$residuals
 
 ##### Rappel de l'objectif
 
-<p style="text-align:justify";>Notre objectif est bien de **visualiser** la nature de la liaison entre les deux variables qualitatives.</p>
+<p style="text-align:justify";>Notre objectif est bien de **visualiser la nature de la liaison entre les deux variables qualitatives**.</p>
 
 <p style="text-align:justify";>Sachant qu'une liaison est l'écart entre les données observées et le modèle d'indépendance, qu'est-ce que le modèle d'indépendance ?</p>
 
@@ -183,11 +197,14 @@ khi2don$residuals
 
 #### Important
 
-Il y a 3 façons de caractériser la liaison entre les 2 variables qualitatives.
-Liaison = l'écart entre les données observées et le modèle d'indépendance.
-La significativité de la liaison (se mesure avec le khi2)
-L'intensité de la liaison (se mesure, notamment avec le Phi2)
-La nature de la liaison (=association entre les modalités) (qui est représenté par l'AFC)
+<p style="text-align:justify";>Rappelons (au cas où ce n'était déjà pas assez clair) que la liaison correspond à **l'écart entre les données observées et le modèle d'indépendance**.</p>
+
+<p style="text-align:justify";>Il y a **trois façons de caractériser la liaison** entre les deux variables qualitatives.</p>
+
+* La **significativité** de la liaison (qui se mesure avec le test du khi2).
+* L'**intensité** de la liaison (qui se mesure, entre autre, avec le Phi2).
+* La **nature** de la liaison (qui correspond à l'association entre les modalités et qui est représentée par le biais de l'AFC).
+
 Exemple des lunettes et des yeux bleux pour illustrer la différence entre intensité et significativité de la liaison.
 
 L'AFC travaille, non pas sur le tableau de contingence, mais sur le tableau de probabilité.     
@@ -196,11 +213,9 @@ L'AFC travaille, non pas sur le tableau de contingence, mais sur le tableau de p
 
 #### Chargement des packages
 
-Le Khi2 a permis d'écarter l'hypothèse d'indépendance, il y a une liaison entre les modalités des deux variables.
-On peut donc faire une AFC pour visualiser la nature de la liaison.
-FactoMineR (Dédié à l'analyse multidimensionnelle de données) mais il y en a d'autres.
-Une librairie développée notamment par François Husson d'Agrocampus Rennes.
-On charge la librairie qui permet plusieurs analyses de données multi-dimentionnelles (AFC, ACP, ACM)...
+<p style="text-align:justify";>Le test du Khi2 a permis d'écarter l'hypothèse d'indépendance. Il y a donc une liaison entre les modalités des deux variables. De fait, nous pouvons faire une AFC pour visualiser la nature de la liaison. Pour notre part, nous avons choisi d'utiliser le **package** [**FactoMineR**](https://cran.r-project.org/web/packages/FactoMineR/index.html "Page du package FactoMineR") (Dédié à l'analyse multidimensionnelle de données) mais il y en existe d'autres qui peuvent être utilisés pour réaliser ce type de méthode statistique.</p>
+
+<p style="text-align:justify";>Nous chargeons la librairie `FactoMineR` qui permet de réaliser plusieurs analyses de données multi-dimentionnelles (AFC, ACP, ACM, etc.).</p>
 
 ```{r}
 library (FactoMineR)
@@ -210,8 +225,8 @@ library (FactoMineR)
 
 #### AFC - Résultats
 
-les sorties et le graphe par défaut
-Amélioration de la représentation graphique
+les sorties et le graphe par défaut.       
+Amélioration de la représentation graphique.       
 
 ```{r}
 res <- CA(don)
