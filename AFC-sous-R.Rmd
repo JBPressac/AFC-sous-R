@@ -34,8 +34,7 @@ Comme le souligne François Husson dans le MOOC, il est difficile de savoir à p
 
 Une liaison entre deux variables est l'écart entre les données observées et le modèle d'indépendance. Mettons pour l'instant de côté cette notion, nous reviendrons plus tard.
 
-Commençons par ouvrir le logiciel RStudio et par créer un nouveau projet depuis le menu File > New Project. Choisissons ensuite "New directory" > "Empty project" puis saisissons *AFC-sous-R* dans Directory name. Téléchargeons le fichier [AnaDo_JeuDonnees_TravailFemme.csv](https://github.com/JBPressac/AFC-sous-R/blob/master/AnaDo_JeuDonnees_TravailFemme.csv) du tableau de contingence et plaçons-le dans le répertoire "AFC-sous-R". Créons ensuite notre script R depuis File > New file > R script.
-
+Commençons par ouvrir le logiciel RStudio et par créer un nouveau projet depuis le menu File > New Project. Choisissons ensuite "New directory" > "Empty project" puis saisissons *AFC-sous-R* dans Directory name. Téléchargeons le fichier [AnaDo_JeuDonnees_TravailFemme.csv](https://raw.githubusercontent.com/JBPressac/AFC-sous-R/master/AnaDo_JeuDonnees_TravailFemme.csv) du tableau de contingence et plaçons-le dans le répertoire "AFC-sous-R". Créons ensuite notre script R depuis File > New file > R script.
 
 #### Définir la localisation du répertoire de travail
 
