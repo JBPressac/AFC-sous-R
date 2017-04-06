@@ -28,6 +28,8 @@ Les données sont issues d'un questionnaire du [CREDOC](http://www.credoc.fr/) p
 
 Le point de départ de l'analyse est le tableau de contingence reproduit ci-dessous. C'est ce type de données (les marges des totaux mis à part) que nous fournirons à la fonction de calcul de l'AFC.
 
+![](tableau-tabard.png "Tableau de contingence issu de l'enquête de N. Tabard de 1974")
+
 Comme le souligne François Husson dans le MOOC, il est difficile de savoir à partir de ce tableau si les femmes sont favorables ou non au travail féminin. En effet, une majorité de femmes (908 sur 1724, soit 52%) ont répondu que la famille idéale est celle où "seul le mari travaille". Elles sont néanmoins 1123 sur 1724 (65%) à avoir répondu que l'activité convenant le mieux à une mère de famille quand ses enfants vont à l’école est de travailler à mi-temps. L'AFC va nous permettre d'étudier le lien entre ces deux questions et de lever cette apparente contradiction. Elle va notamment nous permettre de visualiser la nature de la liaison entre les deux questions. Mais qu'est ce qu'une liaison ?
 
 Une liaison entre deux variables est l'écart entre les données observées et le modèle d'indépendance. Mettons pour l'instant de côté cette notion, nous reviendrons plus tard.
