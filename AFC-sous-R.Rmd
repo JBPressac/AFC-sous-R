@@ -89,8 +89,7 @@ Afin de faciliter, par la suite, la lecture et l'emploi du jeu de données, nous
 
 Nous pouvons, très facilement et à n'importe quel moment, afficher le tableau de contingence `don` à partir du volet Data dans la fenêtre en haut à droite de RStudio.
 
-
-![Data1](Data1.png "Volet Data 1")
+![](Data1.png "Volet Data 1")
 
 Seules les trois premières colonnes du jeu de données sont utilisées ici. Nous avons donc besoin de suppprimer les colonnes dont nous n'aurons pas l'utilité. Plus spécifiquement, nous n'allons **sélectionner que les trois premières colonnes** avec la commande suivante.
 
@@ -100,16 +99,27 @@ don <- don[,1:3]
 
 Nous pouvons voir que, dans le volet Data dans la fenêtre en haut à droite de RStudio, le nombre de variables affichées a été réduit.
 
+![](Data2.png "Volet Data 2")
 
-![Data2](Data2.png "Volet Data 2")
-
-#### Statistiques de base du tableau de contingence
+Afin d'amliorer la lecture du tableau et, par la suite, du graphique, nous allons renommer les modalités des deux variables grâce à la fonction `dimnames()`
 
 ```{r}
-summary(don)
+(dimnames(don)[[1]][1]<-"Les 2 conjoints travaillent")
+(dimnames(don)[[1]][2]<-"Travail du mari plus absorbant")
+(dimnames(don)[[1]][3]<-"Seul le mari travaille")
+(dimnames(don)[[2]][1]<-"Rester au foyer")
+(dimnames(don)[[2]][2]<-"Travail à mi-temps")
+(dimnames(don)[[2]][3]<-"Travail à temps plein")
 ```
 
-La fonction `summary` permet d'obtenir un "résumé", quelques **statistiques de base concernant une variable**, la variable "don" dans le cas qui nous concerne Au regard de ce "résumé", nous voyons que, pour chacune des modalités de la variable, nous obtenons la **médiane**, les **quartiles**, le **minimum** et le **maximum**.     
+Pour la fonction `dimnames()` :       
+
+* `[[1]]` (entre deux doubles crochets) permet de spécifier que nous allons renommer une ou plusieurs modalités en ligne.
+* `[[2]]` (entre deux doubles crochets) permet de spécifier que nous allons renommer une ou plusieurs modalités en colonne.
+* `[1]` (entre crochets) permet de spécifier que nous allons renommer la première modalité d'une variable.
+* `[2]` (enter crochets) permet de spécifier que nous allons renommer la deuxième modalité d'une variable.       
+
+Suivant cette logique, lorsque nous écrivons, par exemple, `(dimnames(don)[[2]][3]<-"...")`, cela signifie que nous allons renommer la troisième modalité en colonne.
 
 Rappellons que notre objectif est bien de **visualiser la nature de la liaison entre deux variables qualitatives**. Mais faut-il encore que cette liaison soit **significative**.        
 
@@ -249,10 +259,11 @@ plot(res, cex = 0.6, title = "Représentation graphique", selectRow = "cos2 0.7"
 ```     
 
 Détails des arguments utilisés dans la fonction `plot()`.       
-* L'argument `cex=` permet de madifier la taille de la police       
-* L'argument `title=` permet de donner un titre au graphique       
-* L'argument `selectRow=` permet de...       
-* L'argument `selectCol=` permet de...       
+
+* L'argument `cex=` permet de madifier la taille de la police.       
+* L'argument `title=` permet de donner un titre au graphique.       
+* L'argument `selectRow=` permet de sélectionner les modalités en ligne à afficher en fonction de critères particuliers.       
+* L'argument `selectCol=` permet de sélectionner les modalités en colonne à afficher en fonction de critères particulier.       
 
 
 ##### Les résultats
@@ -262,9 +273,11 @@ summary(res, nbelements = Inf)
 ```
 
 Les tableaux avec les résultats n'affichent, par défaut, que les 10 réponses les plus significatives.       
-L'argument `nbelements=Inf` permet de retirer cette limite.       
+
+* L'argument `nbelements=Inf` permet de retirer cette limite.       
 
 Cette commande permet d'obtenir :       
+
 * Le résultat du test du khi2 avec la p-value.       
 * Un tableau avec les variance de chaque dimension (axe) et les pourcentages de variance.      
 
