@@ -1,7 +1,7 @@
 ---
 title: "Analyse factorielle des correspondances sous R - Partie I"
 author: "Jean-Baptiste Pressac, Laurent Mell"
-date: "6 Avril 2017"
+date: "11 Avril 2017"
 output: html_document
 ---
 
@@ -245,8 +245,8 @@ res.independance <- CA(khi2don$expected)
 La lecture de ce graphique nous permet de voir que les points sont quasiment tous **confondus avec le centre de gravité**, correspondant au **profil moyen**. La représentation graphique est trompeuse mais l'échelle des axes va dans le sens de notre interprétation. Simplement, ce qu'il y a retenir de ce graphe, c'est que, lorsqu'il y a indépendance entre les deux variables, tous les points sont confondus avec l'origine. Du fait qu'il n'y ait pas d'écarts à l'indépendance, il n'y a graphiquement rien à exploiter, rien à interpréter, rien à analyser. Ce graphe donne à voir ce que nous avons précédemment énoncé, à savoir que :
 
 * Si nous acceptons l'hypothèse d'indépendance (p-value > 0,05 dans le cas d'un test du khi2), nous n'aurons pas d'utilité à réaliser une AFC car les points projetés seront extrêmement proches ou confondus avec le centre de gravité, confondus avec le centre du graphe.
-* La réalisation d'un test du khi2 est donc fortement conseillée avant la réqlisation d'une AFC
-* Plus précisément, le test du khi2 conditionne l'éventuelle réalisation d'une AFC
+* La réalisation d'un test du khi2 est donc fortement conseillée avant la réqlisation d'une AFC.
+* Plus précisément, le test du khi2 conditionne l'éventuelle réalisation d'une AFC.       
 
 Les résultats qui suivent vont aussi dans le sens notre propos :       
 
@@ -254,17 +254,17 @@ Les résultats qui suivent vont aussi dans le sens notre propos :
 summary(res.independance)
 ```
 
-Dans le cas où il y a indépendance entre les deux variables, le test du khi2 nous donne une p-value = 1. Les coordonnées (dim.n) des modalités en ligne et en colonne, sur chacune des dimensions, sont égales à O. Il en va de même pour leur contribution à la construction (ctr) de chaque dimension et leur qualité de réprésentation (cos2) sur chaque dimension.       
+Dans le cas où il y a indépendance entre les deux variables, le **test du khi2 nous donne une p-value = 1**. Les coordonnées (dim.n) des modalités en ligne et en colonne, sur chacune des dimensions, sont égales à O. Il en va de même pour leur contribution à la construction (ctr) de chaque dimension et leur qualité de réprésentation (cos2) sur chaque dimension.       
 
 Quittons ce cas d'indépendance et revenons maintenant à notre premier jeu de données où la liaison entre les variables est significative.       
 
 Les différentes fonctions proposées par le logiciel R, ainsi que celles associées aux multiples packages disponibles, nous permettent l'affichage du graphe.       
 
 ```{r plot(res)}
-plot(res, cex = 0.6, cex.axis = 0.6, cex.lab = 0.8, title = "Représentation graphique", selectRow = "cos2 0.7", selectCol = "cos2 0.7")
+plot(res, cex = 0.7, cex.axis = 0.6, cex.lab = 0.8, title = "Représentation graphique", selectRow = "cos2 0.7", selectCol = "cos2 0.7")
 ```     
 
-Détails des arguments utilisés dans la fonction `plot()` :       
+Voici le détail des arguments que nous avons utilisés avec la fonction `plot()` :       
 
 * L'argument `cex=` permet de modifier la taille des points et des textes accompagnant ces points.       
 * L'argument `cex.axis` permet de modifier la taille des annotations d'axe.       
@@ -273,11 +273,11 @@ Détails des arguments utilisés dans la fonction `plot()` :
 * L'argument `selectRow=` permet de sélectionner les modalités en ligne à afficher en fonction de critères particuliers.       
 * L'argument `selectCol=` permet de sélectionner les modalités en colonne à afficher en fonction de critères particulier.       
 
-Ce en sont que quelques arguments, parmi d'autres, d'améliorer la représentation graphique. Dans le jeu de données qui nous concerne, ces améliorations restent mineures et n'ont que peu d'impact sur la représentation graphique. Par contre, dans le cas où nous aurions à travailler sur un tableau de contingence, dont chacune des variables comporte au moins une vingtaine de modalités, ces améliorations graphiques prennent d'autant plus d'importance.       
+Ce ne sont que quelques arguments, parmi d'autres, en vue d'améliorer la représentation graphique. Dans le jeu de données qui nous concerne, ces améliorations restent mineures et n'ont que peu d'impact sur la représentation graphique. Par contre, dans le cas où nous aurions à travailler sur un tableau de contingence, dont chacune des variables comporte au moins une vingtaine de modalités, ces améliorations graphiques prendraient d'autant plus d'importance.       
 
-Prenons un exemple pour illustrer notre propos. Nous allons nous appuyer sur des données de l'INSEE concernant les [spécificités socioprofessionnelles régionales](https://www.insee.fr/fr/statistiques/1281090#consulter "spécificités socioprofessionnelles régionales").       
+Appuyons-nous sur un exemple pour illustrer notre propos. Nous allons nous utiliser des données de l'INSEE sur les [spécificités socioprofessionnelles régionales](https://www.insee.fr/fr/statistiques/1281090#consulter "Spécificités socioprofessionnelles régionales").       
 
-Importons le jeu de données.       
+Importons donc le jeu de données.       
 
 ```{r read.table(pcsregion)}
 pcsregion <- read.table("pcsregion.csv", header=TRUE, row.names=1, sep=";", check.names=FALSE, fileEncoding="latin1")
@@ -289,53 +289,105 @@ Lisons le jeu de données.
 View(pcsregion)
 ```
 
-À la lecture de ce tableau de contingence, nous disposons de 8 modalités en colonne et 23 modalités en ligne. 
-
 Lorsque nous réalisons une AFC avec ce jeu de données, nus obtenons ceci :       
 
 ```{r CA(pcsregion)}
 afcpcsregion <- CA(pcsregion)
 ```
 
-Avec "seulement" 30 modalités,  nous voyons que le graphe est (en grossissant légèrement le trait) "totalement" illisible.      
+Soyons honnêtes. Avec "seulement" 30 modalités (8 modalités en colonne et 23 modalités en ligne),  nous voyons que **le graphe est (en grossissant légèrement le trait) "totalement" illisible**. C'est dans ce contexte que l'utilisation des différents arguments, que nous avons détaillés plus haut autour de la fonction `plot()`, prennent leur véritable importance.      
 
-```{r plot(res)}
-plot(afcpcsregion, cex = 0.6, cex.axis = 0.6, cex.lab = 0.8, title = "Représentation graphique", selectRow = "cos2 0.7", selectCol = "cos2 0.7")
+```{r plot(afcpcsregion)}
+plot(afcpcsregion, cex = 0.6, cex.axis = 0.6, cex.lab = 0.8, title = "Spécificités socioprofessionnelles régionales", selectRow = "cos2 0.7", selectCol = "cos2 0.7")
 ```  
+
+De cette manière, nous pouvons, par exemple, jouer sur la taille des noms de modalité et ne sélectionner que celles qui ont une qualité de représentation significative (arbitrairement cos2 > 0,7). Alors, bien évidemment, il ne s'agit que d'un exemple pour souligner l'évential de possibilités mis à notre disposition en vue d'améliorer la représentation graphique, ainsi que la lecture et l'analyse des données.
 
 Revenons maintenant à nos données initiales quant aux représentations sur le travail féminin.       
 
-##### Les résultats
+##### Le nombre d'axes à interpréter       
+
+Au-delà de la simple lecture visuelle du graphe, il existe d'autres moyens d'interpréter nos données. À partir de là, il serait intéressant de déterminer le nombre d'axes à interpréter.       
+
+Les valeurs propres (i.e. variance) des axes :       
+
+```{r Valeur propre des axes(res)}
+res$eig
+```
+
+Dans notre exemple, nous abtenons deux facteurs, classés du plus importants au moins importants (du plus explicatif au moins explicatif). Chacun des facteurs a une "valeur propre" (quantité d'information expliquée par le facteur). La deuxième colonne renvoie au "pourcentage d'inertie", correspondant à la proportion des variations totales des variables originales expliquées par chaque facteur.
+
+Nous pouvons, à la suite, effectuer une représentation de l'histogramme des valeurs propres :     
+
+```{r barplot(res)}
+barplot(res$eig[,1], main = "Histogramme des valeurs propres", sub = "Représentations des femmes sur le travail féminin", xlab = "Axes", ylab = "Pourcentage d'inertie", cex.axis = 0.8, cex.names = 0.8, col ="orange", names.arg = 1:nrow(res$eig))
+```
+
+Détails des arguments utilisés dans la fonction `barplot()` :       
+
+* L'argument `main=` correspond au titre du graphique.
+* L'argument `sub=` correspond au sous-titre du graphique.
+* L'argument `xlab=` correspond au titre de l'axe x.
+* L'argument `ylab=` correspond au titre de l'axe y.
+* L'argument `cex.axis=` permet de modifier la taille des valeurs numériques du graphique.
+* L'argument `cex.names=` permet de modifier la taille des valeurs lettrées du graphique.
+* L'argument `col=` permet de modifier la couleur des barres.
+* L'argument `names.arg=` permet de nommer chaque barre.       
+
+L'histogramme va servir visuellement à déterminer le nombre d'axes à interpréter à l'aide du critère du "coude" de Cattell. Lorsqu'on observe un décrochement entre deux facteurs, on détermine les facteurs avant ce décrochement comme étant les axes à interpréter. Ce n'est pas la seule règle possible. Un autre critère de choix (appelé « critère de Kaiser ») suggère de garder tous les facteurs dont la valeur propre est supérieure à la valeur propre moyenne (qui vaut par définition 1 divisé par le nombre de facteurs). Pour plus d'informations, nous vous invitons à vous reporter au lien suivant afin d'approfondir ce travail quant au [nombre de facteurs à retenir](http://quanti.hypotheses.org/930/ "Histogramme des valeurs propres").       
+
+Ce jeu de données ne permet pas de réellement saisir cette démarche qui vise à déterminer le nombre d'axes à interpréter. pour ce faire, reprenons nos données sur les spécificités socioprofessionnelles régionales.
+
+Voici les valeurs propres des axes :       
+
+```{r Valeur propre des axes(afcpcsregion)}
+afcpcsregion$eig
+```
+
+Dans ce nouvel exemple, nous abtenons sept facteurs. Présentons, dans la foulée, l'histogramme des valeurs propres :     
+
+```{r barplot(afcpcsregion)}
+barplot(afcpcsregion$eig[,1], main = "Histogramme des valeurs propres", sub = "Spécificités socioprofessionnelles régionales", xlab = "Axes", ylab = "Pourcentage d'inertie", cex.axis = 0.8, cex.names = 0.8, col ="orange", names.arg = 1:nrow(afcpcsregion$eig))
+```
+
+Ajout d'un texte d'explication.
+
+
+
+##### Les résultats       
+
+La fonction `summary` est extrêmement utile dans ce contexte.
 
 ```{r summary(res)}
 summary(res, nbelements = Inf)
 ```
 
-Les tableaux avec les résultats permet d'obtenir :
+Cette fonction `summary` nous permet d'obtenir :
 
 * Le résultat du test du khi2 (uniquement sur les lignes et les colonnes actives) avec la p-value.
 * Un tableau avec les valeurs propres, les pourcentages d'inertie associés à chaque dimension.
 * Un tableau avec les résultats sur les lignes actives avec leur coordonnée (dim.n) sur chaque dimension, leur contribution à la construction (ctr) de chaque dimension et leur qualité de réprésentation (cos2) sur chaque dimension.
 * Un tableau avec les résultats sur les colonnes actives (dim.n, ctr, cos2).
 * Un tableau (optionnel) avec les résultats sur les éléments supplémentaires en ligne avec la coordonnée (dim.n) et la qualité de représentation (cos2).
-* Un tableau (optionnel) avec les résultats sur les éléments supplémentaires en colonne avec la coordonnée (dim.n) et la qualité de représentation (cos2).
+* Un tableau (optionnel) avec les résultats sur les éléments supplémentaires en colonne avec la coordonnée (dim.n) et la qualité de représentation (cos2).       
 
-Les tableaux avec les résultats n'affichent, par défaut, que les 10 réponses les plus significatives.       
+Par ailleurs, la fonction `summary` n'affichera, par défaut, que les 10 réponses les plus significatives.       
 
 * L'argument `nbelements=Inf` permet de retirer cette limite.
-* Dans l'exemple qui nous concerne ce n'est utile mais, dans un certain nombre de cas, cette argument est utile.       
+* Dans l'exemple qui nous concerne ce n'est utile puisque chacune des deux variables ne dispose que de trois modalités.
+* Mais, dans un certain nombre de cas, cette argument est précieux.       
 
-Ce qu'il appelle la variance est aussi appelée dans la littérature "valeur propre" ou "inertie". La variance mesure l'intensité de la liaison entre les deux variables expliquées par cet axe. La variance est comprise entre 0 et 1. Le total des variances (le Phi2) est la mesure de l'intensité de la liaison (liaison = l'écart à l'indépendance).       
+Ce qu'il appelle la `Variance` est aussi appelée dans la littérature "**valeur propre**" ou "**inertie**". La variance mesure l'intensité de la liaison entre les deux variables expliquées par cet axe. **La variance est comprise entre 0 et 1**. Le total des variances (le **Phi2**) est la mesure de l'intensité de la liaison (liaison = l'écart à l'indépendance).       
 
-`Le Phi2 = 0.117 + 0.019 = 0.136`
+* Ici, `le Phi2 = 0.117 + 0.019 = 0.136`
 
 À quoi comparer cette valeur ?        
 
-Les variances étant au max égales à 1, le Phi2 peut avoir au maximum une valeur de 2. 0.136 << 2 : L'intensité de la liaison est faible. Les réponses s'associent globalement peu entre elles. Mais rare sont les cas où l'intensité de la liaison entre les variables est forte.       
+Les variances étant _au maximxum_ égales à 1, le Phi2 peut avoir _au maximum_ une valeur de 2. 0.136 << 2 : L'intensité de la liaison est faible. Les réponses s'associent globalement peu entre elles. Mais rare sont les cas où l'intensité de la liaison entre les variables est forte.       
 
-Le % of var, soit le pourcentage de variance, représente le % de variance expliqué par l'axe. Autrement dit, la dimension 1 (ou l'axe 1) explique 86.292% de la variance entre les deux variables. Et le plan constitué des axes 1 et 2 explique 100% de la variance. Ce qui est normal puisque les pourcentages se répartissent sur tous les axes. S'il y avait eu 8 axes, le pourcentage d'inertie se serait réparti sur les 8 axes.       
+Le `% of var`, soit le pourcentage de variance, représente le **% de variance expliqué par l'axe**. Autrement dit, la dimension 1 (ou l'axe 1) explique 86.292 % de la variance entre les deux variables. Et le plan constitué des axes 1 et 2 explique 100% de la variance. Ce qui est normal puisque les pourcentages se répartissent sur tous les axes. S'il y avait eu 8 axes, le pourcentage d'inertie se serait réparti sur les 8 axes.       
 
-Dans quel cas peut-on avoir 8 axes ?
+Dans quel cas peut-on avoir 8 axes ?       
 
 Ce qu'il faut savoir c'est que le nombre d'axes est égal au nombre minimum entre le nombre de colonnes - 1 et le nombre de lignes - 1 du tableau de contingence. Autrement, si vous avez un tableau de contingence avec en ligne 9 modalités et en colonnes 15 modalités. On fait 9 - 1 = 8 puis 15 - 1 = 14 et on garde 8.       
 
@@ -343,140 +395,13 @@ Dans ce cas le % de variance permettra de choisir le nombre d'axes à retenir po
 
 La position par rapport au centre de l'axe. Le centre de l'axe correspond au profil moyen en ligne et le profil moyen en colonne.       
 
-Expliquer le profil moyen avec le fichier Excel et montrer que les pourcentages colonnes de "travailler à mi-temps" sont proches du profil colonne moyen. Ce que l'on retrouve bien sur le graphe où "travailler à mi-temps" est proche du centre du graphe.       
+* Expliquer le profil moyen avec le fichier Excel et montrer que les pourcentages colonnes de "travailler à mi-temps" sont proches du profil colonne moyen. Ce que l'on retrouve bien sur le graphe où "travailler à mi-temps" est proche du centre du graphe.       
 
 Peut-on interpréter la position entre deux point lignes ou deux points colonnes ?       
 
 Rappel : L'AFC ne travaille pas sur le tableau de contingence mais transforme le tableau de contingence en tableau de probabilité. C'est à dire le tableau de contingence dont les valeurs sont divisées par la population. (voir fichier Excel). Deux point lignes sont donc proches l'un de l'autre si leur profil en porcentage est similaire.       
 
-Par contre, on peut dire que les lignes sont "du côté" des colonnes auxquelles elles s'associent le plus. Dans la mesure où ces colonnes sont éloignées du centre de gravité. Et respectivement, les colonnes sont "du côté" des lignes avec lesquelles elles s'associent le plus. Dans la mesure où ces lignes sont éloignées du centre de gravité. On en veut pour preuve que sur le graphe "seul le mari travaille" est du côté de "rester au foyer". Si on revient sur le tableau de contingence (slide 5 de Husson) ce résultat peut sembler contradictoire  puisque 573 personnes ont répondu à "seul le mari travaille" et "travailler à mi-temps" alors que  seulement 241 personnes ont répondu à "seul le mari travaille" et "rester au foyer". Ne devrait-on pas dire que "seul le mari travaille" s'associe le plus à "travailler à mi-temps". Cependant quand on regarde les marges du tableau de contingence... et quand on regarder les pourcentages en colonne dans le fichier Excel...
-
-
-#####################################################
-#####################################################
-
-
-Comme nous avons pu le voir, la fonction `summary()` nous permet d'obtenir des tableaux avec les résultats suivants :       
-
-* Le test du khi2 (uniquement sur les lignes et les colonnes actives) avec la p-value.
-* Les valeurs propres, les pourcentages d'inertie associés à chaque dimension.
-* Les résultats sur les lignes actives avec leur coordonnée (dim.n) sur chaque dimension, leur contribution à la construction (ctr) de chaque dimension et leur qualité de réprésentation (cos2) sur chaque dimension.
-* Les résultats sur les colonnes actives (dim.n, ctr, cos2).
-* Les résultats (optionnel) sur les éléments supplémentaires en ligne avec la coordonnée (dim.n) et la qualité de représentation (cos2).
-* Les résultats (optionnel) sur les éléments supplémentaires en colonne avec la coordonnée (dim.n) et la qualité de représentation (cos2).
-
-
-
-
-##### Analyse d'une AFC en 5 étapes
-
-* 1 - Détermination du nombre d'axes à interpréter
-* 2 - Interprétation des coordonnées des fréquences actives et des individus actifs
-* 3 - Interprétation de la contribution et de la qualtité de représentation des fréquences et des ind.
-* 4 - Élaboration de la typologie
-* 5 - Éléments d'interprétation
-
-###### ÉTAPE 1 - DÉTERMINATION DU NOMBRE D'AXES À INTERPRÉTER       
-
-Les valeurs propres (i.e. variance) des axes       
-
-```{r Valeur propre des axes(res)}
-res$eig
-```
-
-Dans notre exemple, on obtient 2 facteurs, classés du plus importants au moins importants (du plus explicatif au moins explicatif). Chacun des facteurs a une "valeur propre" (quantité d'information
-expliquée par le facteur). La deuxième colonne renvoie au "pourcentage d'inertie", correspondant à la proportion des variations totales des variables originales expliquées par chaque facteur.
-
-Représentation de l'histogramme des valeurs propres     
-
-```{r barplot(res)}
-barplot(res$eig[,1], main = "Histogramme des valeurs propres", xlab = "Axes", ylab = "Pourcentage d'inertie", cex.axis = 0.8, cex.names = 0.8, col ="orange", names.arg = 1:nrow(res$eig))
-```
-
-Détails des arguments utilisés dans la fonction `barplot()` :       
-
-* L'argument `main=` correspond au titre du graphique
-* L'argument `xlab=` correspond au titre de l'axe x
-* L'argument `ylab=` correspond au titre de l'axe y
-* L'argument `cex.axis=` permet de modifier la taille des valeurs numériques du graphique 
-* L'argument `cex.names=` permet de modifier la taille des valeurs lettrées du graphique
-* L'argument `col=` permet de modifier la couleur des barres
-* L'argument `names.arg=` permet de nommer chaque barre       
-
-L'histogramme va servir visuellement à déterminer le nombre d'axes à interpréter à l'aide du critère du "coude" de Cattell. Lorsqu'on observe un décrochement entre 2 facteurs, on détermine les facteurs avant ce décrochement comme étant les axes à interpréter. Ce n'est pas la seule règle possible. Un un autre critère de choix (appelé « critère de Kaiser ») suggère de garder tous les facteurs dont la valeur propre est supérieure à la valeur propre moyenne (qui vaut par définition 1 divisé par le nombre de facteurs). Pour plus d'informations, nous vous invitons à vous reporter au lien suivant afin d'approfondir ce travail quant au [nombre de facteurs à retenir](http://quanti.hypotheses.org/930/ "Histogramme des valeurs propres").       
-
-###### ÉTAPE 2 - INTERPRÉTATION DES COORDONNÉES DES FRÉQUENCES ACTIVES ET DES INDIVIDUS ACTIFS       
-
-Retour sur le tableau des résultats de l'AFC (chercher comment exporter ces résultats en .csv ou .txt).        
-
-* "Il est seulement nécessaire de retenir les individus et fréquences (ou variables) dont les coordonnées s'écartent de l'origine des axes. L'AFC se construit sur la base d'une opposition entre individus, les individus proches de l'origine des axes sont assimilés à un profil moyen que l'analyse factorielle ne permet pas de dissocier. Une formule mathématique peut être proposée pour identifier les individus ou variables les plus remarquables : Coordonnées = racine carrée de la valeur propre." (Busca & Toutain, 2009)       
-
-Coordonnées des modalités en ligne (...)       
-
-* La valeur propre de l'axe 1 est de .... La racine carré de la valeur propre de l'axe 1 est de ...
-* La valeur propre de l'axe 2 est de .... La racine carré de la valeur propre de l'axe 1 est de ...
-
-Nous retiendrons donc les modalités avec des coordonnées supérieures à la racine carré de la valeur propre de chacun des axes retenus       
-
-* Axe 1 : ...
-* Axe 2 : ...
-
-Coordonnées des modalités en colonne (...)       
-
-* Axe 1 : ...
-* Axe 2 : ...       
-
-###### ÉTAPE 3 - INTERPRÉTATION DE LA CONTRIBUTION ET DE LA QUALITÉ DE REPRÉSENTATION       
-
-Rappel de la représentation graphique       
-
-```{r plot2(res)}
-plot(res, cex = 0.6, title = "Représentation graphique")
-```
-
-Représentation graphique des lignes et des colonnes avec un cos2 supérieur à 0.7       
-
-```{r plot3(res)}
-plot(res, cex = 0.6, title = "Représentation graphique", selectRow = "cos2 0.7", selectCol = "cos2 0.7")
-```
-
-Mais problème. Pourquoi la limite du cos2 à 0.7 ?
-
-Qualité de représentation d'une modalité (un "profil") selon un axe : coS2
-C'est une indication de la représentation par l'axe de l'écart de la modalité par rapport au profil moyen.
-
-
-
-
-À AJOUTER PLUS TARD
-
-CONTRIBUTION À LA CONSTRUCTION DES AXES
-Quel est le pays qui contribue le plus à la construction de l'axe 2 ?
-On affiche la liste des contributions des lignes (pays) pour chaque dimension
-Pour connaitre le nom des objets disponibles dans res.ca, on execute tout simplement res.ca
-ce qui permet de savoir que res.ca$row$contrib affiche les contributions par pays.
-Une fois que l'on a la réponse à la question, qu'en fait-on ? A quoi ça sert de le savoir ?
-Qu'est ce que signifie "contribuer" ? Cela a-t-il des conséquences sur la projection du
-nuage sur le plan ? Le MOOC donne pour réponse à cette question l'Italie alors que sa
-contribution n'est pas la plus élevée d'après res.ca$row$contrib...
-res$row$contrib
-Affichage de la première colonne : les contributions au deuxième axe (affiché "Dim2")
-res$row$contrib[,2]
-Trier les contributions par ordre décroissant : 
-sort(res$row$contrib[,2], decreasing = TRUE)
-Affichage de la première ligne : les contributions de la modalité "Les deux conjoints 
-travaillers également" aux axes 1 et 2 (affichés "Dim1" et "Dim2")
-res$row$contrib[1,]
-
-
-AFC - DÉCRIRE LES DIMENSIONS FACTORIELLES
-dimdesc(res)
-Un tableau présentant les lignes en fonctions de leurs coordonnées croissantes pour la dimension 1
-Un tableau présentant les colonnes en fonctions de leurs coordonnées croissantes pour la dimension 1
-Ainsi de suite pour les dimensions 2 et 3
-
-
-
+Par contre, on peut dire que les lignes sont "du côté" des colonnes auxquelles elles s'associent le plus. Dans la mesure où ces colonnes sont éloignées du centre de gravité. Et respectivement, les colonnes sont "du côté" des lignes avec lesquelles elles s'associent le plus. Dans la mesure où ces lignes sont éloignées du centre de gravité. On en veut pour preuve que sur le graphe "seul le mari travaille" est du côté de "rester au foyer". Si on revient sur le tableau de contingence (slide 5 de Husson) ce résultat peut sembler contradictoire  puisque 573 personnes ont répondu à "seul le mari travaille" et "travailler à mi-temps" alors que  seulement 241 personnes ont répondu à "seul le mari travaille" et "rester au foyer". Ne devrait-on pas dire que "seul le mari travaille" s'associe le plus à "travailler à mi-temps". Cependant quand on regarde les marges du tableau de contingence... et quand on regarder les pourcentages en colonne dans le fichier Excel...       
 
 
 
