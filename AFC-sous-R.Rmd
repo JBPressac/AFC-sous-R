@@ -58,7 +58,8 @@ La définition du répertoire de travail peut aussi être faite par le biais de 
 Nous lisons ensuite le fichier CSV à partir de la fonction `read.table()` :
 
 ```{r read.table}
-don <- read.table("AnaDo_JeuDonnees_TravailFemme.csv", header=TRUE, row.names=1, sep=";", check.names=FALSE, fileEncoding="latin1")
+don <- read.table("AnaDo_JeuDonnees_TravailFemme.csv", header=TRUE, 
+                  row.names=1, sep=";", check.names=FALSE, fileEncoding="latin1")
 ```
 
 * La fonction `read.table()` permet de lire un fichier dans un format tabulaire et de créer une dataframe à partir de ce dernier.         
@@ -261,7 +262,8 @@ Quittons ce cas d'indépendance et revenons maintenant à notre premier jeu de d
 Les différentes fonctions proposées par le logiciel R, ainsi que celles associées aux multiples packages disponibles, nous permettent l'affichage du graphe.       
 
 ```{r plot(res)}
-plot(res, cex = 0.7, cex.axis = 0.6, cex.lab = 0.8, title = "Représentation graphique", selectRow = "cos2 0.7", selectCol = "cos2 0.7")
+plot(res, cex = 0.7, cex.axis = 0.6, cex.lab = 0.8, title = "Représentation graphique", 
+     selectRow = "cos2 0.7", selectCol = "cos2 0.7")
 ```     
 
 Voici le détail des arguments que nous avons utilisés avec la fonction `plot()` :       
@@ -280,7 +282,8 @@ Appuyons-nous sur un exemple pour illustrer notre propos. Nous allons nous utili
 Importons donc le jeu de données.       
 
 ```{r read.table(pcsregion)}
-pcsregion <- read.table("pcsregion.csv", header=TRUE, row.names=1, sep=";", check.names=FALSE, fileEncoding="latin1")
+pcsregion <- read.table("pcsregion.csv", header=TRUE, row.names=1, 
+                        sep=";", check.names=FALSE, fileEncoding="latin1")
 ```
 
 Lisons le jeu de données.       
@@ -298,7 +301,9 @@ afcpcsregion <- CA(pcsregion)
 Soyons honnêtes. Avec "seulement" 30 modalités (8 modalités en colonne et 23 modalités en ligne),  nous voyons que **le graphe est (en grossissant légèrement le trait) "totalement" illisible**. C'est dans ce contexte que l'utilisation des différents arguments, que nous avons détaillés plus haut autour de la fonction `plot()`, prennent leur véritable importance.      
 
 ```{r plot(afcpcsregion)}
-plot(afcpcsregion, cex = 0.6, cex.axis = 0.6, cex.lab = 0.8, title = "Spécificités socioprofessionnelles régionales", selectRow = "cos2 0.7", selectCol = "cos2 0.7")
+plot(afcpcsregion, cex = 0.6, cex.axis = 0.6, cex.lab = 0.8, 
+     title = "Spécificités socioprofessionnelles régionales", 
+     selectRow = "cos2 0.7", selectCol = "cos2 0.7")
 ```  
 
 De cette manière, nous pouvons, par exemple, jouer sur la taille des noms de modalité et ne sélectionner que celles qui ont une qualité de représentation significative (arbitrairement cos2 > 0,7). Alors, bien évidemment, il ne s'agit que d'un exemple pour souligner l'évential de possibilités mis à notre disposition en vue d'améliorer la représentation graphique, ainsi que la lecture et l'analyse des données.
@@ -320,7 +325,10 @@ Dans notre exemple, nous abtenons deux facteurs, classés du plus importants au 
 Nous pouvons, à la suite, effectuer une représentation de l'histogramme des valeurs propres :     
 
 ```{r barplot(res)}
-barplot(res$eig[,1], main = "Histogramme des valeurs propres", sub = "Représentations des femmes sur le travail féminin", xlab = "Axes", ylab = "Pourcentage d'inertie", cex.axis = 0.8, cex.names = 0.8, col ="orange", names.arg = 1:nrow(res$eig))
+barplot(res$eig[,1], main = "Histogramme des valeurs propres", 
+        sub = "Représentations des femmes sur le travail féminin", 
+        xlab = "Axes", ylab = "Pourcentage d'inertie", cex.axis = 0.8, 
+        cex.names = 0.8, col ="orange", names.arg = 1:nrow(res$eig))
 ```
 
 Détails des arguments utilisés dans la fonction `barplot()` :       
@@ -347,7 +355,10 @@ afcpcsregion$eig
 Dans ce nouvel exemple, nous abtenons sept facteurs. Présentons, dans la foulée, l'histogramme des valeurs propres :     
 
 ```{r barplot(afcpcsregion)}
-barplot(afcpcsregion$eig[,1], main = "Histogramme des valeurs propres", sub = "Spécificités socioprofessionnelles régionales", xlab = "Axes", ylab = "Pourcentage d'inertie", cex.axis = 0.8, cex.names = 0.8, col ="orange", names.arg = 1:nrow(afcpcsregion$eig))
+barplot(afcpcsregion$eig[,1], main = "Histogramme des valeurs propres", 
+        sub = "Spécificités socioprofessionnelles régionales", 
+        xlab = "Axes", ylab = "Pourcentage d'inertie", cex.axis = 0.8, 
+        cex.names = 0.8, col ="orange", names.arg = 1:nrow(afcpcsregion$eig))
 ```
 
 Ajout d'un texte d'explication.
@@ -402,9 +413,4 @@ Peut-on interpréter la position entre deux point lignes ou deux points colonnes
 Rappel : L'AFC ne travaille pas sur le tableau de contingence mais transforme le tableau de contingence en tableau de probabilité. C'est à dire le tableau de contingence dont les valeurs sont divisées par la population. (voir fichier Excel). Deux point lignes sont donc proches l'un de l'autre si leur profil en porcentage est similaire.       
 
 Par contre, on peut dire que les lignes sont "du côté" des colonnes auxquelles elles s'associent le plus. Dans la mesure où ces colonnes sont éloignées du centre de gravité. Et respectivement, les colonnes sont "du côté" des lignes avec lesquelles elles s'associent le plus. Dans la mesure où ces lignes sont éloignées du centre de gravité. On en veut pour preuve que sur le graphe "seul le mari travaille" est du côté de "rester au foyer". Si on revient sur le tableau de contingence (slide 5 de Husson) ce résultat peut sembler contradictoire  puisque 573 personnes ont répondu à "seul le mari travaille" et "travailler à mi-temps" alors que  seulement 241 personnes ont répondu à "seul le mari travaille" et "rester au foyer". Ne devrait-on pas dire que "seul le mari travaille" s'associe le plus à "travailler à mi-temps". Cependant quand on regarde les marges du tableau de contingence... et quand on regarder les pourcentages en colonne dans le fichier Excel...       
-
-
-
-
-
 
