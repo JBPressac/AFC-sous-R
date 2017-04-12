@@ -17,6 +17,8 @@ library(knitr)
 **Jean-Baptiste PRESSAC** ([CRBC](https://www.univ-brest.fr/crbc/menu/Membres+du+laboratoire/Personnel_administratif_et_technique/Jean-Baptiste_Pressac "Laboratoire CRBC"), CNRS) (Jean-Baptiste.Pressac@univ-brest.fr)     
 **Laurent MELL** ([LABERS](https://www.univ-brest.fr/labers/ "Laboratoire LABERS"), Université de Bretagne Occidentale) (laurent.mell@univ-brest.fr)     
 
+Si vous avez des commentaires à formuler ou des remarques à effectuer, vous pouvez nos contacter via nos adresses mails (Jean-Baptiste.Pressac@univ-brest.fr, laurent.mell@univ-brest.fr). Par la même occasion, si vous souhaitez échanger plus en détail et/ou contribuer à cette démarche, nous sommes aussi disponible.
+
 
 ### Introduction
 
@@ -178,7 +180,7 @@ Rappelons que pour que le test du khi2 soit opératoire, il doit respecter un ce
 * L'**effectif marginal** du tableau de contingence doit toujours être supérieur ou égal à 5.
 * L'**effectif théorique** des cases du tableau de contingence doit être supérieur à 5 dans 80% des cases du tableau de contingence.
 
-Du fait que nous ayons obtenu une p-value inférieure à 2.2e-16 et, par extension, inférieure au seuil de 0,05, nous **rejetons l'hypothèse d'indépendance entre les deux variables**.
+Du fait que nous ayons obtenu une p-value inférieure à 2,2x10^-16^ et, par extension, inférieure au seuil de 0,05, nous **rejetons l'hypothèse d'indépendance entre les deux variables**.
 
 Comme le résultat est significatif, tout en respectant les conditons de validité du test du khi2, nous stockons le résultat de la fonction dans la variable `khi2don`.
 
@@ -268,7 +270,7 @@ library (FactoMineR)
 
 ### AFC - Les résultats
 
-Lors du précédent test du khi2, nous avons obtenu une p-value inférieure à 2.2e-16. Nous avons donc rejeté l’hypothèse d’indépendance entre les deux variables et admis que la liaison entre ces deux variables est signficative.       
+Lors du précédent test du khi2, nous avons obtenu une p-value inférieure à 2,2x10^-16^. Nous avons donc rejeté l’hypothèse d’indépendance entre les deux variables et admis que la liaison entre ces deux variables est signficative.       
 
 Nous sommes en droit de réaliser une AFC afin de visualiser la nature de la liaison. Pour ce faire, nous allons employer la fonction `CA()`, fournie par le package `FactoMineR` que nous venons de charger. Précédemment, nous avons stocké notre jeu de données dans la variable `don`. Nous exécutons une analyse factorielle des correspondances (AFC) sur notre jeu de données de la manière qui suit :
 
@@ -337,7 +339,7 @@ Voici le détail des arguments que nous avons utilisés avec la fonction `plot()
 
 Ce ne sont que quelques arguments, parmi d'autres, en vue d'améliorer la représentation graphique. Dans le jeu de données qui nous concerne, ces améliorations restent mineures et n'ont que peu d'impact sur la représentation graphique. Par contre, dans le cas où nous aurions à travailler sur un tableau de contingence, dont chacune des variables comporte au moins une vingtaine de modalités, ces améliorations graphiques prendraient d'autant plus d'importance.       
 
-Appuyons-nous sur un exemple pour illustrer notre propos. Nous allons nous utiliser des données de l'INSEE sur les [spécificités socioprofessionnelles régionales](https://www.insee.fr/fr/statistiques/1281090#consulter "Spécificités socioprofessionnelles régionales").       
+Appuyons-nous sur un exemple pour illustrer notre propos. Nous allons utiliser des données de l'INSEE sur les [spécificités socioprofessionnelles régionales](https://www.insee.fr/fr/statistiques/1281090#consulter "Spécificités socioprofessionnelles régionales").       
 
 Importons donc le jeu de données.       
 
