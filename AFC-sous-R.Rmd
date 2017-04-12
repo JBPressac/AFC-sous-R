@@ -11,7 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 
 ### Auteurs
-**Jean-Baptiste PRESSAC** ([CRBC](https://www.univ-brest.fr/crbc/menu/Membres+du+laboratoire/Personnel_administratif_et_technique/Jean-Baptiste_Pressac "Laboratoire CRBC"), Université de Bretagne Occidentale) (Jean-Baptiste.Pressac@univ-brest.fr)     
+**Jean-Baptiste PRESSAC** ([CRBC](https://www.univ-brest.fr/crbc/menu/Membres+du+laboratoire/Personnel_administratif_et_technique/Jean-Baptiste_Pressac "Laboratoire CRBC"), CNRS) (Jean-Baptiste.Pressac@univ-brest.fr)     
 **Laurent MELL** ([LABERS](https://www.univ-brest.fr/labers/ "Laboratoire LABERS"), Université de Bretagne Occidentale) (laurent.mell@univ-brest.fr)     
 
 
@@ -20,7 +20,7 @@ knitr::opts_chunk$set(echo = TRUE)
 Ce premier travail s'inscrit dans une démarche de réflexion, plus large, que nous souhaitons entreprendre autour **l'analyse de données multidimensionnelles**. La spécificité de ce premier travail réside dans le fait que nous allons nous concentrer sur **l'analyse factorielle des correspondances (AFC)**. Notre objectif sera d'étudier les **éventuelles** liaisons entre les modalités de deux variables qualitatives. Par ailleurs, nous avons fait le choix d'utiliser le logiciel [R](https://www.r-project.org/ "Logiciel R") ainsi que l'environnement de développement [RStudio](https://www.rstudio.com/ "Environnement de développement RStudio").
 
 
-#### Les données
+### Les données
 
 Les données sur lesquelles nous allons travailler proviennent du MOOC [Analyse des données multidimensionnelles](https://www.fun-mooc.fr/courses/agrocampusouest/40001S03/session03/about "MOOC Analyse de données multidimensionnelles") sur la plateforme [FUN](https://www.fun-mooc.fr/ "Plateforme FUN"). Ce MOOC est proposé par [François Husson](http://math.agrocampus-ouest.fr/infoglueDeliverLive/membres/Francois.Husson "François Husson"), [Jérôme Pagès](http://math.agrocampus-ouest.fr/infoglueDeliverLive/membres/Jerome.Pages "Jérôme Pagès") et [Magalie Houée-Bigot](http://math.agrocampus-ouest.fr/infoglueDeliverLive/membres/Magalie.Hou%C3%A9e-Bigot "Magalie Houée-Bigot").
 
@@ -33,14 +33,16 @@ Le point de départ de l'analyse est le tableau de contingence reproduit ci-dess
 
 ![](Tableau_Tabard1.png "Tableau de contingence issu de l'enquête de N. Tabard de 1974")
 
-Comme le souligne François Husson dans le MOOC, il est difficile de savoir à partir de ce tableau si les femmes sont favorables ou non au travail féminin. En effet, une majorité de femmes (908 sur 1 724, soit 52 %) ont répondu que la famille idéale est celle où "seul le mari travaille". Elles sont néanmoins 1 123 sur 1 724 (65 %) à avoir répondu que l'activité convenant le mieux à une mère de famille quand ses enfants vont à l’école est de travailler à mi-temps. L'AFC va nous permettre d'étudier le lien entre ces deux questions et de lever cette apparente contradiction. Elle va notamment nous permettre de visualiser la nature de la liaison entre les deux questions. Mais qu'est ce qu'une liaison ?       
+Comme le souligne François Husson dans le MOOC, il est difficile de savoir à partir de ce tableau si les femmes sont favorables ou non au travail féminin. En effet, 908 femmes sur 1 724, soit 52 % ont répondu que la famille idéale est celle où "seul le mari travaille". Elles sont néanmoins 1 123 sur 1 724 (65 %) à avoir répondu que l'activité convenant le mieux à une mère de famille quand ses enfants vont à l’école est de travailler à mi-temps. L'AFC va nous permettre d'étudier le lien entre ces deux questions et de lever cette apparente contradiction. Elle va notamment nous permettre de visualiser la nature de la liaison entre les deux questions. Mais qu'est ce qu'une liaison ?       
 
-Une liaison entre deux variables est l'écart entre les données observées et le modèle d'indépendance. Mettons pour l'instant de côté cette notion, nous y reviendrons plus tard.       
+Une liaison entre deux variables est l'écart entre les données observées et le modèle d'indépendance. Mettons pour l'instant de côté cette notion, nous y reviendrons plus tard.
+
+### Création du projet RStudio
 
 Commençons par ouvrir le logiciel RStudio et par créer un nouveau projet depuis le menu File > New Project. Choisissons ensuite "New directory" > "Empty project" puis saisissons *AFC-sous-R* dans Directory name. Téléchargeons le fichier [AnaDo_JeuDonnees_TravailFemme.csv](https://raw.githubusercontent.com/JBPressac/AFC-sous-R/master/AnaDo_JeuDonnees_TravailFemme.csv) du tableau de contingence et plaçons-le dans le répertoire "AFC-sous-R". Créons ensuite notre script R depuis File > New file > R script.        
 
 
-#### Définir la localisation du répertoire de travail
+### Définir la localisation du répertoire de travail
 
 Il est très important, d'emblée, de définir le répertoire de travail. Il existe une commande `getwd()` qui permet d'afficher la localisation du répertoire de travail sous la forme d'un chemin absolu :       
 
@@ -53,7 +55,7 @@ La définition du répertoire de travail peut aussi être faite par le biais de 
 ![](Roue.png "Roue crantée dans la fenêtre en bas à droite de RStudio")
 
 
-#### Importation du jeu de données
+### Importation du jeu de données
 
 Nous lisons ensuite le fichier CSV à partir de la fonction `read.table()` :
 
@@ -114,20 +116,20 @@ Rappellons que notre objectif est bien de **visualiser la nature de la liaison e
 Pour ce faire, nous réalisons un **test du Khi2**.      
 
 
-#### Test du Khi2
+### Test du Khi2
 
-Le test du khi2 mesure la **significativité d'une relation mais pas son intensité**. Afin de réaliser ce test du khi2, nous utilisons une fonction fournie de base avec le logiciel R. Il s'agit de la fonction `chisq.test`. Il n'est pas nécessaire d'installer une librairie supplémentaire afin de réaliser ce test.       
+Le test du khi2 mesure la **significativité d'une liaison mais pas son intensité**. Afin de réaliser ce test du khi2, nous utilisons une fonction fournie de base avec le logiciel R. Il s'agit de la fonction `chisq.test`. Il n'est pas nécessaire d'installer une librairie supplémentaire afin de réaliser ce test.       
 
 ```{r chisq.test(don)}
 chisq.test(don)
 ```
 
-Le terme `X-squared` est à lire `Khi2` soit Khi au carré. La fonction `chisq.test` nous donne, entre autres, la valeur du Khi2 qui est un **indicateur de la significativité de la liaison**. Mais ce qui nous interesse ici est la `p-value`. Nous voyons ici que la `p-value` est inférieure à 2,2x10^-16^. Cela signifie que la **probabilité que les variables soient indépendante** est inférieure à 2,2x10^-16^. Ce qui nous permet de rejeter l'hypothèse d'indépendance entre les deux variables. Pour autant, cela ne veut dire que les variables soient dépendantes. Les réponses à la question sur la famille idéale sont probablement liées aux réponses concerant l'activité convenant le mieux à une mère de famille dont les enfants vont à l'école.          
+Le terme `X-squared` est à lire `Khi2` soit Khi au carré. La fonction `chisq.test` nous donne, entre autres, la valeur du Khi2 qui est un **indicateur de la significativité de la liaison**. Mais ce qui nous interesse ici est la `p-value`. Nous voyons ici que la `p-value` est inférieure à 2,2x10^-16^. Cela signifie que la **probabilité que les variables soient indépendantes** est inférieure à 2,2x10^-16^. Ce qui nous permet de rejeter l'hypothèse d'indépendance entre les deux variables. Pour autant, cela ne veut pas dire que les variables soient dépendantes. Les réponses à la question sur la famille idéale sont probablement liées aux réponses concernant l'activité convenant le mieux à une mère de famille dont les enfants vont à l'école.          
 
 
 #### Test du Khi2 - Explications
 
-Le test du khi2 permet de **déterminer la probabilité que les deux variables d'un tableau de contingence sont indépendantes**, c'est-à-dire qu'il n'existe pas de relation entre les modalités en ligne et les modalités en colonne (les unes ne conditionnent pas les autres, et réciproquement). Dit autrement et comme le [rappelle très clairement Julien Barnier](https://alea.fr.eu.org/pages/khi2 "Test du khi2 par Julien Barnier"), cela veut dire que le "fait d'appartenir à une modalité de la première variable n'a pas d'influence sur la modalité d'appartenance de la deuxième variable". Dans ce test, l'hypothèse nulle (H0) suppose qu'il y a indépendance entre les deux variables. Si nous acceptons l'hypothèse d'indépendance (H0), nous n'aurons pas d'utilité à réaliser une AFC car les points projetés seront extrêmement proches ou confondus avec le centre de gravité, confondus avec le centre du graphe. Si nous rejetons l'hypothèse d'indépendance (p-value < 0,05), l'hypothèse alternative (H1) suppose que la liaison entre les deux variables est significative sans que nous puissions définir l'intensité de la liaison.       
+Le test du khi2 permet de **déterminer la probabilité que les deux variables d'un tableau de contingence soient indépendantes**, c'est-à-dire qu'il n'existe pas de relation entre les modalités en ligne et les modalités en colonne (les unes ne conditionnent pas les autres, et réciproquement). Dit autrement et comme le [rappelle très clairement Julien Barnier](https://alea.fr.eu.org/pages/khi2 "Test du khi2 par Julien Barnier"), cela veut dire que le "fait d'appartenir à une modalité de la première variable n'a pas d'influence sur la modalité d'appartenance de la deuxième variable". Dans ce test, l'hypothèse nulle (H0) suppose qu'il y a indépendance entre les deux variables. Si nous acceptons l'hypothèse d'indépendance (H0), nous n'aurons pas d'utilité à réaliser une AFC car les points projetés seront extrêmement proches ou confondus avec le centre de gravité, confondus avec le centre du graphe. Si nous rejetons l'hypothèse d'indépendance (p-value < 0,05), l'hypothèse alternative (H1) suppose que la liaison entre les deux variables est significative sans que nous puissions définir l'intensité de la liaison.       
 
 Rappelons que pour que le test du khi2 soit opératoire, il doit respecter un certain nombre de [conditions](http://grasland.script.univ-paris-diderot.fr/STAT98/stat98_8/stat98_8.htm) (pour reprendre les propos de Claude Grasland) :       
 
@@ -154,7 +156,7 @@ Nous pouvons afficher le tableau de contingence d'origine (**tableau des donnée
 khi2don$observed
 ```
 
-De la même manière, nous pouvons afficher tableau d'indépendance (**tableau des effectifs théoriques**) en sélectionnant la valeur `expected`. Dans ce contexte, nous calculons le tableau des pourcentages théoriques, en multipliant pour chaque case la proportion observée dans la population des deux modalités correspondantes. Puis, le tableau des effectifs théoriques se calcule en multipliant le tableau des pourcentages théoriques par l'effectif total.
+De la même manière, nous pouvons afficher le tableau d'indépendance (**tableau des effectifs théoriques**) en sélectionnant la valeur `expected`. Dans ce contexte, nous calculons le tableau des pourcentages théoriques, en multipliant pour chaque case la proportion observée dans la population des deux modalités correspondantes. Puis, le tableau des effectifs théoriques se calcule en multipliant le tableau des pourcentages théoriques par l'effectif total.
 
 Pour plus de détails, nous vous recommandons la lecture de ce document de Julien Barnier : [Tout ce que vous n'avez jamais voulu savoir sur le Khi2 sans jamais avoir eu envie de le demander](https://alea.fr.eu.org/pages/khi2 "Test du khi2 par Julien Barnier").
 
@@ -180,7 +182,7 @@ Par ailleurs,
 Plus la valeur de l'écart à l'indépendance est importante, plus l'attraction/opposition entre les modalités est forte.
 
 
-##### Rappel de l'objectif
+### Rappel de l'objectif
 
 Notre objectif est bien de **visualiser la nature de la liaison entre les deux variables qualitatives**.
 
@@ -195,7 +197,7 @@ Par ailleurs, il y a **trois façons de caractériser la liaison** entre les deu
 Enfin, l'AFC travaille, non pas sur le tableau de contingence, mais sur le tableau de probabilité.     
 
 
-#### Chargement des packages
+### Chargement des packages
 
 Le test du Khi2 a permis d'écarter l'hypothèse d'indépendance. Il y a donc une liaison entre les modalités des deux variables. De fait, nous pouvons faire une AFC pour visualiser la nature de la liaison. Pour notre part, nous avons choisi d'utiliser le **package** [**FactoMineR**](https://cran.r-project.org/web/packages/FactoMineR/index.html "Page du package FactoMineR") (dédié à l'analyse multidimensionnelle de données) mais il y en existe d'autres qui peuvent être utilisés pour réaliser ce type de méthode statistique.       
 
@@ -206,7 +208,7 @@ library (FactoMineR)
 ```     
 
 
-#### AFC - Les résultats
+### AFC - Les résultats
 
 Lors du précédent test du khi2, nous avons obtenu une p-value inférieure à 2.2e-16. Nous avons donc rejeté l’hypothèse d’indépendance entre les deux variables et admis que la liaison entre ces deux variables est signficative.       
 
@@ -231,7 +233,7 @@ Lors d'une première lecture de ce tableau de contingence, François Husson soul
 
 À côté de ça, à la question "Quelle activité convient le mieux à une mère de famille quand ses enfants vont à l’école ?", elles sont 1 440 sur 1 724 (visible dans la **marge ligne**), soit environ 84 %, à être en faveur du travail à mi-temps ou à plein-temps. Les réponses à cette question semblent indiquer que les femmes sont moins hostiles au travail féminin (bien au contraire).       
 
-Du coup, à ce stade de l'interprétation, nous nous retrouvons _a priori_ face une **contradcition**.       
+Du coup, à ce stade de l'interprétation, nous nous retrouvons _a priori_ face une **contradiction**.       
 
 De cela, nous pouvons dire que le tableau de contingence ne permet pas de savoir si les femmes des années 70 sont favorables ou non à l'activité féminine. Par contre, Une **première lecture du graphe de l'AFC** nous permet de dire que les modalités des réponses s'associent entre elles des plus favorables au travail féminin aux plus défavorables au travail féminin.       
 
@@ -246,16 +248,16 @@ res.independance <- CA(khi2don$expected)
 La lecture de ce graphique nous permet de voir que les points sont quasiment tous **confondus avec le centre de gravité**, correspondant au **profil moyen**. La représentation graphique est trompeuse mais l'échelle des axes va dans le sens de notre interprétation. Simplement, ce qu'il y a retenir de ce graphe, c'est que, lorsqu'il y a indépendance entre les deux variables, tous les points sont confondus avec l'origine. Du fait qu'il n'y ait pas d'écarts à l'indépendance, il n'y a graphiquement rien à exploiter, rien à interpréter, rien à analyser. Ce graphe donne à voir ce que nous avons précédemment énoncé, à savoir que :
 
 * Si nous acceptons l'hypothèse d'indépendance (p-value > 0,05 dans le cas d'un test du khi2), nous n'aurons pas d'utilité à réaliser une AFC car les points projetés seront extrêmement proches ou confondus avec le centre de gravité, confondus avec le centre du graphe.
-* La réalisation d'un test du khi2 est donc fortement conseillée avant la réqlisation d'une AFC.
+* La réalisation d'un test du khi2 est donc fortement conseillée avant la réalisation d'une AFC.
 * Plus précisément, le test du khi2 conditionne l'éventuelle réalisation d'une AFC.       
 
-Les résultats qui suivent vont aussi dans le sens notre propos :       
+Les résultats qui suivent vont aussi dans le sens de notre propos :       
 
 ```{r summary(res.independance)}
 summary(res.independance)
 ```
 
-Dans le cas où il y a indépendance entre les deux variables, le **test du khi2 nous donne une p-value = 1**. Les coordonnées (dim.n) des modalités en ligne et en colonne, sur chacune des dimensions, sont égales à O. Il en va de même pour leur contribution à la construction (ctr) de chaque dimension et leur qualité de réprésentation (cos2) sur chaque dimension.       
+Dans le cas où il y a indépendance entre les deux variables, le **test du khi2 nous donne une p-value = 1**. Les coordonnées (dim.n) des modalités en ligne et en colonne, sur chacune des dimensions, sont égales à 0. Il en va de même pour leur contribution à la construction (ctr) de chaque dimension et leur qualité de réprésentation (cos2) sur chaque dimension.       
 
 Quittons ce cas d'indépendance et revenons maintenant à notre premier jeu de données où la liaison entre les variables est significative.       
 
@@ -292,7 +294,7 @@ Lisons le jeu de données.
 View(pcsregion)
 ```
 
-Lorsque nous réalisons une AFC avec ce jeu de données, nus obtenons ceci :       
+Lorsque nous réalisons une AFC avec ce jeu de données, nous obtenons ceci :       
 
 ```{r CA(pcsregion)}
 afcpcsregion <- CA(pcsregion)
@@ -306,11 +308,11 @@ plot(afcpcsregion, cex = 0.6, cex.axis = 0.6, cex.lab = 0.8,
      selectRow = "cos2 0.7", selectCol = "cos2 0.7")
 ```  
 
-De cette manière, nous pouvons, par exemple, jouer sur la taille des noms de modalité et ne sélectionner que celles qui ont une qualité de représentation significative (arbitrairement cos2 > 0,7). Alors, bien évidemment, il ne s'agit que d'un exemple pour souligner l'évential de possibilités mis à notre disposition en vue d'améliorer la représentation graphique, ainsi que la lecture et l'analyse des données.
+De cette manière, nous pouvons, par exemple, jouer sur la taille des noms de modalité et ne sélectionner que celles qui ont une qualité de représentation significative (arbitrairement cos2 > 0,7). Alors, bien évidemment, il ne s'agit que d'un exemple pour souligner l'éventail des possibilités mis à notre disposition en vue d'améliorer la représentation graphique, ainsi que la lecture et l'analyse des données.
 
 Revenons maintenant à nos données initiales quant aux représentations sur le travail féminin.       
 
-##### Le nombre d'axes à interpréter       
+### Le nombre d'axes à interpréter       
 
 Au-delà de la simple lecture visuelle du graphe, il existe d'autres moyens d'interpréter nos données. À partir de là, il serait intéressant de déterminer le nombre d'axes à interpréter.       
 
@@ -320,7 +322,7 @@ Les valeurs propres (i.e. variance) des axes :
 res$eig
 ```
 
-Dans notre exemple, nous abtenons deux facteurs, classés du plus importants au moins importants (du plus explicatif au moins explicatif). Chacun des facteurs a une "valeur propre" (quantité d'information expliquée par le facteur). La deuxième colonne renvoie au "pourcentage d'inertie", correspondant à la proportion des variations totales des variables originales expliquées par chaque facteur.
+Dans le résultat de `res$eig`, les axes (aussi appelés *facteurs*) sont appelés `dim`. La *valeur propre* ou `eigenvalue` représente la quantité d'information expliquée par l'axe. La deuxième colonne renvoie au *pourcentage d'inertie*, correspondant à la proportion des variations totales des variables originales expliquées par chaque axe.
 
 Nous pouvons, à la suite, effectuer une représentation de l'histogramme des valeurs propres :     
 
@@ -342,9 +344,9 @@ Détails des arguments utilisés dans la fonction `barplot()` :
 * L'argument `col=` permet de modifier la couleur des barres.
 * L'argument `names.arg=` permet de nommer chaque barre.       
 
-L'histogramme va servir visuellement à déterminer le nombre d'axes à interpréter à l'aide du critère du "coude" de Cattell. Lorsqu'on observe un décrochement entre deux facteurs, on détermine les facteurs avant ce décrochement comme étant les axes à interpréter. Ce n'est pas la seule règle possible. Un autre critère de choix (appelé « critère de Kaiser ») suggère de garder tous les facteurs dont la valeur propre est supérieure à la valeur propre moyenne (qui vaut par définition 1 divisé par le nombre de facteurs). Pour plus d'informations, nous vous invitons à vous reporter au lien suivant afin d'approfondir ce travail quant au [nombre de facteurs à retenir](http://quanti.hypotheses.org/930/ "Histogramme des valeurs propres").       
+L'histogramme va servir visuellement à déterminer le nombre d'axes à interpréter à l'aide du critère du "coude" de Cattell. Lorsqu'on observe un décrochement entre deux axes, on détermine les axes avant ce décrochement comme étant les axes à interpréter. Ce n'est pas la seule règle possible. Un autre critère de choix, appelé « critère de Kaiser », suggère de garder tous les axes dont la valeur propre est supérieure à la valeur propre moyenne (qui vaut par définition 1 divisé par le nombre d'axes). Pour plus d'informations, nous vous invitons à vous reporter au lien suivant afin d'approfondir ce travail quant au [nombre d'axes à retenir](http://quanti.hypotheses.org/930/ "Histogramme des valeurs propres").       
 
-Ce jeu de données ne permet pas de réellement saisir cette démarche qui vise à déterminer le nombre d'axes à interpréter. pour ce faire, reprenons nos données sur les spécificités socioprofessionnelles régionales.
+Ce jeu de données ne permet pas de réellement saisir cette démarche qui vise à déterminer le nombre d'axes à interpréter. Pour ce faire, reprenons nos données sur les spécificités socioprofessionnelles régionales.
 
 Voici les valeurs propres des axes :       
 
@@ -352,7 +354,7 @@ Voici les valeurs propres des axes :
 afcpcsregion$eig
 ```
 
-Dans ce nouvel exemple, nous abtenons sept facteurs. Présentons, dans la foulée, l'histogramme des valeurs propres :     
+Dans ce nouvel exemple, nous abtenons sept facteurs (ou axes). Présentons, dans la foulée, l'histogramme des valeurs propres :     
 
 ```{r barplot(afcpcsregion)}
 barplot(afcpcsregion$eig[,1], main = "Histogramme des valeurs propres", 
@@ -364,8 +366,7 @@ barplot(afcpcsregion$eig[,1], main = "Histogramme des valeurs propres",
 Ajout d'un texte d'explication.
 
 
-
-##### Les résultats       
+### Les résultats       
 
 La fonction `summary` est extrêmement utile dans ce contexte.
 
@@ -394,7 +395,7 @@ Ce qu'il appelle la `Variance` est aussi appelée dans la littérature "**valeur
 
 À quoi comparer cette valeur ?        
 
-Les variances étant _au maximxum_ égales à 1, le Phi2 peut avoir _au maximum_ une valeur de 2. 0.136 << 2 : L'intensité de la liaison est faible. Les réponses s'associent globalement peu entre elles. Mais rare sont les cas où l'intensité de la liaison entre les variables est forte.       
+Les variances étant _au maximum_ égales à 1, le Phi2 peut avoir _au maximum_ une valeur de 2. 0.136 << 2 : L'intensité de la liaison est faible. Les réponses s'associent globalement peu entre elles. Mais rares sont les cas où l'intensité de la liaison entre les variables est forte.       
 
 Le `% of var`, soit le pourcentage de variance, représente le **% de variance expliqué par l'axe**. Autrement dit, la dimension 1 (ou l'axe 1) explique 86.292 % de la variance entre les deux variables. Et le plan constitué des axes 1 et 2 explique 100% de la variance. Ce qui est normal puisque les pourcentages se répartissent sur tous les axes. S'il y avait eu 8 axes, le pourcentage d'inertie se serait réparti sur les 8 axes.       
 
@@ -410,7 +411,7 @@ La position par rapport au centre de l'axe. Le centre de l'axe correspond au pro
 
 Peut-on interpréter la position entre deux point lignes ou deux points colonnes ?       
 
-Rappel : L'AFC ne travaille pas sur le tableau de contingence mais transforme le tableau de contingence en tableau de probabilité. C'est à dire le tableau de contingence dont les valeurs sont divisées par la population. (voir fichier Excel). Deux point lignes sont donc proches l'un de l'autre si leur profil en porcentage est similaire.       
+Rappel : L'AFC ne travaille pas sur le tableau de contingence mais transforme le tableau de contingence en tableau de probabilité. C'est à dire le tableau de contingence dont les valeurs sont divisées par la population. Deux points lignes sont donc proches l'un de l'autre si leur profil en pourcentage est similaire.       
 
 Par contre, on peut dire que les lignes sont "du côté" des colonnes auxquelles elles s'associent le plus. Dans la mesure où ces colonnes sont éloignées du centre de gravité. Et respectivement, les colonnes sont "du côté" des lignes avec lesquelles elles s'associent le plus. Dans la mesure où ces lignes sont éloignées du centre de gravité. On en veut pour preuve que sur le graphe "seul le mari travaille" est du côté de "rester au foyer". Si on revient sur le tableau de contingence (slide 5 de Husson) ce résultat peut sembler contradictoire  puisque 573 personnes ont répondu à "seul le mari travaille" et "travailler à mi-temps" alors que  seulement 241 personnes ont répondu à "seul le mari travaille" et "rester au foyer". Ne devrait-on pas dire que "seul le mari travaille" s'associe le plus à "travailler à mi-temps". Cependant quand on regarde les marges du tableau de contingence... et quand on regarder les pourcentages en colonne dans le fichier Excel...       
 
