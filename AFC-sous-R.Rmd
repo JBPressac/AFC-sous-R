@@ -17,7 +17,7 @@ library(knitr)
 **Jean-Baptiste PRESSAC** ([CRBC](https://www.univ-brest.fr/crbc/menu/Membres+du+laboratoire/Personnel_administratif_et_technique/Jean-Baptiste_Pressac "Laboratoire CRBC"), CNRS) (Jean-Baptiste.Pressac@univ-brest.fr)     
 **Laurent MELL** ([LABERS](https://www.univ-brest.fr/labers/ "Laboratoire LABERS"), Université de Bretagne Occidentale) (laurent.mell@univ-brest.fr)     
 
-Si vous avez des commentaires à formuler ou des remarques à effectuer, vous pouvez nos contacter via nos adresses mails (Jean-Baptiste.Pressac@univ-brest.fr, laurent.mell@univ-brest.fr). Par la même occasion, si vous souhaitez échanger plus en détail et/ou contribuer à cette démarche, nous sommes aussi disponible.
+Si vous avez des commentaires à formuler ou des remarques à effectuer, vous pouvez nos contacter via nos adresses mails (Jean-Baptiste.Pressac@univ-brest.fr, laurent.mell@univ-brest.fr). Par la même occasion, si vous souhaitez échanger plus en détail et/ou contribuer à cette démarche, nous sommes aussi disponibles.
 
 
 ### Introduction
@@ -65,7 +65,7 @@ La définition du répertoire de travail peut aussi être faite par le biais de 
 Nous lisons ensuite le fichier CSV à partir de la fonction `read.table()` :
 
 ```{r read.table}
-don <- read.table("AnaDo_JeuDonnees_TravailFemme.csv", header=TRUE, 
+wfemmes <- read.table("AnaDo_JeuDonnees_TravailFemme.csv", header=TRUE, 
                   row.names=1, sep=";", check.names=FALSE, fileEncoding="latin1")
 ```
 
@@ -76,16 +76,16 @@ don <- read.table("AnaDo_JeuDonnees_TravailFemme.csv", header=TRUE,
 * L'argument `check.names=FALSE` permet d'empêcher R de modifier la syntaxe du nom des modalités de variable.
 * L'argument `fileEncoding="latin1"` permet de spécifier l'encodage du fichier.     
 
-Afin de faciliter, par la suite, la lecture et l'emploi du jeu de données, nous **stockons le résultat dans la variable** `don`.
+Afin de faciliter, par la suite, la lecture et l'emploi du jeu de données, nous **stockons le résultat dans la variable** `wfemmes`.
 
-Nous pouvons, très facilement et à n'importe quel moment, afficher le tableau de contingence `don` à partir du volet Data dans la fenêtre en haut à droite de RStudio.
+Nous pouvons, très facilement et à n'importe quel moment, afficher le tableau de contingence `wfemmes` à partir du volet Data dans la fenêtre en haut à droite de RStudio.
 
-![](Data1.png "Volet Data dans la fenêtre en haut à droite de RStudio")
-
+![](Data1.png "Volet Data dans la fenêtre en haut à droite de RStudio")       
+       
 Seules les trois premières colonnes du jeu de données sont utilisées ici. Nous avons donc besoin de suppprimer les colonnes dont nous n'aurons pas l'utilité. Plus spécifiquement, nous n'allons **sélectionner que les trois premières colonnes** avec la commande suivante :
 
-```{r don[1:3]}
-don <- don[1:3]
+```{r wfemmes[1:3]}
+wfemmes <- wfemmes[1:3]
 ```     
 
 Dans cette commande :       
@@ -94,17 +94,17 @@ Dans cette commande :
 
 Nous pouvons voir que, dans le volet Data dans la fenêtre en haut à droite de RStudio, le nombre de variables affichées a été réduit.
 
-![](Data2.png "Volet Data dans la fenêtre en haut à droite de RStudio")
-
+![](Data2.png "Volet Data dans la fenêtre en haut à droite de RStudio")        
+        
 Afin d'amliorer la lecture du tableau et, par la suite, du graphique, nous allons renommer les modalités des deux variables grâce à la fonction `dimnames()`
 
-```{r (dimnames(don)}
-(dimnames(don)[[1]][1]<-"Les 2 conjoints travaillent")
-(dimnames(don)[[1]][2]<-"Travail du mari plus absorbant")
-(dimnames(don)[[1]][3]<-"Seul le mari travaille")
-(dimnames(don)[[2]][1]<-"Rester au foyer")
-(dimnames(don)[[2]][2]<-"Travail à mi-temps")
-(dimnames(don)[[2]][3]<-"Travail à plein-temps")
+```{r (dimnames(wfemmes)}
+(dimnames(wfemmes)[[1]][1]<-"Les 2 conjoints travaillent")
+(dimnames(wfemmes)[[1]][2]<-"Travail du mari plus absorbant")
+(dimnames(wfemmes)[[1]][3]<-"Seul le mari travaille")
+(dimnames(wfemmes)[[2]][1]<-"Rester au foyer")
+(dimnames(wfemmes)[[2]][2]<-"Travail à mi-temps")
+(dimnames(wfemmes)[[2]][3]<-"Travail à plein-temps")
 ```
 
 Pour la fonction `dimnames()` :       
@@ -114,49 +114,49 @@ Pour la fonction `dimnames()` :
 * `[1]` (entre crochets) permet de spécifier que nous allons renommer la première modalité d'une variable.
 * `[2]` (enter crochets) permet de spécifier que nous allons renommer la deuxième modalité d'une variable.       
 
-Suivant cette logique, lorsque nous écrivons, par exemple, `(dimnames(don)[[2]][3]<-"...")`, cela signifie que nous allons renommer la troisième modalité en colonne.
+Suivant cette logique, lorsque nous écrivons, par exemple, `(dimnames(wfemmes)[[2]][3]<-"...")`, cela signifie que nous allons renommer la troisième modalité en colonne.
 
 Notez que nous pouvons calculer sous R les marges lignes et les marges colonnes du tableau de contingence de la manière suivante :
 
 
-```{r dons_avec_marges}
-don_avec_marges <- don
-don_avec_marges$Total <- rowSums(don_avec_marges)
-don_avec_marges[nrow(don_avec_marges)+1, ] <- colSums(don_avec_marges)
-row.names(don_avec_marges)[nrow(don_avec_marges)] <- "Total"
-don_avec_marges
+```{r wfemmes_avec_marges}
+wfemmes_avec_marges <- wfemmes
+wfemmes_avec_marges$Total <- rowSums(wfemmes_avec_marges)
+wfemmes_avec_marges[nrow(wfemmes_avec_marges)+1, ] <- colSums(wfemmes_avec_marges)
+row.names(wfemmes_avec_marges)[nrow(wfemmes_avec_marges)] <- "Total"
+wfemmes_avec_marges
 ```
 
 
 Affichons ce tableau de manière plus agréable dans ce document (avec la fonction `kable()` du package `knitr`) :
 
-```{r}
+```{r kable(wfemmes_avec_marges)}
 
-kable(don_avec_marges) 
+kable(wfemmes_avec_marges) 
 ```
 
 Il est aussi intéressant de calculer les pourcentages en ligne et les pourcentages en colonne.
 
-```{r dons_pourcentage_en_ligne}
-dons_pourcentage_en_ligne <- don
-dons_pourcentage_en_ligne$Moyenne <- rowMeans(dons_pourcentage_en_ligne)
-dons_pourcentage_en_ligne[nrow(dons_pourcentage_en_ligne)+1, ] <- colSums(dons_pourcentage_en_ligne)
-row.names(dons_pourcentage_en_ligne)[nrow(dons_pourcentage_en_ligne)] <- "Total"
-dons_pourcentage_en_ligne
+```{r wfemmes_pourcentage_en_ligne}
+wfemmes_pourcentage_en_ligne <- wfemmes
+wfemmes_pourcentage_en_ligne$Moyenne <- rowMeans(wfemmes_pourcentage_en_ligne)
+wfemmes_pourcentage_en_ligne[nrow(wfemmes_pourcentage_en_ligne)+1, ] <- colSums(wfemmes_pourcentage_en_ligne)
+row.names(wfemmes_pourcentage_en_ligne)[nrow(wfemmes_pourcentage_en_ligne)] <- "Total"
+wfemmes_pourcentage_en_ligne
 ```
 
 ```{r Rcmdr}
 library (Rcmdr)
 ```
 
-```{r don_pourcentage_en_ligne}
-don_pourcentage_en_ligne <- rowPercents(don)
-kable(don_pourcentage_en_ligne)
+```{r kable(wfemmes_pourcentage_en_ligne)}
+wfemmes_pourcentage_en_ligne <- rowPercents(wfemmes)
+kable(wfemmes_pourcentage_en_ligne)
 ```
 
-```{r don_pourcentage_en_colonne}
-don_pourcentage_en_colonne <- colPercents(don)
-kable(don_pourcentage_en_colonne)
+```{r wfemmes_pourcentage_en_colonne}
+wfemmes_pourcentage_en_colonne <- colPercents(wfemmes)
+kable(wfemmes_pourcentage_en_colonne)
 ```
 
 
@@ -165,7 +165,7 @@ kable(don_pourcentage_en_colonne)
 Comme nous le verrons plus loin, on passera en paramètre de la fonction R de calcul de l'AFC le tableau de contingence. Mais l'AFC travaille en réalité sur le tableau de probabilités que l'on peut calculer de cette manière sous R :
 
 ```{r tableau_de_probabilite}
-# tableau_de_probabilite <- addmargins(don,FUN=list(Pourcentage=function(x) round(sum(x)/sum(don),2)))
+# tableau_de_probabilite <- addmargins(wfemmes,FUN=list(Pourcentage=function(x) round(sum(x)/sum(wfemmes),2)))
 # tableau_de_probabilite[length(tableau_de_probabilite)] <- 100
 # tableau_de_probabilite
 ```
@@ -179,8 +179,8 @@ Pour ce faire, nous réalisons un **test du Khi2**.
 
 Le test du khi2 mesure la **significativité d'une liaison mais pas son intensité**. Afin de réaliser ce test du khi2, nous utilisons une fonction fournie de base avec le logiciel R. Il s'agit de la fonction `chisq.test`. Il n'est pas nécessaire d'installer une librairie supplémentaire afin de réaliser ce test.       
 
-```{r chisq.test(don)}
-chisq.test(don)
+```{r chisq.test(wfemmes)}
+chisq.test(wfemmes)
 ```
 
 Le terme `X-squared` est à lire `Khi2` soit Khi au carré. La fonction `chisq.test` nous donne, entre autres, la valeur du Khi2 qui est un **indicateur de la significativité de la liaison**. Mais ce qui nous interesse ici est la `p-value`. Nous voyons ici que la `p-value` est inférieure à 2,2x10^-16^. Cela signifie que la **probabilité que les variables soient indépendantes** est inférieure à 2,2x10^-16^. Ce qui nous permet de rejeter l'hypothèse d'indépendance entre les deux variables. Pour autant, cela ne veut pas dire que les variables soient dépendantes. Les réponses à la question sur la famille idéale sont probablement liées aux réponses concernant l'activité convenant le mieux à une mère de famille dont les enfants vont à l'école.          
@@ -198,10 +198,10 @@ Rappelons que pour que le test du khi2 soit opératoire, il doit respecter un ce
 
 Du fait que nous ayons obtenu une p-value inférieure à 2,2x10^-16^ et, par extension, inférieure au seuil de 0,05, nous **rejetons l'hypothèse d'indépendance entre les deux variables**.
 
-Comme le résultat est significatif, tout en respectant les conditons de validité du test du khi2, nous stockons le résultat de la fonction dans la variable `khi2don`.
+Comme le résultat est significatif, tout en respectant les conditons de validité du test du khi2, nous stockons le résultat de la fonction dans la variable `khi2wfemmes`.
 
-```{r khi2don}
-chisq.test(don) -> khi2don
+```{r khi2wfemmes}
+chisq.test(wfemmes) -> khi2wfemmes
 ```     
 
 
@@ -211,24 +211,24 @@ Le test du khi2 est symétrique. Les lignes et les colonnes du tableau croisé s
 
 Nous pouvons afficher le tableau de contingence d'origine (**tableau des données observées**) en sélectionnant la valeur `observed`.
 
-```{r khi2don$observed}
-khi2don$observed
+```{r khi2wfemmes$observed}
+khi2wfemmes$observed
 ```
 
 De la même manière, nous pouvons afficher le tableau d'indépendance (**tableau des effectifs théoriques**) en sélectionnant la valeur `expected`. Dans ce contexte, nous calculons le tableau des pourcentages théoriques, en multipliant pour chaque case la proportion observée dans la population des deux modalités correspondantes. Puis, le tableau des effectifs théoriques se calcule en multipliant le tableau des pourcentages théoriques par l'effectif total.
 
 Pour plus de détails, nous vous recommandons la lecture de ce document de Julien Barnier : [Tout ce que vous n'avez jamais voulu savoir sur le Khi2 sans jamais avoir eu envie de le demander](https://alea.fr.eu.org/pages/khi2 "Test du khi2 par Julien Barnier").
 
-```{r khi2don$expected}
-khi2don$expected
+```{r khi2wfemmes$expected}
+khi2wfemmes$expected
 ```
 
 Le tableau des effectifs théoriques n'a que peu d'intérêt en lui-même mais en a davantage comparativement au tableau des données observées.
 
 Nous pouvons aussi afficher le tableau des résidus (**tableau des écarts à l'indépendance**) en sélectionnant la valeur `residuals`. Un résidu positif signifie que les effectifs dans la case sont supérieur à ceux attendus sous l'hypothèse d'indépendance. Et l'inverse pour un résidu négatif.
 
-```{r Khi2don$residuals}
-khi2don$residuals
+```{r Khi2wfemmes$residuals}
+khi2wfemmes$residuals
 ```     
 
 Exprimé d'une autre manière, l'écart à l'indépendance représente l'**écart entre l’effectif observé et l’effectif théorique**, et ceci pour chacune des cases du tableau de contingence. D'ailleurs, comme le note [Philippe Cibois](https://www.scienceshumaines.com/textesInedits/Cibois.pdf "Précisions sur l'écart à l'indépendance p.16-38"), l'écart à l'indépendance "est un effectif et c'est un invariant, indépendant du choix des lignes et des colonnes (c'est la différence entre l'effectif observé et l'effectif théorique : le résultat est donc un effectif)."
@@ -257,11 +257,11 @@ Pour clarifier cette notin d'indépendance, reprenons notre tableau de contingen
 
 ```{r, echo=FALSE}
 
-kable(don_avec_marges) 
+kable(wfemmes_avec_marges) 
 ```
 
-```{r dons_avec_marges bis}
-don_avec_marges
+```{r wfemmess_avec_marges bis}
+wfemmes_avec_marges
 ```
 
 
@@ -288,13 +288,13 @@ library (FactoMineR)
 
 Lors du précédent test du khi2, nous avons obtenu une p-value inférieure à 2,2x10^-16^. Nous avons donc rejeté l’hypothèse d’indépendance entre les deux variables et admis que la liaison entre ces deux variables est signficative.       
 
-Nous sommes en droit de réaliser une AFC afin de visualiser la nature de la liaison. Pour ce faire, nous allons employer la fonction `CA()`, fournie par le package `FactoMineR` que nous venons de charger. Précédemment, nous avons stocké notre jeu de données dans la variable `don`. Nous exécutons une analyse factorielle des correspondances (AFC) sur notre jeu de données de la manière qui suit :
+Nous sommes en droit de réaliser une AFC afin de visualiser la nature de la liaison. Pour ce faire, nous allons employer la fonction `CA()`, fournie par le package `FactoMineR` que nous venons de charger. Précédemment, nous avons stocké notre jeu de données dans la variable `wfemmes`. Nous exécutons une analyse factorielle des correspondances (AFC) sur notre jeu de données de la manière qui suit :
 
-```{r CA(don)}
-res <- CA(don)
+```{r CA(wfemmes)}
+afcwfemmes <- CA(wfemmes)
 ```
 
-Afin de faciliter, par la suite, la lecture et l'emploi des résultats cette AFC, nous les **stockons dans la variable** `res`.
+Afin de faciliter, par la suite, la lecture et l'emploi des résultats cette AFC, nous les **stockons dans la variable** `afcwfemmes`.
 
 Revenons un instant sur ce fameux **tableau 37**, issu de l'enquête de Nicole Tabard, croisant les deux variables (questions) :       
 
@@ -317,8 +317,8 @@ Avant d'approfondir, plus en détail, l'interprétation de cette AFC, nous allon
 
 Si nous réalisons une AFC avec les données du modèle d'indépendance :       
 
-```{r CA(khi2don$expected)}
-res.independance <- CA(khi2don$expected)
+```{r CA(khi2wfemmes$expected)}
+afcwfemmes.independance <- CA(khi2wfemmes$expected)
 ```
 
 La lecture de ce graphique nous permet de voir que les points sont quasiment tous **confondus avec le centre de gravité**, correspondant au **profil moyen**. La représentation graphique est trompeuse mais l'échelle des axes va dans le sens de notre interprétation. Simplement, ce qu'il y a retenir de ce graphe, c'est que, lorsqu'il y a indépendance entre les deux variables, tous les points sont confondus avec l'origine. Du fait qu'il n'y ait pas d'écarts à l'indépendance, il n'y a graphiquement rien à exploiter, rien à interpréter, rien à analyser. Ce graphe donne à voir ce que nous avons précédemment énoncé, à savoir que :
@@ -329,8 +329,8 @@ La lecture de ce graphique nous permet de voir que les points sont quasiment tou
 
 Les résultats qui suivent vont aussi dans le sens de notre propos :       
 
-```{r summary(res.independance)}
-summary(res.independance)
+```{r summary(afcwfemmes.independance)}
+summary(afcwfemmes.independance)
 ```
 
 Dans le cas où il y a indépendance entre les deux variables, le **test du khi2 nous donne une p-value = 1**. Les coordonnées (dim.n) des modalités en ligne et en colonne, sur chacune des dimensions, sont égales à 0. Il en va de même pour leur contribution à la construction (ctr) de chaque dimension et leur qualité de réprésentation (cos2) sur chaque dimension.       
@@ -339,8 +339,8 @@ Quittons ce cas d'indépendance et revenons maintenant à notre premier jeu de d
 
 Les différentes fonctions proposées par le logiciel R, ainsi que celles associées aux multiples packages disponibles, nous permettent l'affichage du graphe.       
 
-```{r plot(res)}
-plot(res, cex = 0.7, cex.axis = 0.6, cex.lab = 0.8, title = "Représentation graphique", 
+```{r plot(afcwfemmes)}
+plot(afcwfemmes, cex = 0.7, cex.axis = 0.6, cex.lab = 0.8, title = "Représentation graphique", 
      selectRow = "cos2 0.7", selectCol = "cos2 0.7")
 ```     
 
@@ -394,19 +394,19 @@ Au-delà de la simple lecture visuelle du graphe, il existe d'autres moyens d'in
 
 Les valeurs propres (i.e. variance) des axes :       
 
-```{r Valeur propre des axes(res)}
-res$eig
+```{r Valeur propre des axes(afcwfemmes)}
+afcwfemmes$eig
 ```
 
-Dans le résultat de `res$eig`, les axes (aussi appelés *facteurs*) sont appelés `dim`. La *valeur propre* ou `eigenvalue` représente la quantité d'information expliquée par l'axe. La deuxième colonne renvoie au *pourcentage d'inertie*, correspondant à la proportion des variations totales des variables originales expliquées par chaque axe.
+Dans le résultat de `afcwfemmes$eig`, les axes (aussi appelés *facteurs*) sont appelés `dim`. La *valeur propre* ou `eigenvalue` représente la quantité d'information expliquée par l'axe. La deuxième colonne renvoie au *pourcentage d'inertie*, correspondant à la proportion des variations totales des variables originales expliquées par chaque axe.
 
 Nous pouvons, à la suite, effectuer une représentation de l'histogramme des valeurs propres :     
 
-```{r barplot(res)}
-barplot(res$eig[,1], main = "Histogramme des valeurs propres", 
+```{r barplot(afcwfemmes)}
+barplot(afcwfemmes$eig[,1], main = "Histogramme des valeurs propres", 
         sub = "Représentations des femmes sur le travail féminin", 
         xlab = "Axes", ylab = "Pourcentage d'inertie", cex.axis = 0.8, 
-        cex.names = 0.8, col ="orange", names.arg = 1:nrow(res$eig))
+        cex.names = 0.8, col ="orange", names.arg = 1:nrow(afcwfemmes$eig))
 ```
 
 Détails des arguments utilisés dans la fonction `barplot()` :       
@@ -446,8 +446,8 @@ barplot(afcpcsregion$eig[,1], main = "Histogramme des valeurs propres",
 
 La fonction `summary` est extrêmement utile dans ce contexte.
 
-```{r summary(res)}
-summary(res, nbelements = Inf)
+```{r summary(afcwfemmes)}
+summary(afcwfemmes, nbelements = Inf)
 ```
 
 Cette fonction `summary` nous permet d'obtenir :
@@ -477,9 +477,10 @@ Le `% of var`, soit le pourcentage de variance, représente le **% de variance e
 
 Ce qu'il faut savoir c'est que le nombre d'axes est égal au nombre minimum entre le nombre de colonnes - 1 et le nombre de lignes - 1 du tableau de contingence. Autrement, si vous avez un tableau de contingence avec en ligne 9 modalités et en colonnes 15 modalités. On fait 9 - 1 = 8 puis 15 - 1 = 14 et on garde 8.       
 
+
 ### Interpréter la position des points sur le graphe
 
-Le centre de l'axe correspond au profil moyen en ligne et au profil moyen en colonne. Pour rappel, le profil moyen correspond à la distribution marginale, c'est à dire à la marge (ligne ou colonne) divisée par l'effectif total (les 1724 femmes de l'enquête du CREDOC).
+Le centre de l'axe correspond au profil moyen en ligne et au profil moyen en colonne. Pour rappel, le profil moyen correspond à la distribution marginale, c'est à dire à la marge (ligne ou colonne) divisée par l'effectif total (les 1724 femmes de l'enquête du CREDOC).        
 
 
 
@@ -490,4 +491,10 @@ Peut-on interpréter la position entre deux point lignes ou deux points colonnes
 Rappel : L'AFC ne travaille pas sur le tableau de contingence mais transforme le tableau de contingence en tableau de probabilité. C'est à dire le tableau de contingence dont les valeurs sont divisées par la population. Deux points lignes sont donc proches l'un de l'autre si leur profil en pourcentage est similaire.       
 
 Par contre, on peut dire que les lignes sont "du côté" des colonnes auxquelles elles s'associent le plus. Dans la mesure où ces colonnes sont éloignées du centre de gravité. Et respectivement, les colonnes sont "du côté" des lignes avec lesquelles elles s'associent le plus. Dans la mesure où ces lignes sont éloignées du centre de gravité. On en veut pour preuve que sur le graphe "seul le mari travaille" est du côté de "rester au foyer". Si on revient sur le tableau de contingence (slide 5 de Husson) ce résultat peut sembler contradictoire  puisque 573 personnes ont répondu à "seul le mari travaille" et "travailler à mi-temps" alors que  seulement 241 personnes ont répondu à "seul le mari travaille" et "rester au foyer". Ne devrait-on pas dire que "seul le mari travaille" s'associe le plus à "travailler à mi-temps". Cependant quand on regarde les marges du tableau de contingence... et quand on regarder les pourcentages en colonne dans le fichier Excel...       
+
+
+#### Conclusion       
+
+Comme nous l'avons annoncé en introduction, notre objectif était de nous concentrer sur **l'analyse factorielle des correspondances (AFC)** et d'étudier les **éventuelles** liaisons entre les modalités de deux variables qualitatives. Avec ce premier travail, nous avons apporté un certain nombre d'éléments de lecture, d'analyse et d'interprétation. Nous pousuivrons cet exercice **dans une seconde partie** prochainement. Nous chercherons, entre autres, à approfondir la question de l'interprétation de l'AFC (détermination du nombre d'axes à interpréter, interprétation des coordonnées des modalités actifs, interprétation de la contribution et de la qualtité de représentation des modalités, élaboration de la typologie, etc.).          
+
 
