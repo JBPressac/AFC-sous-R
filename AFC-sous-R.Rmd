@@ -128,14 +128,14 @@ don_avec_marges
 ```
 
 
-Affichons ce tableau de manière plus agréable dans ce document :
+Affichons ce tableau de manière plus agréable dans ce document (avec la fonction `kable()` du package `knitr`) :
 
-```{r, echo=FALSE}
+```{r}
 
 kable(don_avec_marges) 
 ```
 
-Il est aussi interessant de calculer les pourcentages en ligne et les pourcentages en colonne.
+Il est aussi intéressant de calculer les pourcentages en ligne et les pourcentages en colonne.
 
 ```{r dons_pourcentage_en_ligne}
 dons_pourcentage_en_ligne <- don
@@ -144,6 +144,22 @@ dons_pourcentage_en_ligne[nrow(dons_pourcentage_en_ligne)+1, ] <- colSums(dons_p
 row.names(dons_pourcentage_en_ligne)[nrow(dons_pourcentage_en_ligne)] <- "Total"
 dons_pourcentage_en_ligne
 ```
+
+```{r Rcmdr}
+library (Rcmdr)
+```
+
+```{r don_pourcentage_en_ligne}
+don_pourcentage_en_ligne <- rowPercents(don)
+kable(don_pourcentage_en_ligne)
+```
+
+```{r don_pourcentage_en_colonne}
+don_pourcentage_en_colonne <- colPercents(don)
+kable(don_pourcentage_en_colonne)
+```
+
+
 
 
 Comme nous le verrons plus loin, on passera en paramètre de la fonction R de calcul de l'AFC le tableau de contingence. Mais l'AFC travaille en réalité sur le tableau de probabilités que l'on peut calculer de cette manière sous R :
