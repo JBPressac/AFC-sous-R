@@ -2,7 +2,9 @@
 title: "Analyse factorielle des correspondances sous R - Partie I"
 author: "Jean-Baptiste Pressac, Laurent Mell"
 date: "12 Avril 2017"
-output: html_document
+output:
+  html_document: default
+  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -99,12 +101,12 @@ Nous pouvons voir que, dans le volet Data dans la fenêtre en haut à droite de 
 Afin d'amliorer la lecture du tableau et, par la suite, du graphique, nous allons renommer les modalités des deux variables grâce à la fonction `dimnames()`
 
 ```{r (dimnames(wfemmes)}
-(dimnames(wfemmes)[[1]][1]<-"Les 2 conjoints travaillent")
-(dimnames(wfemmes)[[1]][2]<-"Travail du mari plus absorbant")
-(dimnames(wfemmes)[[1]][3]<-"Seul le mari travaille")
-(dimnames(wfemmes)[[2]][1]<-"Rester au foyer")
-(dimnames(wfemmes)[[2]][2]<-"Travail à mi-temps")
-(dimnames(wfemmes)[[2]][3]<-"Travail à plein-temps")
+dimnames(wfemmes)[[1]][1]<-"Les 2 conjoints travaillent"
+dimnames(wfemmes)[[1]][2]<-"Travail du mari plus absorbant"
+dimnames(wfemmes)[[1]][3]<-"Seul le mari travaille"
+dimnames(wfemmes)[[2]][1]<-"Rester au foyer"
+dimnames(wfemmes)[[2]][2]<-"Travail à mi-temps"
+dimnames(wfemmes)[[2]][3]<-"Travail à plein-temps"
 ```
 
 Pour la fonction `dimnames()` :       
@@ -128,49 +130,59 @@ wfemmes_avec_marges
 ```
 
 
-Affichons ce tableau de manière plus agréable dans ce document (avec la fonction `kable()` du package `knitr`) :
+Affichons ce tableau de manière plus agréable :
 
-```{r kable(wfemmes_avec_marges)}
+```{r, echo=FALSE}
 
 kable(wfemmes_avec_marges) 
 ```
 
-Il est aussi intéressant de calculer les pourcentages en ligne et les pourcentages en colonne.
+Il est aussi intéressant de calculer les pourcentages en ligne et les pourcentages en colonne avec la librairie `Rcmdr`.
 
-```{r wfemmes_pourcentage_en_ligne}
-wfemmes_pourcentage_en_ligne <- wfemmes
-wfemmes_pourcentage_en_ligne$Moyenne <- rowMeans(wfemmes_pourcentage_en_ligne)
-wfemmes_pourcentage_en_ligne[nrow(wfemmes_pourcentage_en_ligne)+1, ] <- colSums(wfemmes_pourcentage_en_ligne)
-row.names(wfemmes_pourcentage_en_ligne)[nrow(wfemmes_pourcentage_en_ligne)] <- "Total"
-wfemmes_pourcentage_en_ligne
-```
 
 ```{r Rcmdr}
 library (Rcmdr)
 ```
 
 ```{r kable(wfemmes_pourcentage_en_ligne)}
-wfemmes_pourcentage_en_ligne <- rowPercents(wfemmes)
-kable(wfemmes_pourcentage_en_ligne)
+wfemmes_pourcentage_en_ligne <- wfemmes
+wfemmes_pourcentage_en_ligne[nrow(wfemmes_pourcentage_en_ligne)+1, ] <- colSums(wfemmes_pourcentage_en_ligne)
+row.names(wfemmes_pourcentage_en_ligne)[nrow(wfemmes_pourcentage_en_ligne)] <- "Profil ligne moyen"
+wfemmes_pourcentage_en_ligne <- rowPercents(wfemmes_pourcentage_en_ligne)
 ```
+
+```{r, echo=FALSE}
+kable(wfemmes_pourcentage_en_ligne, caption="Tableau des pourcentages en ligne")
+```
+
+Pour rappel, la ligne "Profil ligne moyen" correspond à la répartition en pourcentage des modalités à la question sur « l'activité qui convient le mieux à une mère de famille quand les enfants vont à l'école », quelque soit la réponse à la question sur la famille idéale. Le profil ligne moyen peut être comparé aux profils lignes (la répartition en pourcentages ou la distribution de probabilité d'une modalité en ligne). Ici, aucune des trois profils lignes n'est proche du profil ligne moyen.
+
+Calculons maintenant le tableau des pourcentages en colonne.
+
 
 ```{r wfemmes_pourcentage_en_colonne}
-wfemmes_pourcentage_en_colonne <- colPercents(wfemmes)
-kable(wfemmes_pourcentage_en_colonne)
+wfemmes_pourcentage_en_colonne <- wfemmes
+wfemmes_pourcentage_en_colonne$Total <- rowSums(wfemmes_pourcentage_en_colonne)
+wfemmes_pourcentage_en_colonne <- colPercents(wfemmes_pourcentage_en_colonne)
+dimnames(wfemmes_pourcentage_en_colonne)[[2]][4] <- "Profil colonne moyen"
+```
+```{r, echo=FALSE}
+kable(wfemmes_pourcentage_en_colonne, caption="Tableau des pourcentages en colonne")
+```
+
+Ce tableau permet de constater que la répartition des réponses sur la famille idéale pour la modalité "Travail à mi-temps" est le plus proche de la répartion des réponses à la question sur la famille idéale. Autrement dit, le profil colonne "Travail à mi-temps" est le profil colonne le plus proche du profil colonne moyen. Cette similitude se traduira sur le graphe de l'AFC comme nous le verrons plus loin.
+
+Nous verrons également que l'on passera en paramètre à la fonction R de calcul de l'AFC, le tableau de contingence. Mais l'AFC travaille en réalité sur le tableau de probabilités que l'on peut calculer en divisant les valeurs du tableau de contingence par le nombre d'individus (on effectue le calcul sur le tableau de contingence avec marge pour mieux constater que l'effectif total du tableau de probabilité est bien égal à 1, ce qui est la marque d'une distribution de probabilités) :
+
+```{r}
+wfemmes_tableau_de_probabilite <- wfemmes_avec_marges / 1724
+```
+```{r, echo=FALSE}
+kable(wfemmes_tableau_de_probabilite, caption="Tableau de probabilités")
 ```
 
 
-
-
-Comme nous le verrons plus loin, on passera en paramètre de la fonction R de calcul de l'AFC le tableau de contingence. Mais l'AFC travaille en réalité sur le tableau de probabilités que l'on peut calculer de cette manière sous R :
-
-```{r tableau_de_probabilite}
-# tableau_de_probabilite <- addmargins(wfemmes,FUN=list(Pourcentage=function(x) round(sum(x)/sum(wfemmes),2)))
-# tableau_de_probabilite[length(tableau_de_probabilite)] <- 100
-# tableau_de_probabilite
-```
-
-Rappellons que notre objectif est bien de **visualiser la nature de la liaison entre deux variables qualitatives**. Mais faut-il encore que cette liaison soit **significative**.        
+Rappellons que notre objectif est de **visualiser la nature de la liaison entre deux variables qualitatives**. Mais faut-il encore que cette liaison soit **significative**.        
 
 Pour ce faire, nous réalisons un **test du Khi2**.      
 
@@ -250,28 +262,6 @@ Par ailleurs, il y a **trois façons de caractériser la liaison** entre les deu
 * La **significativité** de la liaison (qui se mesure avec le test du khi2).
 * L'**intensité** de la liaison (qui se mesure, entre autre, avec le Phi2).
 * La **nature** de la liaison (qui correspond à l'association entre les modalités et qui est représentée par le biais de l'AFC).
-
-### La notion d'indépendance
-
-Pour clarifier cette notin d'indépendance, reprenons notre tableau de contingence avec ses marges.
-
-```{r, echo=FALSE}
-
-kable(wfemmes_avec_marges) 
-```
-
-```{r wfemmess_avec_marges bis}
-wfemmes_avec_marges
-```
-
-
-Affichons ce tableau de manière plus agréable dans ce document :
-
-
-
-
-Enfin, l'AFC travaille, non pas sur le tableau de contingence, mais sur le tableau de probabilité. 
-
 
 ### Chargement des packages
 
@@ -480,20 +470,37 @@ Ce qu'il faut savoir c'est que le nombre d'axes est égal au nombre minimum entr
 
 ### Interpréter la position des points sur le graphe
 
-Le centre de l'axe correspond au profil moyen en ligne et au profil moyen en colonne. Pour rappel, le profil moyen correspond à la distribution marginale, c'est à dire à la marge (ligne ou colonne) divisée par l'effectif total (les 1724 femmes de l'enquête du CREDOC).        
+```{r, echo=FALSE}
+plot(afcwfemmes, cex = 0.7, cex.axis = 0.6, cex.lab = 0.8, title = "Représentation graphique", 
+     selectRow = "cos2 0.7", selectCol = "cos2 0.7")
+```   
+
+Le centre de l'axe correspond au profil ligne moyen et au profil colonne moyen. Nous avions précedemment calculé les profils moyens et nous avions effectivement constaté que le profil de la modalité "Travail à mi-temps" était proche du profil colonne moyen.
+
+```{r, echo=FALSE}
+kable(wfemmes_pourcentage_en_ligne, caption="Tableau des pourcentages en ligne")
+kable(wfemmes_pourcentage_en_colonne, caption="Tableau des pourcentages en colonne")
+```
+
+Peut-on interpréter la position entre deux point lignes ou deux points colonnes ? La réponse est "oui" ! Les points lignes (resp. les points colonnes) qui ont des profils lignes (resp. des profils colonnes) similaires sont proches sur le graphe. Ce n'est le cas d'aucun des points du graphe issu des données de Nicole Tabard.
+
+Par contre, on peut ne peut pas interpréter la proximité entre un point ligne et un point colonne. On peut seulement dire que que les lignes sont "du côté" des colonnes auxquelles elles s'associent le plus, dans la mesure où ces colonnes sont éloignées du centre de gravité. Et respectivement, les colonnes sont "du côté" des lignes avec lesquelles elles s'associent le plus, dans la mesure où ces lignes sont éloignées du centre de gravité. On en veut pour preuve que sur le graphe "seul le mari travaille" est du côté de "rester au foyer".
+
+SUr le graphe, "Seul le mari travaille" et "du côté" de "rester au foyer". Si on revient sur le tableau de contingence (affiché ci-dessous), cela peut sembler contradictoire  puisque 573 personnes ont répondu à "seul le mari travaille" et "travailler à mi-temps" alors que  seulement 241 personnes ont répondu à "seul le mari travaille" et "rester au foyer". "Seul le mari travaille" ne devrait-il pas être du côté de "Travailler à mi-temps" ? 
+
+```{r, echo=FALSE}
+
+kable(wfemmes_avec_marges) 
+```
 
 
+C'est tout simplement parce qu'il ne faut pas regarder le tableau de contingence mais le tableau des pourcentages en colonnes car on veut comparer une modalité en ligne avec les trois autres modalités en colonne. Or dans ce tableau, la ligne "Seul le mari travaille" représente 84,9% des réponses à la colonne "Rester au foyer". C'est son meileur score commparé aux autres colonnes. C'est pourqoui on peut dire que"Seul le mari travaille" est "du côté" de "Rester au foyer".
 
-* Expliquer le profil moyen avec le fichier Excel et montrer que les pourcentages colonnes de "travailler à mi-temps" sont proches du profil colonne moyen. Ce que l'on retrouve bien sur le graphe où "travailler à mi-temps" est proche du centre du graphe.       
+```{r, echo=FALSE}
+kable(wfemmes_pourcentage_en_colonne, caption="Tableau des pourcentages en colonne")
+```
 
-Peut-on interpréter la position entre deux point lignes ou deux points colonnes ?       
-
-Rappel : L'AFC ne travaille pas sur le tableau de contingence mais transforme le tableau de contingence en tableau de probabilité. C'est à dire le tableau de contingence dont les valeurs sont divisées par la population. Deux points lignes sont donc proches l'un de l'autre si leur profil en pourcentage est similaire.       
-
-Par contre, on peut dire que les lignes sont "du côté" des colonnes auxquelles elles s'associent le plus. Dans la mesure où ces colonnes sont éloignées du centre de gravité. Et respectivement, les colonnes sont "du côté" des lignes avec lesquelles elles s'associent le plus. Dans la mesure où ces lignes sont éloignées du centre de gravité. On en veut pour preuve que sur le graphe "seul le mari travaille" est du côté de "rester au foyer". Si on revient sur le tableau de contingence (slide 5 de Husson) ce résultat peut sembler contradictoire  puisque 573 personnes ont répondu à "seul le mari travaille" et "travailler à mi-temps" alors que  seulement 241 personnes ont répondu à "seul le mari travaille" et "rester au foyer". Ne devrait-on pas dire que "seul le mari travaille" s'associe le plus à "travailler à mi-temps". Cependant quand on regarde les marges du tableau de contingence... et quand on regarder les pourcentages en colonne dans le fichier Excel...       
-
-
-#### Conclusion       
+### Conclusion       
 
 Comme nous l'avons annoncé en introduction, notre objectif était de nous concentrer sur **l'analyse factorielle des correspondances (AFC)** et d'étudier les **éventuelles** liaisons entre les modalités de deux variables qualitatives. Avec ce premier travail, nous avons apporté un certain nombre d'éléments de lecture, d'analyse et d'interprétation. Nous pousuivrons cet exercice **dans une seconde partie** prochainement. Nous chercherons, entre autres, à approfondir la question de l'interprétation de l'AFC (détermination du nombre d'axes à interpréter, interprétation des coordonnées des modalités actifs, interprétation de la contribution et de la qualtité de représentation des modalités, élaboration de la typologie, etc.).          
 
