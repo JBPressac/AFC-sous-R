@@ -1,7 +1,7 @@
 ---
 title: "Analyse factorielle des correspondances sous R - Partie I"
 author: "Jean-Baptiste Pressac, Laurent Mell"
-date: "12 Avril 2017"
+date: "14 Avril 2017"
 output:
   html_document: default
   pdf_document: default
@@ -19,7 +19,7 @@ library(knitr)
 **Jean-Baptiste PRESSAC** ([CRBC](https://www.univ-brest.fr/crbc/menu/Membres+du+laboratoire/Personnel_administratif_et_technique/Jean-Baptiste_Pressac "Laboratoire CRBC"), CNRS) (Jean-Baptiste.Pressac@univ-brest.fr)     
 **Laurent MELL** ([LABERS](https://www.univ-brest.fr/labers/ "Laboratoire LABERS"), Université de Bretagne Occidentale) (laurent.mell@univ-brest.fr)     
 
-Si vous avez des commentaires à formuler ou des remarques à effectuer, vous pouvez nos contacter via nos adresses mails (Jean-Baptiste.Pressac@univ-brest.fr, laurent.mell@univ-brest.fr). Par la même occasion, si vous souhaitez échanger plus en détail et/ou contribuer à cette démarche, nous sommes aussi disponibles.
+Si vous avez des commentaires à formuler ou des remarques à effectuer, vous pouvez nous contacter par mail (Jean-Baptiste.Pressac@univ-brest.fr, laurent.mell@univ-brest.fr). Par la même occasion, si vous souhaitez échanger plus en détail et/ou contribuer à cette démarche, nous sommes aussi disponibles.
 
 
 ### Introduction
@@ -29,9 +29,9 @@ Ce premier travail s'inscrit dans une démarche de réflexion, plus large, que n
 
 ### Les données
 
-Les données sur lesquelles nous allons travailler proviennent du MOOC [Analyse des données multidimensionnelles](https://www.fun-mooc.fr/courses/agrocampusouest/40001S03/session03/about "MOOC Analyse de données multidimensionnelles") sur la plateforme [FUN](https://www.fun-mooc.fr/ "Plateforme FUN"). Ce MOOC est proposé par [François Husson](http://math.agrocampus-ouest.fr/infoglueDeliverLive/membres/Francois.Husson "François Husson"), [Jérôme Pagès](http://math.agrocampus-ouest.fr/infoglueDeliverLive/membres/Jerome.Pages "Jérôme Pagès") et [Magalie Houée-Bigot](http://math.agrocampus-ouest.fr/infoglueDeliverLive/membres/Magalie.Hou%C3%A9e-Bigot "Magalie Houée-Bigot").
+Les données sur lesquelles nous allons travailler proviennent, en partie, du MOOC [Analyse des données multidimensionnelles](https://www.fun-mooc.fr/courses/agrocampusouest/40001S03/session03/about "MOOC Analyse de données multidimensionnelles") sur la plateforme [FUN](https://www.fun-mooc.fr/ "Plateforme FUN"). Ce MOOC est proposé par [François Husson](http://math.agrocampus-ouest.fr/infoglueDeliverLive/membres/Francois.Husson "François Husson"), [Jérôme Pagès](http://math.agrocampus-ouest.fr/infoglueDeliverLive/membres/Jerome.Pages "Jérôme Pagès") et [Magalie Houée-Bigot](http://math.agrocampus-ouest.fr/infoglueDeliverLive/membres/Magalie.Hou%C3%A9e-Bigot "Magalie Houée-Bigot").
 
-Les données sont issues d'un enquête du [CREDOC](http://www.credoc.fr/) publiée en 1974 par Nicole Tabard, intitulée [Besoins et aspirations des familles et des jeunes](http://www.sudoc.fr/000101354 "Besoins et aspirations des familles et des jeunes"). Le MOOC ne nous donne pas d'informations sur les circonstances dans lesquelles le questionnaire a été établi ni sur le nombre total de questions. Nous savons uniquement qu'il a porté sur 1724 femmes. L'AFC ne nous permet pas d'analyser l'intégralité du questionnaire mais il va nous servir à étudier l'articulation des réponses qualitatives à deux questions :       
+Les données sont issues d'un enquête du [CREDOC](http://www.credoc.fr/) publiée en 1974 par Nicole Tabard, intitulée [Besoins et aspirations des familles et des jeunes](http://www.sudoc.fr/000101354 "Besoins et aspirations des familles et des jeunes"). Le MOOC ne nous donne pas d'informations sur les circonstances dans lesquelles le questionnaire a été établi ni sur le nombre total de questions. Nous savons uniquement qu'il a porté sur 1724 femmes. L'AFC ne nous permettra pas d'analyser l'intégralité du questionnaire. De toute façon, nous allons nous focaliser sur une relation spécifique. Nous allons étudier l'articulation des réponses qualitatives à deux questions :       
 
 * Quelle est la famille idéale pour vous ?
 * Quelle activité convient le mieux à une mère de famille quand ses enfants vont à l’école ?       
@@ -98,7 +98,7 @@ Nous pouvons voir que, dans le volet Data dans la fenêtre en haut à droite de 
 
 ![](Data2.png "Volet Data dans la fenêtre en haut à droite de RStudio")        
         
-Afin d'amliorer la lecture du tableau et, par la suite, du graphique, nous allons renommer les modalités des deux variables grâce à la fonction `dimnames()`
+Afin d'amliorer la lecture du tableau et, par la suite, du graphique, nous allons renommer les modalités des deux variables grâce à la fonction `dimnames()` :
 
 ```{r (dimnames(wfemmes)}
 dimnames(wfemmes)[[1]][1]<-"Les 2 conjoints travaillent"
@@ -155,7 +155,7 @@ wfemmes_pourcentage_en_ligne <- rowPercents(wfemmes_pourcentage_en_ligne)
 kable(wfemmes_pourcentage_en_ligne, caption="Tableau des pourcentages en ligne")
 ```
 
-Pour rappel, la ligne "Profil ligne moyen" correspond à la répartition en pourcentage des modalités à la question sur « l'activité qui convient le mieux à une mère de famille quand les enfants vont à l'école », quelque soit la réponse à la question sur la famille idéale. Le profil ligne moyen peut être comparé aux profils lignes (la répartition en pourcentages ou la distribution de probabilité d'une modalité en ligne). Ici, aucune des trois profils lignes n'est proche du profil ligne moyen.
+Pour rappel, la ligne "Profil ligne moyen" correspond à la répartition en pourcentage des modalités à la question sur "l'activité qui convient le mieux à une mère de famille quand les enfants vont à l'école", quelque soit la réponse à la question sur la famille idéale. Le profil ligne moyen peut être comparé aux profils lignes (la répartition en pourcentages ou la distribution de probabilité d'une modalité en ligne). Ici, aucun des trois profils lignes n'est proche du profil ligne moyen.
 
 Calculons maintenant le tableau des pourcentages en colonne.
 
@@ -429,7 +429,7 @@ barplot(afcpcsregion$eig[,1], main = "Histogramme des valeurs propres",
         cex.names = 0.8, col ="orange", names.arg = 1:nrow(afcpcsregion$eig))
 ```
 
-À la vue de cet histogramme, nous pourrions ne retenir que les deux premières dimensions et réaliser une AFC en fonction de ces deux dernières. Toutefois, rien ne vous empêche de "relancer" une AFC avec la dimension 3, voire la dimension 4. Ce n’est pas parce que les deux premières dimensions sont les plus explicatives que les suivantes n’ont rien à dire.       
+À la vue de cet histogramme, nous pourrions ne retenir que les deux premières dimensions et réaliser une AFC qu'en fonction de ces deux dernières. Toutefois, rien ne vous empêche de "relancer" une AFC avec la dimension 3, voire la dimension 4. Ce n’est pas parce que les deux premières dimensions sont les plus explicatives que les suivantes n’ont rien à dire.       
 
 
 ### Les résultats       
