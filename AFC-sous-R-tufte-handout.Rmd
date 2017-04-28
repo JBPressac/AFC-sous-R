@@ -1,10 +1,12 @@
 ---
-title: "Analyse factorielle des correspondances sous R - Partie I"
-author: "Jean-Baptiste Pressac, Laurent Mell"
-date: "14 Avril 2017"
+title: "Analyse factorielle des correspondances sous R"
+subtitle: "Partie I"
+author: "Jean-Baptiste Pressac et Laurent Mell"
+date: "28 Avril 2017"
 output:
-  pdf_document: default
-  html_document: default
+  tufte::tufte_html: default
+  tufte::tufte_handout: default
+link-citations: yes
 ---
 
 ```{r setup, include=FALSE}
@@ -15,23 +17,27 @@ knitr::opts_chunk$set(echo = TRUE)
 library(knitr)
 ```
 
-### Auteurs
-**Jean-Baptiste PRESSAC** ([CRBC](https://www.univ-brest.fr/crbc/menu/Membres+du+laboratoire/Personnel_administratif_et_technique/Jean-Baptiste_Pressac "Laboratoire CRBC"), CNRS) (Jean-Baptiste.Pressac@univ-brest.fr)     
-**Laurent MELL** ([LABERS](https://www.univ-brest.fr/labers/ "Laboratoire LABERS"), Université de Bretagne Occidentale) (laurent.mell@univ-brest.fr)     
+```{r tufte, include=FALSE}
+library(tufte)
+```
 
-Si vous avez des commentaires à formuler ou des remarques à effectuer, vous pouvez nous contacter par mail (Jean-Baptiste.Pressac@univ-brest.fr, laurent.mell@univ-brest.fr). Par la même occasion, si vous souhaitez échanger plus en détail et/ou contribuer à cette démarche, nous sommes aussi disponibles.
+# Auteurs
+[**Jean-Baptiste PRESSAC**](Jean-Baptiste.Pressac@univ-brest.fr "Mail de Jean-Baptiste PRESSAC") ([CRBC](https://www.univ-brest.fr/crbc/menu/Membres+du+laboratoire/Personnel_administratif_et_technique/Jean-Baptiste_Pressac "Laboratoire CRBC"), CNRS)     
+[**Laurent MELL**](laurent.mell@univ-brest.fr "Mail de Laurent MELL") ([LABERS](https://www.univ-brest.fr/labers/ "Laboratoire LABERS"), UBO)       
+
+Si vous avez des commentaires à formuler ou des remarques à effectuer, vous pouvez nous contacter par mail (par le biais de nos noms ci-dessus). Par la même occasion, si vous souhaitez échanger plus en détail et/ou contribuer à cette démarche, nous sommes aussi disponibles.
 
 
-### Introduction
+# Introduction
 
 Ce premier travail s'inscrit dans une démarche de réflexion, plus large, que nous souhaitons entreprendre autour **l'analyse de données multidimensionnelles**. La spécificité de ce premier travail réside dans le fait que nous allons nous concentrer sur **l'analyse factorielle des correspondances (AFC)**. Notre objectif sera d'étudier les **éventuelles** liaisons entre les modalités de deux variables qualitatives. Par ailleurs, nous avons fait le choix d'utiliser le logiciel [R](https://www.r-project.org/ "Logiciel R") ainsi que l'environnement de développement [RStudio](https://www.rstudio.com/ "Environnement de développement RStudio").
 
 
-### Les données
+# Les données
 
 Les données sur lesquelles nous allons travailler proviennent, en partie, du MOOC [Analyse des données multidimensionnelles](https://www.fun-mooc.fr/courses/agrocampusouest/40001S03/session03/about "MOOC Analyse de données multidimensionnelles") sur la plateforme [FUN](https://www.fun-mooc.fr/ "Plateforme FUN"). Ce MOOC est proposé par [François Husson](http://math.agrocampus-ouest.fr/infoglueDeliverLive/membres/Francois.Husson "François Husson"), [Jérôme Pagès](http://math.agrocampus-ouest.fr/infoglueDeliverLive/membres/Jerome.Pages "Jérôme Pagès") et [Magalie Houée-Bigot](http://math.agrocampus-ouest.fr/infoglueDeliverLive/membres/Magalie.Hou%C3%A9e-Bigot "Magalie Houée-Bigot").
 
-Les données sont issues d'un enquête du [CREDOC](http://www.credoc.fr/) publiée en 1974 par Nicole Tabard, intitulée [Besoins et aspirations des familles et des jeunes](http://www.sudoc.fr/000101354 "Besoins et aspirations des familles et des jeunes"). Le MOOC ne nous donne pas d'informations sur les circonstances dans lesquelles le questionnaire a été établi ni sur le nombre total de questions. Nous savons uniquement qu'il a porté sur 1724 femmes. L'AFC ne nous permettra pas d'analyser l'intégralité du questionnaire. De toute façon, nous allons nous focaliser sur une relation spécifique. Nous allons étudier l'articulation des réponses qualitatives à deux questions :       
+Les données sont issues d'un enquête du [CREDOC](http://www.credoc.fr/) publiée en 1974 par Nicole Tabard, intitulée "Besoins et aspirations des familles et des jeunes"^[Tabard N. (1974), _Besoins et aspirations des familles et des jeunes_, Caisse nationale des Allocations Familiales, Paris.]. Le MOOC ne nous donne pas d'informations sur les circonstances dans lesquelles le questionnaire a été établi ni sur le nombre total de questions. Nous savons uniquement qu'il a porté sur 1724 femmes. L'AFC ne nous permettra pas d'analyser l'intégralité du questionnaire. De toute façon, nous allons nous focaliser sur une relation spécifique. Nous allons étudier l'articulation des réponses qualitatives à deux questions :       
 
 * Quelle est la famille idéale pour vous ?
 * Quelle activité convient le mieux à une mère de famille quand ses enfants vont à l’école ?       
@@ -44,12 +50,12 @@ Comme le souligne François Husson dans le MOOC, il est difficile de savoir à p
 
 Une liaison entre deux variables est l'écart entre les données observées et le modèle d'indépendance. Mettons pour l'instant de côté cette notion, nous y reviendrons plus tard.
 
-### Création du projet RStudio
+# Création du projet RStudio
 
 Commençons par ouvrir le logiciel RStudio et par créer un nouveau projet depuis le menu File > New Project. Choisissons ensuite "New directory" > "Empty project" puis saisissons *AFC-sous-R* dans Directory name. Téléchargeons le fichier [AnaDo_JeuDonnees_TravailFemme.csv](https://raw.githubusercontent.com/JBPressac/AFC-sous-R/master/AnaDo_JeuDonnees_TravailFemme.csv) du tableau de contingence et plaçons-le dans le répertoire "AFC-sous-R". Créons ensuite notre script R depuis File > New file > R script.        
 
 
-### Définir la localisation du répertoire de travail
+# Définir la localisation du répertoire de travail
 
 Il est très important, d'emblée, de définir le répertoire de travail. Il existe une commande `getwd()` qui permet d'afficher la localisation du répertoire de travail sous la forme d'un chemin absolu :       
 
@@ -62,7 +68,7 @@ La définition du répertoire de travail peut aussi être faite par le biais de 
 ![](Roue.png "Roue crantée dans la fenêtre en bas à droite de RStudio")
 
 
-### Importation du jeu de données
+# Importation du jeu de données
 
 Nous lisons ensuite le fichier CSV à partir de la fonction `read.table()` :
 
@@ -187,7 +193,7 @@ Rappellons que notre objectif est de **visualiser la nature de la liaison entre 
 Pour ce faire, nous réalisons un **test du Khi2**.      
 
 
-### Test du Khi2
+# Test du Khi2
 
 Le test du khi2 mesure la **significativité d'une liaison mais pas son intensité**. Afin de réaliser ce test du khi2, nous utilisons une fonction fournie de base avec le logiciel R. Il s'agit de la fonction `chisq.test`. Il n'est pas nécessaire d'installer une librairie supplémentaire afin de réaliser ce test.       
 
@@ -198,7 +204,7 @@ chisq.test(wfemmes)
 Le terme `X-squared` est à lire `Khi2` soit Khi au carré. La fonction `chisq.test` nous donne, entre autres, la valeur du Khi2 qui est un **indicateur de la significativité de la liaison**. Mais ce qui nous interesse ici est la `p-value`. Nous voyons ici que la `p-value` est inférieure à 2,2x10^-16^. Cela signifie que la **probabilité que les variables soient indépendantes** est inférieure à 2,2x10^-16^. Ce qui nous permet de rejeter l'hypothèse d'indépendance entre les deux variables. Pour autant, cela ne veut pas dire que les variables soient dépendantes. Les réponses à la question sur la famille idéale sont probablement liées aux réponses concernant l'activité convenant le mieux à une mère de famille dont les enfants vont à l'école.          
 
 
-#### Test du Khi2 - Explications
+## Test du Khi2 - Explications
 
 Le test du khi2 permet de **déterminer la probabilité que les deux variables d'un tableau de contingence soient indépendantes**, c'est-à-dire qu'il n'existe pas de relation entre les modalités en ligne et les modalités en colonne (les unes ne conditionnent pas les autres, et réciproquement). Dit autrement et comme le [rappelle très clairement Julien Barnier](https://alea.fr.eu.org/pages/khi2 "Test du khi2 par Julien Barnier"), cela veut dire que le "fait d'appartenir à une modalité de la première variable n'a pas d'influence sur la modalité d'appartenance de la deuxième variable". Dans ce test, l'hypothèse nulle (H0) suppose qu'il y a indépendance entre les deux variables. Si nous acceptons l'hypothèse d'indépendance (H0), nous n'aurons pas d'utilité à réaliser une AFC car les points projetés seront extrêmement proches ou confondus avec le centre de gravité, confondus avec le centre du graphe. Si nous rejetons l'hypothèse d'indépendance (p-value < 0,05), l'hypothèse alternative (H1) suppose que la liaison entre les deux variables est significative sans que nous puissions définir l'intensité de la liaison.       
 
@@ -217,7 +223,7 @@ chisq.test(wfemmes) -> khi2wfemmes
 ```     
 
 
-#### Test du Khi2 - Aide à l'interprétation
+## Test du Khi2 - Aide à l'interprétation
 
 Le test du khi2 est symétrique. Les lignes et les colonnes du tableau croisé sont interchangeables. Le résultat du test sera exactement le même. Il n'y a pas de "sens de lecture" du tableau.
 
@@ -253,7 +259,7 @@ Par ailleurs,
 Plus la valeur de l'écart à l'indépendance est importante, plus l'attraction/opposition entre les modalités est forte.
 
 
-### Rappel de l'objectif
+# Rappel de l'objectif
 
 Notre objectif est bien de **visualiser la nature de la liaison entre les deux variables qualitatives**. Sachant qu'une liaison correspond à **l'écart entre les données observées et le modèle d'indépendance**, nous souhaitons donc **visualiser la nature de l'écart à l'indépendance entre deux variables qualitatives**.
 
@@ -263,7 +269,7 @@ Par ailleurs, il y a **trois façons de caractériser la liaison** entre les deu
 * L'**intensité** de la liaison (qui se mesure, entre autre, avec le Phi2).
 * La **nature** de la liaison (qui correspond à l'association entre les modalités et qui est représentée par le biais de l'AFC).
 
-### Chargement des packages
+# Chargement des packages
 
 Le test du Khi2 a permis d'écarter l'hypothèse d'indépendance. Il y a donc une liaison entre les modalités des deux variables. De fait, nous pouvons faire une AFC pour visualiser la nature de la liaison. Pour notre part, nous avons choisi d'utiliser le **package** [**FactoMineR**](https://cran.r-project.org/web/packages/FactoMineR/index.html "Page du package FactoMineR") (dédié à l'analyse multidimensionnelle de données) mais il y en existe d'autres qui peuvent être utilisés pour réaliser ce type de méthode statistique.       
 
@@ -274,7 +280,7 @@ library (FactoMineR)
 ```     
 
 
-### AFC - Les résultats
+# AFC - Les résultats
 
 Lors du précédent test du khi2, nous avons obtenu une p-value inférieure à 2,2x10^-16^. Nous avons donc rejeté l’hypothèse d’indépendance entre les deux variables et admis que la liaison entre ces deux variables est signficative.       
 
@@ -378,7 +384,7 @@ De cette manière, nous pouvons, par exemple, jouer sur la taille des noms de mo
 
 Revenons maintenant à nos données initiales quant aux représentations sur le travail féminin.       
 
-### Le nombre d'axes à interpréter       
+# Le nombre d'axes à interpréter       
 
 Au-delà de la simple lecture visuelle du graphe, il existe d'autres moyens d'interpréter nos données. À partir de là, il serait intéressant de déterminer le nombre d'axes à interpréter.       
 
@@ -432,7 +438,7 @@ barplot(afcpcsregion$eig[,1], main = "Histogramme des valeurs propres",
 À la vue de cet histogramme, nous pourrions ne retenir que les deux premières dimensions et réaliser une AFC qu'en fonction de ces deux dernières. Toutefois, rien ne vous empêche de "relancer" une AFC avec la dimension 3, voire la dimension 4. Ce n’est pas parce que les deux premières dimensions sont les plus explicatives que les suivantes n’ont rien à dire.       
 
 
-### Les résultats       
+# Les résultats       
 
 La fonction `summary` est extrêmement utile dans ce contexte.
 
@@ -468,7 +474,7 @@ Le `% of var`, soit le pourcentage de variance, représente le **% de variance e
 Ce qu'il faut savoir c'est que le nombre d'axes est égal au nombre minimum entre le nombre de colonnes - 1 et le nombre de lignes - 1 du tableau de contingence. Autrement, si vous avez un tableau de contingence avec en ligne 9 modalités et en colonnes 15 modalités. On fait 9 - 1 = 8 puis 15 - 1 = 14 et on garde 8.       
 
 
-### Interpréter la position des points sur le graphe
+# Interpréter la position des points sur le graphe
 
 ```{r, echo=FALSE}
 plot(afcwfemmes, cex = 0.7, cex.axis = 0.6, cex.lab = 0.8, title = "Représentation graphique", 
@@ -486,7 +492,7 @@ Peut-on interpréter la position entre deux point lignes ou deux points colonnes
 
 Par contre, on peut ne peut pas interpréter la proximité entre un point ligne et un point colonne. On peut seulement dire que que les lignes sont "du côté" des colonnes auxquelles elles s'associent le plus, dans la mesure où ces colonnes sont éloignées du centre de gravité. Et respectivement, les colonnes sont "du côté" des lignes avec lesquelles elles s'associent le plus, dans la mesure où ces lignes sont éloignées du centre de gravité. On en veut pour preuve que sur le graphe "seul le mari travaille" est du côté de "rester au foyer".
 
-SUr le graphe, "Seul le mari travaille" et "du côté" de "rester au foyer". Si on revient sur le tableau de contingence (affiché ci-dessous), cela peut sembler contradictoire  puisque 573 personnes ont répondu à "seul le mari travaille" et "travailler à mi-temps" alors que  seulement 241 personnes ont répondu à "seul le mari travaille" et "rester au foyer". "Seul le mari travaille" ne devrait-il pas être du côté de "Travailler à mi-temps" ? 
+Sur le graphe, "Seul le mari travaille" et "du côté" de "rester au foyer". Si on revient sur le tableau de contingence (affiché ci-dessous), cela peut sembler contradictoire  puisque 573 personnes ont répondu à "seul le mari travaille" et "travailler à mi-temps" alors que  seulement 241 personnes ont répondu à "seul le mari travaille" et "rester au foyer". "Seul le mari travaille" ne devrait-il pas être du côté de "Travailler à mi-temps" ? 
 
 ```{r, echo=FALSE}
 
@@ -500,6 +506,6 @@ C'est tout simplement parce qu'il ne faut pas regarder le tableau de contingence
 kable(wfemmes_pourcentage_en_colonne, caption="Tableau des pourcentages en colonne")
 ```
 
-### Conclusion       
+# Conclusion       
 
 Comme nous l'avons annoncé en introduction, notre objectif était de nous concentrer sur **l'analyse factorielle des correspondances (AFC)** et d'étudier les **éventuelles** liaisons entre les modalités de deux variables qualitatives. Avec ce premier travail, nous avons apporté un certain nombre d'éléments de lecture, d'analyse et d'interprétation. Nous pousuivrons cet exercice **dans une seconde partie** prochainement. Nous chercherons, entre autres, à approfondir la question de l'interprétation de l'AFC (détermination du nombre d'axes à interpréter, interprétation des coordonnées des modalités actifs, interprétation de la contribution et de la qualtité de représentation des modalités, élaboration de la typologie, etc.).          
