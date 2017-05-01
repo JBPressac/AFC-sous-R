@@ -2,7 +2,7 @@
 title: "Analyse factorielle des correspondances sous R"
 subtitle: "Partie I"
 author: "Jean-Baptiste Pressac et Laurent Mell"
-date: "28 Avril 2017"
+date: "1 mai 2017"
 output:
   tufte::tufte_html: default
   tufte::tufte_handout: default
@@ -35,7 +35,7 @@ Ce premier travail s'inscrit dans une démarche de réflexion, plus large, que n
 
 # Les données
 
-Les données sur lesquelles nous allons travailler proviennent, en partie, du MOOC [Analyse des données multidimensionnelles](https://www.fun-mooc.fr/courses/agrocampusouest/40001S03/session03/about "MOOC Analyse de données multidimensionnelles") sur la plateforme [FUN](https://www.fun-mooc.fr/ "Plateforme FUN"). Ce MOOC est proposé par [François Husson](http://math.agrocampus-ouest.fr/infoglueDeliverLive/membres/Francois.Husson "François Husson"), [Jérôme Pagès](http://math.agrocampus-ouest.fr/infoglueDeliverLive/membres/Jerome.Pages "Jérôme Pagès") et [Magalie Houée-Bigot](http://math.agrocampus-ouest.fr/infoglueDeliverLive/membres/Magalie.Hou%C3%A9e-Bigot "Magalie Houée-Bigot").
+Les données sur lesquelles nous allons travailler proviennent, en partie, du MOOC [Analyse des données multidimensionnelles](https://www.fun-mooc.fr/courses/agrocampusouest/40001S03/session03/about "MOOC Analyse de données multidimensionnelles") sur la plateforme [FUN](https://www.fun-mooc.fr/ "Plateforme FUN")^[Ce MOOC est proposé par [François Husson](http://math.agrocampus-ouest.fr/infoglueDeliverLive/membres/Francois.Husson "François Husson"), [Jérôme Pagès](http://math.agrocampus-ouest.fr/infoglueDeliverLive/membres/Jerome.Pages "Jérôme Pagès") et [Magalie Houée-Bigot](http://math.agrocampus-ouest.fr/infoglueDeliverLive/membres/Magalie.Hou%C3%A9e-Bigot "Magalie Houée-Bigot").].
 
 Les données sont issues d'un enquête du [CREDOC](http://www.credoc.fr/) publiée en 1974 par Nicole Tabard, intitulée "Besoins et aspirations des familles et des jeunes"^[Tabard N. (1974), _Besoins et aspirations des familles et des jeunes_, Caisse nationale des Allocations Familiales, Paris.]. Le MOOC ne nous donne pas d'informations sur les circonstances dans lesquelles le questionnaire a été établi ni sur le nombre total de questions. Nous savons uniquement qu'il a porté sur 1724 femmes. L'AFC ne nous permettra pas d'analyser l'intégralité du questionnaire. De toute façon, nous allons nous focaliser sur une relation spécifique. Nous allons étudier l'articulation des réponses qualitatives à deux questions :       
 
@@ -63,9 +63,7 @@ Il est très important, d'emblée, de définir le répertoire de travail. Il exi
 getwd()
 ```
 
-La définition du répertoire de travail peut aussi être faite par le biais de la commande `Set As Working Directory` via l'onglet `More`. Cet onglet correspond au symbole de la roue crantée dans la fenêtre en bas à droite de RStudio.
-
-![](Roue.png "Roue crantée dans la fenêtre en bas à droite de RStudio")
+La définition du répertoire de travail peut aussi être faite par le biais de la commande `Set As Working Directory` via l'onglet `More`^[Emplacement de l'onglet `More`![](Roue.png "Roue crantée dans la fenêtre en bas à droite de RStudio")]. Cet onglet correspond au symbole de la roue crantée dans la fenêtre en bas à droite de RStudio.
 
 
 # Importation du jeu de données
@@ -73,8 +71,9 @@ La définition du répertoire de travail peut aussi être faite par le biais de 
 Nous lisons ensuite le fichier CSV à partir de la fonction `read.table()` :
 
 ```{r read.table}
-wfemmes <- read.table("AnaDo_JeuDonnees_TravailFemme.csv", header=TRUE, 
-                  row.names=1, sep=";", check.names=FALSE, fileEncoding="latin1")
+wfemmes <- read.table("AnaDo_JeuDonnees_TravailFemme.csv",
+           header=TRUE, row.names=1, sep=";", check.names=FALSE,
+           fileEncoding="latin1")
 ```
 
 * La fonction `read.table()` permet de lire un fichier dans un format tabulaire et de créer une dataframe à partir de ce dernier.         
@@ -86,9 +85,7 @@ wfemmes <- read.table("AnaDo_JeuDonnees_TravailFemme.csv", header=TRUE,
 
 Afin de faciliter, par la suite, la lecture et l'emploi du jeu de données, nous **stockons le résultat dans la variable** `wfemmes`.
 
-Nous pouvons, très facilement et à n'importe quel moment, afficher le tableau de contingence `wfemmes` à partir du volet Data dans la fenêtre en haut à droite de RStudio.
-
-![](Data1.png "Volet Data dans la fenêtre en haut à droite de RStudio")       
+Nous pouvons, très facilement et à n'importe quel moment, afficher le tableau de contingence `wfemmes` à partir du volet Data^[Emplacement du tableau de contingence![](Data1.png "Volet Data dans la fenêtre en haut à droite de RStudio")] dans la fenêtre en haut à droite de RStudio.
        
 Seules les trois premières colonnes du jeu de données sont utilisées ici. Nous avons donc besoin de suppprimer les colonnes dont nous n'aurons pas l'utilité. Plus spécifiquement, nous n'allons **sélectionner que les trois premières colonnes** avec la commande suivante :
 
@@ -100,9 +97,7 @@ Dans cette commande :
 
 * En spécifiant `[1:3]` (entre crochets), nous indiquons que nous ne sélectionnons que les 3 premières colonnes.       
 
-Nous pouvons voir que, dans le volet Data dans la fenêtre en haut à droite de RStudio, le nombre de variables affichées a été réduit.
-
-![](Data2.png "Volet Data dans la fenêtre en haut à droite de RStudio")        
+Nous pouvons voir que, dans le volet Data dans la fenêtre en haut à droite de RStudio, le nombre de variables affichées a été réduit^[Réduction du nombre de variables![](Data2.png "Volet Data dans la fenêtre en haut à droite de RStudio")].
         
 Afin d'amliorer la lecture du tableau et, par la suite, du graphique, nous allons renommer les modalités des deux variables grâce à la fonction `dimnames()` :
 
@@ -128,11 +123,11 @@ Notez que nous pouvons calculer sous R les marges lignes et les marges colonnes 
 
 
 ```{r wfemmes_avec_marges}
-wfemmes_avec_marges <- wfemmes
-wfemmes_avec_marges$Total <- rowSums(wfemmes_avec_marges)
-wfemmes_avec_marges[nrow(wfemmes_avec_marges)+1, ] <- colSums(wfemmes_avec_marges)
-row.names(wfemmes_avec_marges)[nrow(wfemmes_avec_marges)] <- "Total"
-wfemmes_avec_marges
+wf_marges <- wfemmes
+wf_marges$Total <- rowSums(wf_marges)
+wf_marges[nrow(wf_marges)+1, ] <- colSums(wf_marges)
+row.names(wf_marges)[nrow(wf_marges)] <- "Total"
+wf_marges
 ```
 
 
@@ -140,25 +135,25 @@ Affichons ce tableau de manière plus agréable :
 
 ```{r, echo=FALSE}
 
-kable(wfemmes_avec_marges) 
+kable(wf_marges) 
 ```
 
 Il est aussi intéressant de calculer les pourcentages en ligne et les pourcentages en colonne avec la librairie `Rcmdr`.
 
 
-```{r Rcmdr}
+```{r Rcmdr, include=FALSE}
 library (Rcmdr)
 ```
 
 ```{r kable(wfemmes_pourcentage_en_ligne)}
-wfemmes_pourcentage_en_ligne <- wfemmes
-wfemmes_pourcentage_en_ligne[nrow(wfemmes_pourcentage_en_ligne)+1, ] <- colSums(wfemmes_pourcentage_en_ligne)
-row.names(wfemmes_pourcentage_en_ligne)[nrow(wfemmes_pourcentage_en_ligne)] <- "Profil ligne moyen"
-wfemmes_pourcentage_en_ligne <- rowPercents(wfemmes_pourcentage_en_ligne)
+wf_ligne <- wfemmes
+wf_ligne[nrow(wf_ligne)+1, ] <- colSums(wf_ligne)
+row.names(wf_ligne)[nrow(wf_ligne)] <- "Profil ligne moyen"
+wf_ligne <- rowPercents(wf_ligne)
 ```
 
 ```{r, echo=FALSE}
-kable(wfemmes_pourcentage_en_ligne, caption="Tableau des pourcentages en ligne")
+kable(wf_ligne)
 ```
 
 Pour rappel, la ligne "Profil ligne moyen" correspond à la répartition en pourcentage des modalités à la question sur "l'activité qui convient le mieux à une mère de famille quand les enfants vont à l'école", quelque soit la réponse à la question sur la famille idéale. Le profil ligne moyen peut être comparé aux profils lignes (la répartition en pourcentages ou la distribution de probabilité d'une modalité en ligne). Ici, aucun des trois profils lignes n'est proche du profil ligne moyen.
@@ -167,13 +162,13 @@ Calculons maintenant le tableau des pourcentages en colonne.
 
 
 ```{r wfemmes_pourcentage_en_colonne}
-wfemmes_pourcentage_en_colonne <- wfemmes
-wfemmes_pourcentage_en_colonne$Total <- rowSums(wfemmes_pourcentage_en_colonne)
-wfemmes_pourcentage_en_colonne <- colPercents(wfemmes_pourcentage_en_colonne)
-dimnames(wfemmes_pourcentage_en_colonne)[[2]][4] <- "Profil colonne moyen"
+wf_colonne <- wfemmes
+wf_colonne$Total <- rowSums(wf_colonne)
+wf_colonne <- colPercents(wf_colonne)
+dimnames(wf_colonne)[[2]][4] <- "Profil colonne moyen"
 ```
 ```{r, echo=FALSE}
-kable(wfemmes_pourcentage_en_colonne, caption="Tableau des pourcentages en colonne")
+kable(wf_colonne)
 ```
 
 Ce tableau permet de constater que la répartition des réponses sur la famille idéale pour la modalité "Travail à mi-temps" est le plus proche de la répartion des réponses à la question sur la famille idéale. Autrement dit, le profil colonne "Travail à mi-temps" est le profil colonne le plus proche du profil colonne moyen. Cette similitude se traduira sur le graphe de l'AFC comme nous le verrons plus loin.
@@ -181,10 +176,10 @@ Ce tableau permet de constater que la répartition des réponses sur la famille 
 Nous verrons également que l'on passera en paramètre à la fonction R de calcul de l'AFC, le tableau de contingence. Mais l'AFC travaille en réalité sur le tableau de probabilités que l'on peut calculer en divisant les valeurs du tableau de contingence par le nombre d'individus (on effectue le calcul sur le tableau de contingence avec marge pour mieux constater que l'effectif total du tableau de probabilité est bien égal à 1, ce qui est la marque d'une distribution de probabilités) :
 
 ```{r}
-wfemmes_tableau_de_probabilite <- wfemmes_avec_marges / 1724
+wfemmes_tableau_de_probabilite <- wf_marges / 1724
 ```
 ```{r, echo=FALSE}
-kable(wfemmes_tableau_de_probabilite, caption="Tableau de probabilités")
+kable(wfemmes_tableau_de_probabilite)
 ```
 
 
@@ -206,9 +201,9 @@ Le terme `X-squared` est à lire `Khi2` soit Khi au carré. La fonction `chisq.t
 
 ## Test du Khi2 - Explications
 
-Le test du khi2 permet de **déterminer la probabilité que les deux variables d'un tableau de contingence soient indépendantes**, c'est-à-dire qu'il n'existe pas de relation entre les modalités en ligne et les modalités en colonne (les unes ne conditionnent pas les autres, et réciproquement). Dit autrement et comme le [rappelle très clairement Julien Barnier](https://alea.fr.eu.org/pages/khi2 "Test du khi2 par Julien Barnier"), cela veut dire que le "fait d'appartenir à une modalité de la première variable n'a pas d'influence sur la modalité d'appartenance de la deuxième variable". Dans ce test, l'hypothèse nulle (H0) suppose qu'il y a indépendance entre les deux variables. Si nous acceptons l'hypothèse d'indépendance (H0), nous n'aurons pas d'utilité à réaliser une AFC car les points projetés seront extrêmement proches ou confondus avec le centre de gravité, confondus avec le centre du graphe. Si nous rejetons l'hypothèse d'indépendance (p-value < 0,05), l'hypothèse alternative (H1) suppose que la liaison entre les deux variables est significative sans que nous puissions définir l'intensité de la liaison.       
+Le test du khi2 permet de **déterminer la probabilité que les deux variables d'un tableau de contingence soient indépendantes**, c'est-à-dire qu'il n'existe pas de relation entre les modalités en ligne et les modalités en colonne (les unes ne conditionnent pas les autres, et réciproquement). Dit autrement et comme le rappelle très clairement Julien Barnier, cela veut dire que le "fait d'appartenir à une modalité de la première variable n'a pas d'influence sur la modalité d'appartenance de la deuxième variable"^[Pour plus de précisions, vous pouvez vous reporter à cette page : https://alea.fr.eu.org/pages/khi2]. Dans ce test, l'hypothèse nulle (H0) suppose qu'il y a indépendance entre les deux variables. Si nous acceptons l'hypothèse d'indépendance (H0), nous n'aurons pas d'utilité à réaliser une AFC car les points projetés seront extrêmement proches ou confondus avec le centre de gravité, confondus avec le centre du graphe. Si nous rejetons l'hypothèse d'indépendance (p-value < 0,05), l'hypothèse alternative (H1) suppose que la liaison entre les deux variables est significative sans que nous puissions définir l'intensité de la liaison.       
 
-Rappelons que pour que le test du khi2 soit opératoire, il doit respecter un certain nombre de [conditions](http://grasland.script.univ-paris-diderot.fr/STAT98/stat98_8/stat98_8.htm) (pour reprendre les propos de Claude Grasland) :       
+Rappelons que pour que le test du khi2 soit opératoire, il doit respecter un certain nombre de conditions^[Claude Grasland détaille davantage son propos sur cette page : http://grasland.script.univ-paris-diderot.fr/STAT98/stat98_8/stat98_8.htm] :       
 
 * L'**effectif total** du tableau de contingence doit être supérieur ou égal à 20.
 * L'**effectif marginal** du tableau de contingence doit toujours être supérieur ou égal à 5.
@@ -235,7 +230,7 @@ khi2wfemmes$observed
 
 De la même manière, nous pouvons afficher le tableau d'indépendance (**tableau des effectifs théoriques**) en sélectionnant la valeur `expected`. Dans ce contexte, nous calculons le tableau des pourcentages théoriques, en multipliant pour chaque case la proportion observée dans la population des deux modalités correspondantes. Puis, le tableau des effectifs théoriques se calcule en multipliant le tableau des pourcentages théoriques par l'effectif total.
 
-Pour plus de détails, nous vous recommandons la lecture de ce document de Julien Barnier : [Tout ce que vous n'avez jamais voulu savoir sur le Khi2 sans jamais avoir eu envie de le demander](https://alea.fr.eu.org/pages/khi2 "Test du khi2 par Julien Barnier").
+Pour plus de détails, nous vous recommandons la lecture de ce document^[Barnier J. (2016), _Tout ce que vous n'avez jamais voulu savoir sur le Khi2 sans jamais avoir eu envie de le demander_, https://alea.fr.eu.org/pages/khi2].
 
 ```{r khi2wfemmes$expected}
 khi2wfemmes$expected
@@ -249,7 +244,7 @@ Nous pouvons aussi afficher le tableau des résidus (**tableau des écarts à l'
 khi2wfemmes$residuals
 ```     
 
-Exprimé d'une autre manière, l'écart à l'indépendance représente l'**écart entre l’effectif observé et l’effectif théorique**, et ceci pour chacune des cases du tableau de contingence. D'ailleurs, comme le note [Philippe Cibois](https://www.scienceshumaines.com/textesInedits/Cibois.pdf "Précisions sur l'écart à l'indépendance p.16-38"), l'écart à l'indépendance "est un effectif et c'est un invariant, indépendant du choix des lignes et des colonnes (c'est la différence entre l'effectif observé et l'effectif théorique : le résultat est donc un effectif)."
+Exprimé d'une autre manière, l'écart à l'indépendance représente l'**écart entre l’effectif observé et l’effectif théorique**, et ceci pour chacune des cases du tableau de contingence. D'ailleurs, l'écart à l'indépendance "est un effectif et c'est un invariant, indépendant du choix des lignes et des colonnes (c'est la différence entre l'effectif observé et l'effectif théorique : le résultat est donc un effectif)."^[Cibois P. (2003), "Les écarts à l'indépendance. Techniques simples pour analyser des données d'enquête", _Sciences Humaines_, https://www.scienceshumaines.com/textesInedits/Cibois.pdf].
 
 Par ailleurs,
 
@@ -297,9 +292,7 @@ Revenons un instant sur ce fameux **tableau 37**, issu de l'enquête de Nicole T
 * Quelle est la famille idéale pour vous ?
 * Quelle activité convient le mieux à une mère de famille quand ses enfants vont à l’école ?       
 
-Il est important de rappeler que les résultats de cette enquête ont été publiés en 1974. Il est fort à parier que la répartition des réponses serait totalement, si ce n'est en grande partie, différente aujourd'hui.
-
-![](Tableau_Tabard.png "Tableau de contingence issu de l'enquête de N. Tabard de 1974")
+Il est important de rappeler que les résultats de cette enquête ont été publiés en 1974^[Rappel du tableau de contigence![](Tableau_Tabard.png "Tableau de contingence issu de l'enquête de N. Tabard de 1974")]. Il est fort à parier que la répartition des réponses serait totalement, si ce n'est en grande partie, différente aujourd'hui.
 
 Lors d'une première lecture de ce tableau de contingence, François Husson soulève une **apparente contradiction**. À la question "Quelle est la famille idéale pour vous ?", nous voyons que 908 femmes sur 1 724 (visible dans la **marge colonne**), soit environ 53 % des répondantes, déclarent "Seul le mari travaille" et seulement 261 femmes sur 1 724 (environ 15 %) déclarent "Les deux conjoints travaillent également". Sur la base de ces premières réponses, nous pouvons émettre l'hypothèse, qu'à cette époque, une majorité était en faveur d'un modèle familial où seul le mari travaille.       
 
@@ -336,7 +329,8 @@ Quittons ce cas d'indépendance et revenons maintenant à notre premier jeu de d
 Les différentes fonctions proposées par le logiciel R, ainsi que celles associées aux multiples packages disponibles, nous permettent l'affichage du graphe.       
 
 ```{r plot(afcwfemmes)}
-plot(afcwfemmes, cex = 0.7, cex.axis = 0.6, cex.lab = 0.8, title = "Représentation graphique", 
+plot(afcwfemmes, cex = 0.7, cex.axis = 0.6, cex.lab = 0.8,
+     title = "Représentation graphique", 
      selectRow = "cos2 0.7", selectCol = "cos2 0.7")
 ```     
 
@@ -357,7 +351,7 @@ Importons donc le jeu de données.
 
 ```{r read.table(pcsregion)}
 pcsregion <- read.table("pcsregion.csv", header=TRUE, row.names=1, 
-                        sep=";", check.names=FALSE, fileEncoding="latin1")
+             sep=";", check.names=FALSE, fileEncoding="latin1")
 ```
 
 Lisons le jeu de données.       
@@ -399,10 +393,11 @@ Dans le résultat de `afcwfemmes$eig`, les axes (aussi appelés *facteurs*) sont
 Nous pouvons, à la suite, effectuer une représentation de l'histogramme des valeurs propres :     
 
 ```{r barplot(afcwfemmes)}
-barplot(afcwfemmes$eig[,1], main = "Histogramme des valeurs propres", 
-        sub = "Représentations des femmes sur le travail féminin", 
-        xlab = "Axes", ylab = "Pourcentage d'inertie", cex.axis = 0.8, 
-        cex.names = 0.8, col ="orange", names.arg = 1:nrow(afcwfemmes$eig))
+barplot(afcwfemmes$eig[,1], main="Histogramme des valeurs propres", 
+       sub = "Représentations des femmes sur le travail féminin", 
+       xlab = "Axes", ylab = "Pourcentage d'inertie",
+       cex.axis = 0.8, cex.names = 0.8, col ="orange",
+       names.arg = 1:nrow(afcwfemmes$eig))
 ```
 
 Détails des arguments utilisés dans la fonction `barplot()` :       
@@ -416,7 +411,7 @@ Détails des arguments utilisés dans la fonction `barplot()` :
 * L'argument `col=` permet de modifier la couleur des barres.
 * L'argument `names.arg=` permet de nommer chaque barre.       
 
-L'histogramme va servir visuellement à déterminer le nombre d'axes à interpréter à l'aide du critère du "coude" de Cattell. Lorsqu'on observe un décrochement entre deux axes, on détermine les axes avant ce décrochement comme étant les axes à interpréter. Ce n'est pas la seule règle possible. Un autre critère de choix, appelé « critère de Kaiser », suggère de garder tous les axes dont la valeur propre est supérieure à la valeur propre moyenne (qui vaut par définition 1 divisé par le nombre d'axes). Pour plus d'informations, nous vous invitons à vous reporter au lien suivant afin d'approfondir ce travail quant au [nombre d'axes à retenir](http://quanti.hypotheses.org/930/ "Histogramme des valeurs propres").       
+L'histogramme va servir visuellement à déterminer le nombre d'axes à interpréter à l'aide du critère du "coude" de Cattell. Lorsqu'on observe un décrochement entre deux axes, on détermine les axes avant ce décrochement comme étant les axes à interpréter. Ce n'est pas la seule règle possible. Un autre critère de choix, appelé « critère de Kaiser », suggère de garder tous les axes dont la valeur propre est supérieure à la valeur propre moyenne (qui vaut par définition 1 divisé par le nombre d'axes). Pour plus d'informations, nous vous invitons à vous reporter au lien suivant afin d'approfondir ce travail^[Perdoncin A. et Mercklé P. (2014), _Représenter graphiquement les résultats d’une analyse factorielle avec R_, http://quanti.hypotheses.org/930.].       
 
 Ce jeu de données ne permet pas de réellement saisir cette démarche qui vise à déterminer le nombre d'axes à interpréter. Pour ce faire, reprenons nos données sur les spécificités socioprofessionnelles régionales.
 
@@ -429,10 +424,11 @@ afcpcsregion$eig
 Dans ce nouvel exemple, nous abtenons sept facteurs (ou axes). Présentons, dans la foulée, l'histogramme des valeurs propres :     
 
 ```{r barplot(afcpcsregion)}
-barplot(afcpcsregion$eig[,1], main = "Histogramme des valeurs propres", 
-        sub = "Spécificités socioprofessionnelles régionales", 
-        xlab = "Axes", ylab = "Pourcentage d'inertie", cex.axis = 0.8, 
-        cex.names = 0.8, col ="orange", names.arg = 1:nrow(afcpcsregion$eig))
+barplot(afcpcsregion$eig[,1], main="Histogramme des valeurs propres",
+       sub = "Spécificités socioprofessionnelles régionales", 
+       xlab = "Axes", ylab = "Pourcentage d'inertie",
+       cex.axis = 0.8, cex.names = 0.8, col ="orange",
+       names.arg = 1:nrow(afcpcsregion$eig))
 ```
 
 À la vue de cet histogramme, nous pourrions ne retenir que les deux premières dimensions et réaliser une AFC qu'en fonction de ces deux dernières. Toutefois, rien ne vous empêche de "relancer" une AFC avec la dimension 3, voire la dimension 4. Ce n’est pas parce que les deux premières dimensions sont les plus explicatives que les suivantes n’ont rien à dire.       
@@ -484,8 +480,8 @@ plot(afcwfemmes, cex = 0.7, cex.axis = 0.6, cex.lab = 0.8, title = "Représentat
 Le centre de l'axe correspond au profil ligne moyen et au profil colonne moyen. Nous avions précedemment calculé les profils moyens et nous avions effectivement constaté que le profil de la modalité "Travail à mi-temps" était proche du profil colonne moyen.
 
 ```{r, echo=FALSE}
-kable(wfemmes_pourcentage_en_ligne, caption="Tableau des pourcentages en ligne")
-kable(wfemmes_pourcentage_en_colonne, caption="Tableau des pourcentages en colonne")
+kable(wf_ligne)       
+kable(wf_colonne)
 ```
 
 Peut-on interpréter la position entre deux point lignes ou deux points colonnes ? La réponse est "oui" ! Les points lignes (resp. les points colonnes) qui ont des profils lignes (resp. des profils colonnes) similaires sont proches sur le graphe. Ce n'est le cas d'aucun des points du graphe issu des données de Nicole Tabard.
@@ -495,15 +491,14 @@ Par contre, on peut ne peut pas interpréter la proximité entre un point ligne 
 Sur le graphe, "Seul le mari travaille" et "du côté" de "rester au foyer". Si on revient sur le tableau de contingence (affiché ci-dessous), cela peut sembler contradictoire  puisque 573 personnes ont répondu à "seul le mari travaille" et "travailler à mi-temps" alors que  seulement 241 personnes ont répondu à "seul le mari travaille" et "rester au foyer". "Seul le mari travaille" ne devrait-il pas être du côté de "Travailler à mi-temps" ? 
 
 ```{r, echo=FALSE}
-
-kable(wfemmes_avec_marges) 
+kable(wf_marges) 
 ```
 
 
 C'est tout simplement parce qu'il ne faut pas regarder le tableau de contingence mais le tableau des pourcentages en colonnes car on veut comparer une modalité en ligne avec les trois autres modalités en colonne. Or dans ce tableau, la ligne "Seul le mari travaille" représente 84,9% des réponses à la colonne "Rester au foyer". C'est son meileur score commparé aux autres colonnes. C'est pourqoui on peut dire que"Seul le mari travaille" est "du côté" de "Rester au foyer".
 
 ```{r, echo=FALSE}
-kable(wfemmes_pourcentage_en_colonne, caption="Tableau des pourcentages en colonne")
+kable(wf_colonne)
 ```
 
 # Conclusion       

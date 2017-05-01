@@ -3,8 +3,8 @@ title: "Analyse factorielle des correspondances sous R - Partie I"
 author: "Jean-Baptiste Pressac, Laurent Mell"
 date: "14 Avril 2017"
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
