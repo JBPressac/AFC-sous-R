@@ -224,24 +224,36 @@ Le test du khi2 est symétrique. Les lignes et les colonnes du tableau croisé s
 
 Nous pouvons afficher le tableau de contingence d'origine (**tableau des données observées**) en sélectionnant la valeur `observed`.
 
-```{r khi2wfemmes$observed}
+```{r khi2wfemmes$observed, include=FALSE}
 khi2wfemmes$observed
+```
+```{r, echo=FALSE}
+kable(khi2wfemmes$observed)
+
 ```
 
 De la même manière, nous pouvons afficher le tableau d'indépendance (**tableau des effectifs théoriques**) en sélectionnant la valeur `expected`. Dans ce contexte, nous calculons le tableau des pourcentages théoriques, en multipliant pour chaque case la proportion observée dans la population des deux modalités correspondantes. Puis, le tableau des effectifs théoriques se calcule en multipliant le tableau des pourcentages théoriques par l'effectif total.
 
 Pour plus de détails, nous vous recommandons la lecture de ce document^[Barnier J. (2016), _Tout ce que vous n'avez jamais voulu savoir sur le Khi2 sans jamais avoir eu envie de le demander_, https://alea.fr.eu.org/pages/khi2].
 
-```{r khi2wfemmes$expected}
+```{r khi2wfemmes$expected, include=FALSE}
 khi2wfemmes$expected
+```
+```{r, echo=FALSE}
+kable(khi2wfemmes$expected)
+
 ```
 
 Le tableau des effectifs théoriques n'a que peu d'intérêt en lui-même mais en a davantage comparativement au tableau des données observées.
 
 Nous pouvons aussi afficher le tableau des résidus (**tableau des écarts à l'indépendance**) en sélectionnant la valeur `residuals`. Un résidu positif signifie que les effectifs dans la case sont supérieur à ceux attendus sous l'hypothèse d'indépendance. Et l'inverse pour un résidu négatif.
 
-```{r Khi2wfemmes$residuals}
+```{r Khi2wfemmes$residuals, include=FALSE}
 khi2wfemmes$residuals
+```
+```{r, echo=FALSE}
+kable(khi2wfemmes$residuals)
+
 ```     
 
 Exprimé d'une autre manière, l'écart à l'indépendance représente l'**écart entre l’effectif observé et l’effectif théorique**, et ceci pour chacune des cases du tableau de contingence. D'ailleurs, l'écart à l'indépendance "est un effectif et c'est un invariant, indépendant du choix des lignes et des colonnes (c'est la différence entre l'effectif observé et l'effectif théorique : le résultat est donc un effectif)."^[Cibois P. (2003), "Les écarts à l'indépendance. Techniques simples pour analyser des données d'enquête", _Sciences Humaines_, https://www.scienceshumaines.com/textesInedits/Cibois.pdf].
